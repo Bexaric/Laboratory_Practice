@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPptYgb.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccVrqxgI.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -57,13 +57,13 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPptYgb.s 			page 1
    9:Core/Src/main.c ****     //- Alternate function mode (10). Режим альтернативных функций.
   10:Core/Src/main.c ****     //- Analog mode (11). Аналоговый режим.
   11:Core/Src/main.c ****     
-  12:Core/Src/main.c ****     *(uint32_t *)(0x40020400UL + 0x04UL) |= 0x00; // настройка режима порта 
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPptYgb.s 			page 2
+  12:Core/Src/main.c ****    *(uint32_t *)(0x40020400UL + 0x04UL) |= 0x00; // настройка режима порта 
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccVrqxgI.s 			page 2
 
 
-  47              		.loc 1 12 5 is_stmt 1 view .LVU5
+  47              		.loc 1 12 4 is_stmt 1 view .LVU5
   13:Core/Src/main.c ****      // Output Push-Pull (PP) 0 – Стандартный двухтактный выход.
-  14:Core/Src/main.c ****      // Output Open-Drain (OD) 1 – Выход с открытым стоком.
+  14:Core/Src/main.c ****       // Output Open-Drain (OD) 1 – Выход с открытым стоком.
   15:Core/Src/main.c **** 
   16:Core/Src/main.c ****     *(uint32_t *)(0x40020400UL + 0x08UL) |= 0x10000000; // скорость одного бита (
   48              		.loc 1 16 5 view .LVU6
@@ -109,13 +109,13 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPptYgb.s 			page 1
   73              	.Letext0:
   74              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
   75              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPptYgb.s 			page 3
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccVrqxgI.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\nicki\AppData\Local\Temp\ccPptYgb.s:21     .text.main:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccPptYgb.s:27     .text.main:00000000 main
-C:\Users\nicki\AppData\Local\Temp\ccPptYgb.s:67     .text.main:00000038 $d
+C:\Users\nicki\AppData\Local\Temp\ccVrqxgI.s:21     .text.main:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccVrqxgI.s:27     .text.main:00000000 main
+C:\Users\nicki\AppData\Local\Temp\ccVrqxgI.s:67     .text.main:00000038 $d
 
 NO UNDEFINED SYMBOLS
