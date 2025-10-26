@@ -15,7 +15,7 @@
 ######################################
 # target
 ######################################
-TARGET_SERIES = STM32F411
+TARGET_SERIES = STM32F446
 TARGET_VERSION = RE
 
 ######################################
@@ -255,7 +255,7 @@ $(BUILD_DIR)/$(TARGET_SERIES)$(TARGET_VERSION).elf: $(OBJECTS) Makefile
 	@echo "-----------------------------------------------------"	
 
 $(BUILD_DIR):
-	@"mkdir" $@
+	@mkdir $@
 
 #######################################
 # clean up
