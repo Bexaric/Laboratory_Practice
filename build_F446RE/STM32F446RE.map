@@ -728,10 +728,10 @@ LOAD D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13
  .debug_ranges  0x00000018       0x10 build_F446RE/main.o
  .debug_ranges  0x00000028       0x20 build_F446RE/startup_stm32f446xx.o
 
-.debug_line     0x00000000      0x33b
+.debug_line     0x00000000      0x339
  .debug_line    0x00000000      0x269 build_F446RE/system_stm32f4xx.o
- .debug_line    0x00000269       0x48 build_F446RE/main.o
- .debug_line    0x000002b1       0x8a build_F446RE/startup_stm32f446xx.o
+ .debug_line    0x00000269       0x46 build_F446RE/main.o
+ .debug_line    0x000002af       0x8a build_F446RE/startup_stm32f446xx.o
 
 .debug_str      0x00000000      0x3fc
  .debug_str     0x00000000      0x3fc build_F446RE/system_stm32f4xx.o

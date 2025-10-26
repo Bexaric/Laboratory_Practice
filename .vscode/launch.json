@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Cortex Debug",
-            "cwd": "${workspaceFolder}",
+            "cwd": "C:/Users/nicki/OneDrive/Рабочий стол/LB1_Yakushev/Laboratory_Practice",
             "executable": "./build_F446RE/STM32F446RE.elf",
             "request": "launch",
             "type": "cortex-debug",
