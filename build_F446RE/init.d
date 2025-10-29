@@ -1,3 +1,3 @@
-build_F446RE/main.o: Core/Src/main.c \
+build_F446RE/init.o: Core/Src/init.c \
  C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h
 C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h:
