@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0AZ6qn.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -49,16 +49,16 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 1
   42 0006 04E0     		b	.L2
   43              	.L6:
    6:Core/Src/main.c ****     while(1) {
-   7:Core/Src/main.c ****         if(READ_GPIO_C13 != 0) 
+   7:Core/Src/main.c ****         if(READ_BIT(GPIOC_IDR, GPIOC_IDR_PIN13)) 
    8:Core/Src/main.c ****         {
-   9:Core/Src/main.c ****             RESET_GPIO_A5;
+   9:Core/Src/main.c ****             SET_BIT(GPIOB_BSRR , GPIOB_BSRR_PIN5_RESET);
   44              		.loc 1 9 13 view .LVU2
   45 0008 084A     		ldr	r2, .L7
   46 000a 9369     		ldr	r3, [r2, #24]
   47 000c 43F40013 		orr	r3, r3, #2097152
   48 0010 9361     		str	r3, [r2, #24]
   49              	.L2:
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0AZ6qn.s 			page 2
 
 
    6:Core/Src/main.c ****     while(1) {
@@ -76,7 +76,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 1
   10:Core/Src/main.c ****         }
   11:Core/Src/main.c ****         else 
   12:Core/Src/main.c ****         {
-  13:Core/Src/main.c ****             SET_GPIO_A5;
+  13:Core/Src/main.c ****             SET_BIT(GPIOB_BSRR , GPIOB_BSRR_PIN5_SET);
   58              		.loc 1 13 13 is_stmt 1 view .LVU7
   59 001e 034A     		ldr	r2, .L7
   60 0020 9369     		ldr	r3, [r2, #24]
@@ -94,14 +94,14 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 1
   73              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
   74              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
   75              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 3
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0AZ6qn.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s:21     .text.main:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s:27     .text.main:00000000 main
-C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s:67     .text.main:0000002c $d
+C:\Users\nicki\AppData\Local\Temp\cc0AZ6qn.s:21     .text.main:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc0AZ6qn.s:27     .text.main:00000000 main
+C:\Users\nicki\AppData\Local\Temp\cc0AZ6qn.s:67     .text.main:0000002c $d
 
 UNDEFINED SYMBOLS
 GPIO_Init
