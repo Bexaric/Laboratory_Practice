@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccXRFOAB.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccx6IzG0.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -37,76 +37,59 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccXRFOAB.s 			page 1
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-   5:Core/Src/init.c ****     *(uint32_t *)(0x40023800UL + 0x30UL) |= (1 << 2);
+   5:Core/Src/init.c ****     RCC_GPIO_EN |= RCC_GPIOA_EN; // Включение тактирования на GPIOAEN
   34              		.loc 1 5 5 view .LVU1
   35 0000 0A4A     		ldr	r2, .L2
   36 0002 D2F83038 		ldr	r3, [r2, #2096]
-  37              		.loc 1 5 42 is_stmt 0 view .LVU2
-  38 0006 43F00401 		orr	r1, r3, #4
+  37              		.loc 1 5 17 is_stmt 0 view .LVU2
+  38 0006 43F00101 		orr	r1, r3, #1
   39 000a C2F83018 		str	r1, [r2, #2096]
-   6:Core/Src/init.c ****     *(uint32_t *)(0x40023800UL + 0x30UL) |= (1 << 0); //Включение тактирования
+   6:Core/Src/init.c ****     RCC_GPIO_EN |= RCC_GPIOC_EN; // Включение тактирования на GPIOCEN
   40              		.loc 1 6 5 is_stmt 1 view .LVU3
-  41              		.loc 1 6 42 is_stmt 0 view .LVU4
+  41              		.loc 1 6 17 is_stmt 0 view .LVU4
   42 000e 43F00503 		orr	r3, r3, #5
   43 0012 C2F83038 		str	r3, [r2, #2096]
-   7:Core/Src/init.c **** 
-   8:Core/Src/init.c ****     *(uint32_t *)(0x40020000UL + 0x00UL) |= (1 << 10); // Режим порта (1 << 27)
-  44              		.loc 1 8 5 is_stmt 1 view .LVU5
+   7:Core/Src/init.c ****     GPIOA_MODER |= GPIOA_MODE_PIN5_OUT; // Режим порта
+  44              		.loc 1 7 5 is_stmt 1 view .LVU5
   45 0016 064B     		ldr	r3, .L2+4
   46 0018 1A68     		ldr	r2, [r3]
-  47              		.loc 1 8 42 is_stmt 0 view .LVU6
+  47              		.loc 1 7 17 is_stmt 0 view .LVU6
   48 001a 42F48062 		orr	r2, r2, #1024
   49 001e 1A60     		str	r2, [r3]
-   9:Core/Src/init.c ****     //- Input mode (00). Режим считывания сигнала с порта микрок�
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccXRFOAB.s 			page 2
+   8:Core/Src/init.c ****     GPIOA_OTYPER |= GPIOA_OTYPE_PIN5_PP; // Настройка режима порта 
+  50              		.loc 1 8 5 is_stmt 1 view .LVU7
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccx6IzG0.s 			page 2
 
 
-  10:Core/Src/init.c ****     //- General Purpose Output mode (01). Режим вывода сигнала на порт ми
-  11:Core/Src/init.c ****     //- Alternate function mode (10). Режим альтернативных функций.
-  12:Core/Src/init.c ****     //- Analog mode (11). Аналоговый режим.
-  13:Core/Src/init.c ****     
-  14:Core/Src/init.c ****     *(uint32_t *)(0x40020000UL + 0x04UL) |= 0x00; // настройка режима порта 
-  50              		.loc 1 14 5 is_stmt 1 view .LVU7
-  15:Core/Src/init.c ****     // Output Push-Pull (PP) 0 – Стандартный двухтактный выход.
-  16:Core/Src/init.c ****     // Output Open-Drain (OD) 1 – Выход с открытым стоком.
-  17:Core/Src/init.c **** 
-  18:Core/Src/init.c ****     *(uint32_t *)(0x40020000UL + 0x08UL) |= (1 << 10); // скорость одного бита (1
-  51              		.loc 1 18 5 view .LVU8
+   9:Core/Src/init.c ****     GPIOA_OSPEEDR |= GPIOA_OSPEED_PIN5_MID; // Скорость одного бита
+  51              		.loc 1 9 5 view .LVU8
   52 0020 9A68     		ldr	r2, [r3, #8]
-  53              		.loc 1 18 42 is_stmt 0 view .LVU9
+  53              		.loc 1 9 19 is_stmt 0 view .LVU9
   54 0022 42F48062 		orr	r2, r2, #1024
   55 0026 9A60     		str	r2, [r3, #8]
-  19:Core/Src/init.c ****     // 00: Low speed / Низкая скорость – диапазон частот от 2 до 
-  20:Core/Src/init.c ****     // 01: Medium speed / Средняя скорость – диапазон частот от 10
-  21:Core/Src/init.c ****     // 10: High speed / Высокая скорость – диапазон частот от 25 �
-  22:Core/Src/init.c ****     // 11: Very high speed / Очень высокая скорость – диапазон час
-  23:Core/Src/init.c **** 
-  24:Core/Src/init.c ****     //*(uint32_t *)(0x40020000UL + 0x0CUL) |= (0x00); // настройка подтяжки
-  25:Core/Src/init.c ****     // 00: No pull-up, pull-down – Нед подтяжки к питанию и стяжки на
-  26:Core/Src/init.c ****     // 01: Pull-up – Подтяжка к положительному напряжению чер
-  27:Core/Src/init.c ****     // 10: Pull-down – Стяжка к общему проводу через резистор.
-  28:Core/Src/init.c ****     // 11: Reserved – Зарезервированное состояние, не использ�
-  29:Core/Src/init.c **** }...
-  56              		.loc 1 29 1 view .LVU10
-  57 0028 7047     		bx	lr
-  58              	.L3:
-  59 002a 00BF     		.align	2
-  60              	.L2:
-  61 002c 00300240 		.word	1073885184
-  62 0030 00000240 		.word	1073872896
-  63              		.cfi_endproc
-  64              	.LFE0:
-  66              		.text
-  67              	.Letext0:
-  68              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
-  69              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccXRFOAB.s 			page 3
+  10:Core/Src/init.c ****     GPIOA_PUPDR |= GPIOA_PUPDR_PIN5_NOPUPD; // Настройка подтяжки
+  56              		.loc 1 10 5 is_stmt 1 view .LVU10
+  11:Core/Src/init.c **** }...
+  57              		.loc 1 11 1 is_stmt 0 view .LVU11
+  58 0028 7047     		bx	lr
+  59              	.L3:
+  60 002a 00BF     		.align	2
+  61              	.L2:
+  62 002c 00300240 		.word	1073885184
+  63 0030 00000240 		.word	1073872896
+  64              		.cfi_endproc
+  65              	.LFE0:
+  67              		.text
+  68              	.Letext0:
+  69              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
+  70              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccx6IzG0.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\nicki\AppData\Local\Temp\ccXRFOAB.s:21     .text.GPIO_Init:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccXRFOAB.s:27     .text.GPIO_Init:00000000 GPIO_Init
-C:\Users\nicki\AppData\Local\Temp\ccXRFOAB.s:61     .text.GPIO_Init:0000002c $d
+C:\Users\nicki\AppData\Local\Temp\ccx6IzG0.s:21     .text.GPIO_Init:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccx6IzG0.s:27     .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\nicki\AppData\Local\Temp\ccx6IzG0.s:62     .text.GPIO_Init:0000002c $d
 
 NO UNDEFINED SYMBOLS

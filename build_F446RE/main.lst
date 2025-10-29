@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccpWNiwm.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -49,61 +49,59 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccpWNiwm.s 			page 1
   42 0006 04E0     		b	.L2
   43              	.L6:
    6:Core/Src/main.c ****     while(1) {
-   7:Core/Src/main.c ****         if((*(uint32_t *)(0x40020800UL + 0x10UL) & 0x2000UL) != 0) 
+   7:Core/Src/main.c ****         if(READ_GPIO_C13 != 0) 
    8:Core/Src/main.c ****         {
-   9:Core/Src/main.c ****             *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 21);
+   9:Core/Src/main.c ****             RESET_GPIO_A5;
   44              		.loc 1 9 13 view .LVU2
   45 0008 084A     		ldr	r2, .L7
   46 000a 9369     		ldr	r3, [r2, #24]
-  47              		.loc 1 9 51 is_stmt 0 view .LVU3
-  48 000c 43F40013 		orr	r3, r3, #2097152
-  49 0010 9361     		str	r3, [r2, #24]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccpWNiwm.s 			page 2
+  47 000c 43F40013 		orr	r3, r3, #2097152
+  48 0010 9361     		str	r3, [r2, #24]
+  49              	.L2:
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 2
 
 
-  50              	.L2:
    6:Core/Src/main.c ****     while(1) {
-  51              		.loc 1 6 5 is_stmt 1 view .LVU4
+  50              		.loc 1 6 5 view .LVU3
    7:Core/Src/main.c ****         {
-  52              		.loc 1 7 9 view .LVU5
+  51              		.loc 1 7 9 view .LVU4
    7:Core/Src/main.c ****         {
-  53              		.loc 1 7 13 is_stmt 0 view .LVU6
-  54 0012 064B     		ldr	r3, .L7
-  55 0014 D3F81038 		ldr	r3, [r3, #2064]
+  52              		.loc 1 7 12 is_stmt 0 view .LVU5
+  53 0012 064B     		ldr	r3, .L7
+  54 0014 D3F81038 		ldr	r3, [r3, #2064]
    7:Core/Src/main.c ****         {
-  56              		.loc 1 7 11 view .LVU7
-  57 0018 13F4005F 		tst	r3, #8192
-  58 001c F4D1     		bne	.L6
+  55              		.loc 1 7 11 view .LVU6
+  56 0018 13F4005F 		tst	r3, #8192
+  57 001c F4D1     		bne	.L6
   10:Core/Src/main.c ****         }
   11:Core/Src/main.c ****         else 
   12:Core/Src/main.c ****         {
-  13:Core/Src/main.c ****             *(uint32_t *)(0x40020000UL + 0x18UL) |= (1 << 5);
-  59              		.loc 1 13 13 is_stmt 1 view .LVU8
-  60 001e 034A     		ldr	r2, .L7
-  61 0020 9369     		ldr	r3, [r2, #24]
-  62              		.loc 1 13 50 is_stmt 0 view .LVU9
-  63 0022 43F02003 		orr	r3, r3, #32
-  64 0026 9361     		str	r3, [r2, #24]
-  65 0028 F3E7     		b	.L2
-  66              	.L8:
-  67 002a 00BF     		.align	2
-  68              	.L7:
-  69 002c 00000240 		.word	1073872896
-  70              		.cfi_endproc
-  71              	.LFE0:
-  73              		.text
-  74              	.Letext0:
-  75              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
-  76              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
-  77              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccpWNiwm.s 			page 3
+  13:Core/Src/main.c ****             SET_GPIO_A5;
+  58              		.loc 1 13 13 is_stmt 1 view .LVU7
+  59 001e 034A     		ldr	r2, .L7
+  60 0020 9369     		ldr	r3, [r2, #24]
+  61 0022 43F02003 		orr	r3, r3, #32
+  62 0026 9361     		str	r3, [r2, #24]
+  63 0028 F3E7     		b	.L2
+  64              	.L8:
+  65 002a 00BF     		.align	2
+  66              	.L7:
+  67 002c 00000240 		.word	1073872896
+  68              		.cfi_endproc
+  69              	.LFE0:
+  71              		.text
+  72              	.Letext0:
+  73              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
+  74              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
+  75              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\nicki\AppData\Local\Temp\ccpWNiwm.s:21     .text.main:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccpWNiwm.s:27     .text.main:00000000 main
-C:\Users\nicki\AppData\Local\Temp\ccpWNiwm.s:69     .text.main:0000002c $d
+C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s:21     .text.main:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s:27     .text.main:00000000 main
+C:\Users\nicki\AppData\Local\Temp\cchSsh3y.s:67     .text.main:0000002c $d
 
 UNDEFINED SYMBOLS
 GPIO_Init
