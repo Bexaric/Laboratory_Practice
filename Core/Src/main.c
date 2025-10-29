@@ -28,7 +28,7 @@ int main(void) {
     //if((*(uint32_t*) (0x40020400UL + 0x10UL) & 0x80UL) != 0)
 
     while(1) {
-        *(uint32_t *)(0x40020400UL + 0x18UL) |= 0x2000;
+        *(uint32_t *)(0x40020400UL + 0x18UL) |= (1UL << 13);
     }
 
 }
