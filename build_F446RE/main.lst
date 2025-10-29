@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccJRXMp3.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccWp42Ic.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -30,92 +30,99 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccJRXMp3.s 			page 1
   28              	.LFB0:
    1:Core/Src/main.c **** #include <stdint.h>
    2:Core/Src/main.c **** 
-   3:Core/Src/main.c **** int main(void) {
-  29              		.loc 1 3 16 view -0
+   3:Core/Src/main.c **** int main(void) 
+   4:Core/Src/main.c **** {
+  29              		.loc 1 4 1 view -0
   30              		.cfi_startproc
   31              		@ Volatile: function does not return.
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
   34              		@ link register save eliminated.
-   4:Core/Src/main.c ****     *(uint32_t*)(0x40023800UL + 0x30UL) |= 0x02; //Включение тактирования на
-  35              		.loc 1 4 5 view .LVU1
-  36 0000 0D4A     		ldr	r2, .L3
+   5:Core/Src/main.c ****     *(uint32_t *)(0x40023800UL + 0x30UL) |= (1 << 2);
+  35              		.loc 1 5 5 view .LVU1
+  36 0000 0C4A     		ldr	r2, .L3
   37 0002 D2F83038 		ldr	r3, [r2, #2096]
-  38              		.loc 1 4 41 is_stmt 0 view .LVU2
-  39 0006 43F00203 		orr	r3, r3, #2
-  40 000a C2F83038 		str	r3, [r2, #2096]
-   5:Core/Src/main.c **** 
-   6:Core/Src/main.c ****     *(uint32_t*)(0x40020400UL + 0x00UL) |= 0x10000000; // Режим порта (1 << 27)
+  38              		.loc 1 5 42 is_stmt 0 view .LVU2
+  39 0006 43F00401 		orr	r1, r3, #4
+  40 000a C2F83018 		str	r1, [r2, #2096]
+   6:Core/Src/main.c ****     *(uint32_t *)(0x40023800UL + 0x30UL) |= (1 << 0); //Включение тактирования
   41              		.loc 1 6 5 is_stmt 1 view .LVU3
-  42 000e 0B4B     		ldr	r3, .L3+4
-  43 0010 D3F80024 		ldr	r2, [r3, #1024]
-  44              		.loc 1 6 41 is_stmt 0 view .LVU4
-  45 0014 42F08052 		orr	r2, r2, #268435456
-  46 0018 C3F80024 		str	r2, [r3, #1024]
-   7:Core/Src/main.c ****     //- Input mode (00). Режим считывания сигнала с порта микрок�
-   8:Core/Src/main.c ****     //- General Purpose Output mode (01). Режим вывода сигнала на порт ми
-   9:Core/Src/main.c ****     //- Alternate function mode (10). Режим альтернативных функций.
-  10:Core/Src/main.c ****     //- Analog mode (11). Аналоговый режим.
-  11:Core/Src/main.c ****     
-  12:Core/Src/main.c ****    *(uint32_t*)(0x40020400UL + 0x04UL) |= 0x00; // настройка режима порта 
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccJRXMp3.s 			page 2
+  42              		.loc 1 6 42 is_stmt 0 view .LVU4
+  43 000e 43F00503 		orr	r3, r3, #5
+  44 0012 C2F83038 		str	r3, [r2, #2096]
+   7:Core/Src/main.c **** 
+   8:Core/Src/main.c ****     *(uint32_t *)(0x40020000UL + 0x00UL) |= (1 << 10); // Режим порта (1 << 27)
+  45              		.loc 1 8 5 is_stmt 1 view .LVU5
+  46 0016 084B     		ldr	r3, .L3+4
+  47 0018 1A68     		ldr	r2, [r3]
+  48              		.loc 1 8 42 is_stmt 0 view .LVU6
+  49 001a 42F48062 		orr	r2, r2, #1024
+  50 001e 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccWp42Ic.s 			page 2
 
 
-  47              		.loc 1 12 4 is_stmt 1 view .LVU5
-  13:Core/Src/main.c ****      // Output Push-Pull (PP) 0 – Стандартный двухтактный выход.
-  14:Core/Src/main.c ****       // Output Open-Drain (OD) 1 – Выход с открытым стоком.
-  15:Core/Src/main.c **** 
-  16:Core/Src/main.c ****     *(uint32_t*)(0x40020400UL + 0x08UL) |= 0x10000000; // скорость одного бита (1
-  48              		.loc 1 16 5 view .LVU6
-  49 001c D3F80824 		ldr	r2, [r3, #1032]
-  50              		.loc 1 16 41 is_stmt 0 view .LVU7
-  51 0020 42F08052 		orr	r2, r2, #268435456
-  52 0024 C3F80824 		str	r2, [r3, #1032]
-  17:Core/Src/main.c ****     // 00: Low speed / Низкая скорость – диапазон частот от 2 до 
-  18:Core/Src/main.c ****     // 01: Medium speed / Средняя скорость – диапазон частот от 10
-  19:Core/Src/main.c ****     // 10: High speed / Высокая скорость – диапазон частот от 25 �
-  20:Core/Src/main.c ****     // 11: Very high speed / Очень высокая скорость – диапазон час
-  21:Core/Src/main.c **** 
-  22:Core/Src/main.c ****     *(uint32_t*)(0x40020400UL + 0x0CUL) |= 0x00; // настройка подтяжки
-  53              		.loc 1 22 5 is_stmt 1 view .LVU8
-  54              	.L2:
-  23:Core/Src/main.c ****     // 00: No pull-up, pull-down – Нед подтяжки к питанию и стяжки на
-  24:Core/Src/main.c ****     // 01: Pull-up – Подтяжка к положительному напряжению чер
-  25:Core/Src/main.c ****     // 10: Pull-down – Стяжка к общему проводу через резистор.
-  26:Core/Src/main.c ****     // 11: Reserved – Зарезервированное состояние, не использ�
-  27:Core/Src/main.c **** 
-  28:Core/Src/main.c ****     //if((*(uint32_t*) (0x40020400UL + 0x10UL) & 0x80UL) != 0)
+   9:Core/Src/main.c ****     //- Input mode (00). Режим считывания сигнала с порта микрок�
+  10:Core/Src/main.c ****     //- General Purpose Output mode (01). Режим вывода сигнала на порт ми
+  11:Core/Src/main.c ****     //- Alternate function mode (10). Режим альтернативных функций.
+  12:Core/Src/main.c ****     //- Analog mode (11). Аналоговый режим.
+  13:Core/Src/main.c ****     
+  14:Core/Src/main.c ****     *(uint32_t *)(0x40020000UL + 0x04UL) |= 0x00; // настройка режима порта 
+  51              		.loc 1 14 5 is_stmt 1 view .LVU7
+  15:Core/Src/main.c ****     // Output Push-Pull (PP) 0 – Стандартный двухтактный выход.
+  16:Core/Src/main.c ****     // Output Open-Drain (OD) 1 – Выход с открытым стоком.
+  17:Core/Src/main.c **** 
+  18:Core/Src/main.c ****     *(uint32_t *)(0x40020000UL + 0x08UL) |= (1 << 10); // скорость одного бита (1
+  52              		.loc 1 18 5 view .LVU8
+  53 0020 9A68     		ldr	r2, [r3, #8]
+  54              		.loc 1 18 42 is_stmt 0 view .LVU9
+  55 0022 42F48062 		orr	r2, r2, #1024
+  56 0026 9A60     		str	r2, [r3, #8]
+  57              	.L2:
+  19:Core/Src/main.c ****     // 00: Low speed / Низкая скорость – диапазон частот от 2 до 
+  20:Core/Src/main.c ****     // 01: Medium speed / Средняя скорость – диапазон частот от 10
+  21:Core/Src/main.c ****     // 10: High speed / Высокая скорость – диапазон частот от 25 �
+  22:Core/Src/main.c ****     // 11: Very high speed / Очень высокая скорость – диапазон час
+  23:Core/Src/main.c **** 
+  24:Core/Src/main.c ****     //*(uint32_t *)(0x40020000UL + 0x0CUL) |= (0x00); // настройка подтяжки
+  25:Core/Src/main.c ****     // 00: No pull-up, pull-down – Нед подтяжки к питанию и стяжки на
+  26:Core/Src/main.c ****     // 01: Pull-up – Подтяжка к положительному напряжению чер
+  27:Core/Src/main.c ****     // 10: Pull-down – Стяжка к общему проводу через резистор.
+  28:Core/Src/main.c ****     // 11: Reserved – Зарезервированное состояние, не использ�
   29:Core/Src/main.c **** 
-  30:Core/Src/main.c ****     while(1) {
-  55              		.loc 1 30 5 view .LVU9
-  31:Core/Src/main.c ****         *(uint32_t *)(0x40020400UL + 0x18UL) |= 0x2000;
-  56              		.loc 1 31 9 discriminator 1 view .LVU10
-  57 0028 044A     		ldr	r2, .L3+4
-  58 002a D2F81834 		ldr	r3, [r2, #1048]
-  59              		.loc 1 31 46 is_stmt 0 discriminator 1 view .LVU11
-  60 002e 43F40053 		orr	r3, r3, #8192
-  61 0032 C2F81834 		str	r3, [r2, #1048]
-  30:Core/Src/main.c ****         *(uint32_t *)(0x40020400UL + 0x18UL) |= 0x2000;
-  62              		.loc 1 30 10 is_stmt 1 view .LVU12
-  63 0036 F7E7     		b	.L2
-  64              	.L4:
-  65              		.align	2
-  66              	.L3:
-  67 0038 00300240 		.word	1073885184
-  68 003c 00000240 		.word	1073872896
-  69              		.cfi_endproc
-  70              	.LFE0:
-  72              		.text
-  73              	.Letext0:
-  74              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
-  75              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccJRXMp3.s 			page 3
+  30:Core/Src/main.c ****     //if((*(uint32_t*) (0x40020400UL + 0x10UL) & 0x80UL) != 0)
+  31:Core/Src/main.c **** 
+  32:Core/Src/main.c ****     while(1) {
+  58              		.loc 1 32 5 is_stmt 1 view .LVU10
+  33:Core/Src/main.c ****         if((*(uint32_t *)(0x40020800UL + 0x10UL) & 0x2000UL) != 1) {
+  59              		.loc 1 33 9 view .LVU11
+  34:Core/Src/main.c ****             *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 5);
+  60              		.loc 1 34 13 view .LVU12
+  61 0028 034A     		ldr	r2, .L3+4
+  62 002a 9369     		ldr	r3, [r2, #24]
+  63              		.loc 1 34 51 is_stmt 0 view .LVU13
+  64 002c 43F02003 		orr	r3, r3, #32
+  65 0030 9361     		str	r3, [r2, #24]
+  32:Core/Src/main.c ****         if((*(uint32_t *)(0x40020800UL + 0x10UL) & 0x2000UL) != 1) {
+  66              		.loc 1 32 10 is_stmt 1 view .LVU14
+  67 0032 F9E7     		b	.L2
+  68              	.L4:
+  69              		.align	2
+  70              	.L3:
+  71 0034 00300240 		.word	1073885184
+  72 0038 00000240 		.word	1073872896
+  73              		.cfi_endproc
+  74              	.LFE0:
+  76              		.text
+  77              	.Letext0:
+  78              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
+  79              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccWp42Ic.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\nicki\AppData\Local\Temp\ccJRXMp3.s:21     .text.main:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccJRXMp3.s:27     .text.main:00000000 main
-C:\Users\nicki\AppData\Local\Temp\ccJRXMp3.s:67     .text.main:00000038 $d
+C:\Users\nicki\AppData\Local\Temp\ccWp42Ic.s:21     .text.main:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccWp42Ic.s:27     .text.main:00000000 main
+C:\Users\nicki\AppData\Local\Temp\ccWp42Ic.s:71     .text.main:00000034 $d
 
 NO UNDEFINED SYMBOLS
