@@ -3,26 +3,14 @@
 int main(void) 
 {
     GPIO_Init();
-    //while(1) {
-    //    if(READ_GPIO_C13 != 0) 
-    //    {
-    //        RESET_GPIO_A5;
-    //    }
-    //    else 
-    //    {
-    //        SET_GPIO_A5;
-    //    }
-    //}
-
-    // С использованием макросов
     while(1) {
-        if(READ_BIT(GPIOC_IDR, GPIOC_IDR_PIN13)) 
+        if(READ_BIT(GPIOC->IDR, GPIO_IDR_IDR_13) !=0) 
         {
-            SET_BIT(GPIOB_BSRR , GPIOB_BSRR_PIN5_RESET);
+            SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR5);
         }
         else 
         {
-            SET_BIT(GPIOB_BSRR , GPIOB_BSRR_PIN5_SET);
+            SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS5);
         }
     }
 }

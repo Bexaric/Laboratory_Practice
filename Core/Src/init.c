@@ -1,11 +1,19 @@
-#include "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
+#include <C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h>
 
-int GPIO_Init(void) 
+void GPIO_Init(void) 
 {
-    RCC_GPIO_EN |= RCC_GPIOA_EN; // Включение тактирования портов GPIOA
-    RCC_GPIO_EN |= RCC_GPIOC_EN; // Включение тактирования портов GPIOC
-    GPIOA_MODER |= GPIOA_MODE_PIN5_OUT; // Режим порта 5-го пина GPIOA
-    GPIOA_OTYPER |= GPIOA_OTYPE_PIN5_PP; // Настройка на Push-Pull 5-го пина GPIOA
-    GPIOA_OSPEEDR |= GPIOA_OSPEED_PIN5_MID; // Настройка скорости работы 7-го пина GPIOA
-    GPIOA_PUPDR |= GPIOA_PUPDR_PIN5_NOPUPD; // Настройка подтяжки (отключение)
+    //Включение тактирования портов GPIOA и GPIOC
+    SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOCEN);
+
+    // Режим порта 5-го пина GPIOA
+    SET_BIT(GPIOA->MODER, GPIO_MODER_MODE5_0);
+
+    // Настройка на Push-Pull 5-го пина GPIOA
+    CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT5);
+
+    // Настройка скорости работы 5-го пина GPIOA
+    SET_BIT(GPIOA->OSPEEDR, GPIO_OSPEEDER_OSPEEDR5_0);
+
+    // Настройка подтяжки (отключение)
+    CLEAR_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD5_0);
 }

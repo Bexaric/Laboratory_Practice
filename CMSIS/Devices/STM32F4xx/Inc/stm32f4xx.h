@@ -153,7 +153,7 @@
 #elif defined(STM32F411xE)
   #include "stm32f411xe.h"
 #elif defined(STM32F446xx)
-  #include "stm32f446xx.h"
+  #include <C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx/stm32f446xx.h>
 #elif defined(STM32F469xx)
   #include "stm32f469xx.h"
 #elif defined(STM32F479xx)

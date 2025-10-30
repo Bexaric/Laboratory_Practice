@@ -166,8 +166,8 @@ typedef enum
   * @}
   */
 
-#include "core_cm4.h"             /* Cortex-M4 processor and core peripherals */
-#include "system_stm32f4xx.h"
+#include <C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Include/core_cm4.h>             /* Cortex-M4 processor and core peripherals */
+#include "C:\LB1_MC\Laboratory_Practice\Laboratory_Practice\CMSIS\Devices\STM32F4xx\Inc\system_stm32f4xx.h"
 #include <stdint.h>
 
 /** @addtogroup Peripheral_registers_structures
