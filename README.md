@@ -1,3 +1,5 @@
+![LB1_Yakushev.gif](LB1_Yakushev.gif)
+
 - [Описание на русском](#ru_description)  
       - [Список поддерживаемых контроллеров](#mk_list_ru)  
       - [Описание файлов](#file_ru_description)
