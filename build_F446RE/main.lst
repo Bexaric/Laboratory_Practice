@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -28,115 +28,127 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 1
   25              		.thumb_func
   27              	MODE_SELECTION:
   28              	.LFB130:
-   1:Core/Src/main.c **** #include <C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h>
-   2:Core/Src/main.c **** 
-   3:Core/Src/main.c **** uint32_t BUTTON_1_STATE = 0; // состояние 1-ой внешней кнопки
-   4:Core/Src/main.c **** uint32_t BUTTON_2_STATE = 0; // состояние 2-ой внешней кнопки
-   5:Core/Src/main.c **** uint32_t BUTTON_3_STATE = 0; // состояние 3-ой внешней кнопки
-   6:Core/Src/main.c **** uint32_t BUTTON_4_STATE = 0; // состояние 4-ой встроенной кнопки
-   7:Core/Src/main.c **** uint8_t flag = 0;            // проверка на единичное нажатие 4-ой кн
-   8:Core/Src/main.c **** 
-   9:Core/Src/main.c **** uint8_t MODE = 0;            // режим работы
-  10:Core/Src/main.c **** // режим 0:  зелёный, жёлтый,  красный
-  11:Core/Src/main.c **** // режим 1:  красный, зелёный, жёлтый
-  12:Core/Src/main.c **** // режим 2:  жёлтый,  красный, зелёный
-  13:Core/Src/main.c **** 
-  14:Core/Src/main.c **** // массив для включения светодиодов
-  15:Core/Src/main.c **** const uint32_t MODE_SET[3][3] = 
-  16:Core/Src/main.c **** {
-  17:Core/Src/main.c ****     {GPIO_BSRR_BS0, GPIO_BSRR_BS1, GPIO_BSRR_BS4},
-  18:Core/Src/main.c ****     
-  19:Core/Src/main.c ****     {GPIO_BSRR_BS4, GPIO_BSRR_BS0, GPIO_BSRR_BS1},
-  20:Core/Src/main.c ****     
-  21:Core/Src/main.c ****     {GPIO_BSRR_BS1, GPIO_BSRR_BS4, GPIO_BSRR_BS0}
-  22:Core/Src/main.c **** };
-  23:Core/Src/main.c **** 
-  24:Core/Src/main.c **** // массив для выключения светодиодов
-  25:Core/Src/main.c **** const uint32_t MODE_RESET[3][3] = 
-  26:Core/Src/main.c **** {
-  27:Core/Src/main.c ****     {GPIO_BSRR_BR0, GPIO_BSRR_BR1, GPIO_BSRR_BR4},
-  28:Core/Src/main.c ****     
-  29:Core/Src/main.c ****     {GPIO_BSRR_BR4, GPIO_BSRR_BR0, GPIO_BSRR_BR1},
+   1:Core/Src/main.c **** // Собрать схему с включением 3-и светодиодов и 4-х кнопо
+   2:Core/Src/main.c **** // Базовый функционал кнопок, указанный ниже, меняется 
+   3:Core/Src/main.c **** // 1) При удержании, включает зеленый светодиод на отлад
+   4:Core/Src/main.c **** // 2) При удержании, включает синий светодиод на отладоч
+   5:Core/Src/main.c **** // 3) При удержании, включает красный светодиод на отлад
+   6:Core/Src/main.c **** // 4) При нажатии меняет функционал у кнопок смещая цвет
+   7:Core/Src/main.c **** // вниз по списку.
+   8:Core/Src/main.c **** // То есть, при первом нажатии 4-ой кнопки, кнопка-1 будет
+   9:Core/Src/main.c **** // красный светодиод, кнопка-2 зелёный, кнопка-3 синий. 
+  10:Core/Src/main.c **** // Каждое третье нажатие на кнопку 4 возвращает функцио
+  11:Core/Src/main.c **** // кнопок к базовому.
+  12:Core/Src/main.c **** 
+  13:Core/Src/main.c **** #include <C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h>
+  14:Core/Src/main.c **** 
+  15:Core/Src/main.c **** uint32_t BUTTON_1_STATE = 0; // состояние 1-ой внешней кнопки
+  16:Core/Src/main.c **** uint32_t BUTTON_2_STATE = 0; // состояние 2-ой внешней кнопки
+  17:Core/Src/main.c **** uint32_t BUTTON_3_STATE = 0; // состояние 3-ой внешней кнопки
+  18:Core/Src/main.c **** uint32_t BUTTON_4_STATE = 0; // состояние 4-ой встроенной кнопки
+  19:Core/Src/main.c **** uint8_t flag = 0;            // проверка на единичное нажатие 4-ой кн
+  20:Core/Src/main.c **** 
+  21:Core/Src/main.c **** uint8_t MODE = 0;            // режим работы
+  22:Core/Src/main.c **** // режим 0:  зелёный, жёлтый,  красный
+  23:Core/Src/main.c **** // режим 1:  красный, зелёный, жёлтый
+  24:Core/Src/main.c **** // режим 2:  жёлтый,  красный, зелёный
+  25:Core/Src/main.c **** 
+  26:Core/Src/main.c **** // массив для включения светодиодов
+  27:Core/Src/main.c **** const uint32_t MODE_SET[3][3] = 
+  28:Core/Src/main.c **** {
+  29:Core/Src/main.c ****     {GPIO_BSRR_BS0, GPIO_BSRR_BS1, GPIO_BSRR_BS4},
   30:Core/Src/main.c ****     
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 2
 
 
-  31:Core/Src/main.c ****     {GPIO_BSRR_BR1, GPIO_BSRR_BR4, GPIO_BSRR_BR0}
-  32:Core/Src/main.c **** };
-  33:Core/Src/main.c **** 
-  34:Core/Src/main.c **** // смена режима по состоянию 4 кнопки
-  35:Core/Src/main.c **** void MODE_SELECTION() 
-  36:Core/Src/main.c **** {
-  29              		.loc 1 36 1 view -0
+  31:Core/Src/main.c ****     {GPIO_BSRR_BS4, GPIO_BSRR_BS0, GPIO_BSRR_BS1},
+  32:Core/Src/main.c ****     
+  33:Core/Src/main.c ****     {GPIO_BSRR_BS1, GPIO_BSRR_BS4, GPIO_BSRR_BS0}
+  34:Core/Src/main.c **** };
+  35:Core/Src/main.c **** 
+  36:Core/Src/main.c **** // массив для выключения светодиодов
+  37:Core/Src/main.c **** const uint32_t MODE_RESET[3][3] = 
+  38:Core/Src/main.c **** {
+  39:Core/Src/main.c ****     {GPIO_BSRR_BR0, GPIO_BSRR_BR1, GPIO_BSRR_BR4},
+  40:Core/Src/main.c ****     
+  41:Core/Src/main.c ****     {GPIO_BSRR_BR4, GPIO_BSRR_BR0, GPIO_BSRR_BR1},
+  42:Core/Src/main.c ****     
+  43:Core/Src/main.c ****     {GPIO_BSRR_BR1, GPIO_BSRR_BR4, GPIO_BSRR_BR0}
+  44:Core/Src/main.c **** };
+  45:Core/Src/main.c **** 
+  46:Core/Src/main.c **** // смена режима по состоянию 4 кнопки
+  47:Core/Src/main.c **** void MODE_SELECTION(void) 
+  48:Core/Src/main.c **** {
+  29              		.loc 1 48 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-  37:Core/Src/main.c ****     if (BUTTON_4_STATE == 0 && flag == 0) 
-  34              		.loc 1 37 5 view .LVU1
-  35              		.loc 1 37 24 is_stmt 0 view .LVU2
+  49:Core/Src/main.c ****     if (BUTTON_4_STATE == 0 && flag == 0) 
+  34              		.loc 1 49 5 view .LVU1
+  35              		.loc 1 49 24 is_stmt 0 view .LVU2
   36 0000 0D4B     		ldr	r3, .L4
   37 0002 1B68     		ldr	r3, [r3]
-  38              		.loc 1 37 8 view .LVU3
+  38              		.loc 1 49 8 view .LVU3
   39 0004 83B9     		cbnz	r3, .L2
-  40              		.loc 1 37 37 discriminator 1 view .LVU4
+  40              		.loc 1 49 37 discriminator 1 view .LVU4
   41 0006 0D4A     		ldr	r2, .L4+4
   42 0008 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
-  43              		.loc 1 37 29 discriminator 1 view .LVU5
+  43              		.loc 1 49 29 discriminator 1 view .LVU5
   44 000a 6AB9     		cbnz	r2, .L2
-  38:Core/Src/main.c ****     {
-  39:Core/Src/main.c ****         flag = 1;
-  45              		.loc 1 39 9 is_stmt 1 view .LVU6
-  46              		.loc 1 39 14 is_stmt 0 view .LVU7
+  50:Core/Src/main.c ****     {
+  51:Core/Src/main.c ****         flag = 1;
+  45              		.loc 1 51 9 is_stmt 1 view .LVU6
+  46              		.loc 1 51 14 is_stmt 0 view .LVU7
   47 000c 0B4B     		ldr	r3, .L4+4
   48 000e 0122     		movs	r2, #1
   49 0010 1A70     		strb	r2, [r3]
-  40:Core/Src/main.c ****         MODE++;
-  50              		.loc 1 40 9 is_stmt 1 view .LVU8
-  51              		.loc 1 40 13 is_stmt 0 view .LVU9
+  52:Core/Src/main.c ****         MODE++;
+  50              		.loc 1 52 9 is_stmt 1 view .LVU8
+  51              		.loc 1 52 13 is_stmt 0 view .LVU9
   52 0012 0B4A     		ldr	r2, .L4+8
   53 0014 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
   54 0016 0133     		adds	r3, r3, #1
   55 0018 DBB2     		uxtb	r3, r3
   56 001a 1370     		strb	r3, [r2]
-  41:Core/Src/main.c ****         if (MODE > 2) 
-  57              		.loc 1 41 9 is_stmt 1 view .LVU10
-  58              		.loc 1 41 12 is_stmt 0 view .LVU11
+  53:Core/Src/main.c ****         if (MODE > 2) 
+  57              		.loc 1 53 9 is_stmt 1 view .LVU10
+  58              		.loc 1 53 12 is_stmt 0 view .LVU11
   59 001c 022B     		cmp	r3, #2
   60 001e 0AD9     		bls	.L1
-  42:Core/Src/main.c ****         {
-  43:Core/Src/main.c ****             MODE = 0;
-  61              		.loc 1 43 13 is_stmt 1 view .LVU12
-  62              		.loc 1 43 18 is_stmt 0 view .LVU13
+  54:Core/Src/main.c ****         {
+  55:Core/Src/main.c ****             MODE = 0;
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 3
+
+
+  61              		.loc 1 55 13 is_stmt 1 view .LVU12
+  62              		.loc 1 55 18 is_stmt 0 view .LVU13
   63 0020 1346     		mov	r3, r2
   64 0022 0022     		movs	r2, #0
   65 0024 1A70     		strb	r2, [r3]
   66 0026 7047     		bx	lr
   67              	.L2:
-  44:Core/Src/main.c ****         }
-  45:Core/Src/main.c ****     }
-  46:Core/Src/main.c ****     else if (BUTTON_4_STATE != 0 && flag) // проверка зажатия
-  68              		.loc 1 46 10 is_stmt 1 view .LVU14
-  69              		.loc 1 46 13 is_stmt 0 view .LVU15
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 3
-
-
+  56:Core/Src/main.c ****         }
+  57:Core/Src/main.c ****     }
+  58:Core/Src/main.c ****     else if (BUTTON_4_STATE != 0 && flag) // проверка зажатия
+  68              		.loc 1 58 10 is_stmt 1 view .LVU14
+  69              		.loc 1 58 13 is_stmt 0 view .LVU15
   70 0028 2BB1     		cbz	r3, .L1
-  71              		.loc 1 46 34 discriminator 1 view .LVU16
+  71              		.loc 1 58 34 discriminator 1 view .LVU16
   72 002a 044B     		ldr	r3, .L4+4
   73 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
   74 002e 13B1     		cbz	r3, .L1
-  47:Core/Src/main.c ****     {
-  48:Core/Src/main.c ****         flag = 0;
-  75              		.loc 1 48 9 is_stmt 1 view .LVU17
-  76              		.loc 1 48 14 is_stmt 0 view .LVU18
+  59:Core/Src/main.c ****     {
+  60:Core/Src/main.c ****         flag = 0;
+  75              		.loc 1 60 9 is_stmt 1 view .LVU17
+  76              		.loc 1 60 14 is_stmt 0 view .LVU18
   77 0030 024B     		ldr	r3, .L4+4
   78 0032 0022     		movs	r2, #0
   79 0034 1A70     		strb	r2, [r3]
   80              	.L1:
-  49:Core/Src/main.c ****     }
-  50:Core/Src/main.c **** }
-  81              		.loc 1 50 1 view .LVU19
+  61:Core/Src/main.c ****     }
+  62:Core/Src/main.c **** }
+  81              		.loc 1 62 1 view .LVU19
   82 0036 7047     		bx	lr
   83              	.L5:
   84              		.align	2
@@ -146,363 +158,732 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 1
   88 0040 00000000 		.word	MODE
   89              		.cfi_endproc
   90              	.LFE130:
-  92              		.section	.text.LED_STATE,"ax",%progbits
+  92              		.section	.text.LED_MODE0,"ax",%progbits
   93              		.align	1
-  94              		.global	LED_STATE
+  94              		.global	LED_MODE0
   95              		.syntax unified
   96              		.thumb
   97              		.thumb_func
-  99              	LED_STATE:
+  99              	LED_MODE0:
  100              	.LFB131:
-  51:Core/Src/main.c **** 
-  52:Core/Src/main.c **** // включение и выключение светодиодов
-  53:Core/Src/main.c **** void LED_STATE() 
-  54:Core/Src/main.c **** {
- 101              		.loc 1 54 1 is_stmt 1 view -0
+  63:Core/Src/main.c **** 
+  64:Core/Src/main.c **** // функционал кнопок для режима №0
+  65:Core/Src/main.c **** void LED_MODE0(void) 
+  66:Core/Src/main.c **** {
+ 101              		.loc 1 66 1 is_stmt 1 view -0
  102              		.cfi_startproc
  103              		@ args = 0, pretend = 0, frame = 0
  104              		@ frame_needed = 0, uses_anonymous_args = 0
  105              		@ link register save eliminated.
-  55:Core/Src/main.c ****     // включение 1-го в списке светодиода (по режиму)
-  56:Core/Src/main.c ****     if (BUTTON_1_STATE != 0) 
- 106              		.loc 1 56 5 view .LVU21
- 107              		.loc 1 56 24 is_stmt 0 view .LVU22
- 108 0000 294B     		ldr	r3, .L13
+  67:Core/Src/main.c ****     // включение 1-го в списке светодиода (по режиму)
+  68:Core/Src/main.c ****     if (BUTTON_1_STATE != 0) 
+ 106              		.loc 1 68 5 view .LVU21
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 4
+
+
+ 107              		.loc 1 68 24 is_stmt 0 view .LVU22
+ 108 0000 1C4B     		ldr	r3, .L13
  109 0002 1B68     		ldr	r3, [r3]
- 110              		.loc 1 56 8 view .LVU23
- 111 0004 002B     		cmp	r3, #0
- 112 0006 29D0     		beq	.L7
-  57:Core/Src/main.c ****     {
-  58:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
- 113              		.loc 1 58 9 is_stmt 1 view .LVU24
- 114 0008 2849     		ldr	r1, .L13+4
- 115 000a 8A69     		ldr	r2, [r1, #24]
- 116 000c 284B     		ldr	r3, .L13+8
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 4
-
-
- 117 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 118 0010 03EB4303 		add	r3, r3, r3, lsl #1
- 119 0014 9800     		lsls	r0, r3, #2
- 120 0016 274B     		ldr	r3, .L13+12
- 121 0018 1B58     		ldr	r3, [r3, r0]
- 122 001a 1343     		orrs	r3, r3, r2
- 123 001c 8B61     		str	r3, [r1, #24]
- 124              	.L8:
-  59:Core/Src/main.c ****     }
-  60:Core/Src/main.c ****     else
-  61:Core/Src/main.c ****     {
-  62:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
-  63:Core/Src/main.c ****     }
-  64:Core/Src/main.c ****     
-  65:Core/Src/main.c ****     // включение 2-го в списке светодиода (по режиму)
-  66:Core/Src/main.c ****     if (BUTTON_2_STATE != 0) 
- 125              		.loc 1 66 5 view .LVU25
- 126              		.loc 1 66 24 is_stmt 0 view .LVU26
- 127 001e 264B     		ldr	r3, .L13+16
- 128 0020 1B68     		ldr	r3, [r3]
- 129              		.loc 1 66 8 view .LVU27
- 130 0022 3BB3     		cbz	r3, .L9
-  67:Core/Src/main.c ****     {
-  68:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
- 131              		.loc 1 68 9 is_stmt 1 view .LVU28
- 132 0024 2149     		ldr	r1, .L13+4
- 133 0026 8A69     		ldr	r2, [r1, #24]
- 134 0028 214B     		ldr	r3, .L13+8
- 135 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 136 002c 03EB4303 		add	r3, r3, r3, lsl #1
- 137 0030 9800     		lsls	r0, r3, #2
- 138 0032 204B     		ldr	r3, .L13+12
- 139 0034 0344     		add	r3, r3, r0
- 140 0036 5B68     		ldr	r3, [r3, #4]
- 141 0038 1343     		orrs	r3, r3, r2
- 142 003a 8B61     		str	r3, [r1, #24]
- 143              	.L10:
-  69:Core/Src/main.c ****     }
-  70:Core/Src/main.c ****     else
-  71:Core/Src/main.c ****     {
-  72:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+ 110              		.loc 1 68 8 view .LVU23
+ 111 0004 E3B1     		cbz	r3, .L7
+  69:Core/Src/main.c ****     {
+  70:Core/Src/main.c ****         // PA0
+  71:Core/Src/main.c ****         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_SET);
+ 112              		.loc 1 71 9 is_stmt 1 view .LVU24
+ 113 0006 1C4A     		ldr	r2, .L13+4
+ 114 0008 9369     		ldr	r3, [r2, #24]
+ 115 000a 43F00103 		orr	r3, r3, #1
+ 116 000e 9361     		str	r3, [r2, #24]
+ 117              	.L8:
+  72:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
   73:Core/Src/main.c ****     }
-  74:Core/Src/main.c **** 
-  75:Core/Src/main.c ****     // включение 3-го в списке светодиода (по режиму)
-  76:Core/Src/main.c ****     if (BUTTON_3_STATE != 0) 
- 144              		.loc 1 76 5 view .LVU29
- 145              		.loc 1 76 24 is_stmt 0 view .LVU30
- 146 003c 1F4B     		ldr	r3, .L13+20
- 147 003e 1B68     		ldr	r3, [r3]
- 148              		.loc 1 76 8 view .LVU31
- 149 0040 2BB3     		cbz	r3, .L11
-  77:Core/Src/main.c ****     {
-  78:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][2]);
- 150              		.loc 1 78 9 is_stmt 1 view .LVU32
- 151 0042 1A49     		ldr	r1, .L13+4
- 152 0044 8A69     		ldr	r2, [r1, #24]
- 153 0046 1A4B     		ldr	r3, .L13+8
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 5
+  74:Core/Src/main.c ****     else
+  75:Core/Src/main.c ****     {
+  76:Core/Src/main.c ****         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_RESET);
+  77:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+  78:Core/Src/main.c ****     }
+  79:Core/Src/main.c **** 
+  80:Core/Src/main.c ****     // включение 2-го в списке светодиода (по режиму)
+  81:Core/Src/main.c ****     if (BUTTON_2_STATE != 0) 
+ 118              		.loc 1 81 5 view .LVU25
+ 119              		.loc 1 81 24 is_stmt 0 view .LVU26
+ 120 0010 1A4B     		ldr	r3, .L13+8
+ 121 0012 1B68     		ldr	r3, [r3]
+ 122              		.loc 1 81 8 view .LVU27
+ 123 0014 D3B1     		cbz	r3, .L9
+  82:Core/Src/main.c ****     {
+  83:Core/Src/main.c ****         // PA1
+  84:Core/Src/main.c ****         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 1);
+ 124              		.loc 1 84 9 is_stmt 1 view .LVU28
+ 125 0016 184A     		ldr	r2, .L13+4
+ 126 0018 9369     		ldr	r3, [r2, #24]
+ 127              		.loc 1 84 47 is_stmt 0 view .LVU29
+ 128 001a 43F00203 		orr	r3, r3, #2
+ 129 001e 9361     		str	r3, [r2, #24]
+ 130              	.L10:
+  85:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
+  86:Core/Src/main.c ****     }
+  87:Core/Src/main.c ****     else
+  88:Core/Src/main.c ****     {
+  89:Core/Src/main.c ****         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 17);
+  90:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+  91:Core/Src/main.c ****     }
+  92:Core/Src/main.c **** 
+  93:Core/Src/main.c ****     // включение 1-го в списке светодиода (по режиму)
+  94:Core/Src/main.c ****     if (BUTTON_3_STATE != 0) 
+ 131              		.loc 1 94 5 is_stmt 1 view .LVU30
+ 132              		.loc 1 94 24 is_stmt 0 view .LVU31
+ 133 0020 174B     		ldr	r3, .L13+12
+ 134 0022 1B68     		ldr	r3, [r3]
+ 135              		.loc 1 94 8 view .LVU32
+ 136 0024 C3B1     		cbz	r3, .L11
+  95:Core/Src/main.c ****     {
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 5
 
 
- 154 0048 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 155 004a 03EB4303 		add	r3, r3, r3, lsl #1
- 156 004e 9800     		lsls	r0, r3, #2
- 157 0050 184B     		ldr	r3, .L13+12
- 158 0052 0344     		add	r3, r3, r0
- 159 0054 9B68     		ldr	r3, [r3, #8]
- 160 0056 1343     		orrs	r3, r3, r2
- 161 0058 8B61     		str	r3, [r1, #24]
- 162 005a 7047     		bx	lr
- 163              	.L7:
-  62:Core/Src/main.c ****     }
- 164              		.loc 1 62 9 view .LVU33
- 165 005c 1349     		ldr	r1, .L13+4
- 166 005e 8A69     		ldr	r2, [r1, #24]
- 167 0060 134B     		ldr	r3, .L13+8
- 168 0062 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 169 0064 03EB4303 		add	r3, r3, r3, lsl #1
- 170 0068 9800     		lsls	r0, r3, #2
- 171 006a 154B     		ldr	r3, .L13+24
- 172 006c 1B58     		ldr	r3, [r3, r0]
- 173 006e 1343     		orrs	r3, r3, r2
- 174 0070 8B61     		str	r3, [r1, #24]
- 175 0072 D4E7     		b	.L8
- 176              	.L9:
-  72:Core/Src/main.c ****     }
- 177              		.loc 1 72 9 view .LVU34
- 178 0074 0D49     		ldr	r1, .L13+4
- 179 0076 8A69     		ldr	r2, [r1, #24]
- 180 0078 0D4B     		ldr	r3, .L13+8
- 181 007a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 182 007c 03EB4303 		add	r3, r3, r3, lsl #1
- 183 0080 9800     		lsls	r0, r3, #2
- 184 0082 0F4B     		ldr	r3, .L13+24
- 185 0084 0344     		add	r3, r3, r0
- 186 0086 5B68     		ldr	r3, [r3, #4]
- 187 0088 1343     		orrs	r3, r3, r2
- 188 008a 8B61     		str	r3, [r1, #24]
- 189 008c D6E7     		b	.L10
- 190              	.L11:
-  79:Core/Src/main.c ****     }
-  80:Core/Src/main.c ****     else
-  81:Core/Src/main.c ****     {
-  82:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][2]);
- 191              		.loc 1 82 9 view .LVU35
- 192 008e 0749     		ldr	r1, .L13+4
- 193 0090 8A69     		ldr	r2, [r1, #24]
- 194 0092 074B     		ldr	r3, .L13+8
- 195 0094 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 196 0096 03EB4303 		add	r3, r3, r3, lsl #1
- 197 009a 9800     		lsls	r0, r3, #2
- 198 009c 084B     		ldr	r3, .L13+24
- 199 009e 0344     		add	r3, r3, r0
- 200 00a0 9B68     		ldr	r3, [r3, #8]
- 201 00a2 1343     		orrs	r3, r3, r2
- 202 00a4 8B61     		str	r3, [r1, #24]
-  83:Core/Src/main.c ****     }
-  84:Core/Src/main.c **** }
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 6
+  96:Core/Src/main.c ****         // PA4
+  97:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][2]);
+ 137              		.loc 1 97 9 is_stmt 1 view .LVU33
+ 138 0026 1449     		ldr	r1, .L13+4
+ 139 0028 8A69     		ldr	r2, [r1, #24]
+ 140 002a 164B     		ldr	r3, .L13+16
+ 141 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 142 002e 03EB4303 		add	r3, r3, r3, lsl #1
+ 143 0032 9800     		lsls	r0, r3, #2
+ 144 0034 144B     		ldr	r3, .L13+20
+ 145 0036 0344     		add	r3, r3, r0
+ 146 0038 9B68     		ldr	r3, [r3, #8]
+ 147 003a 1343     		orrs	r3, r3, r2
+ 148 003c 8B61     		str	r3, [r1, #24]
+ 149 003e 7047     		bx	lr
+ 150              	.L7:
+  76:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+ 151              		.loc 1 76 9 view .LVU34
+ 152 0040 0D4A     		ldr	r2, .L13+4
+ 153 0042 9369     		ldr	r3, [r2, #24]
+ 154 0044 43F48033 		orr	r3, r3, #65536
+ 155 0048 9361     		str	r3, [r2, #24]
+ 156 004a E1E7     		b	.L8
+ 157              	.L9:
+  89:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+ 158              		.loc 1 89 9 view .LVU35
+ 159 004c 0A4A     		ldr	r2, .L13+4
+ 160 004e 9369     		ldr	r3, [r2, #24]
+  89:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+ 161              		.loc 1 89 47 is_stmt 0 view .LVU36
+ 162 0050 43F40033 		orr	r3, r3, #131072
+ 163 0054 9361     		str	r3, [r2, #24]
+ 164 0056 E3E7     		b	.L10
+ 165              	.L11:
+  98:Core/Src/main.c ****     }
+  99:Core/Src/main.c ****     else
+ 100:Core/Src/main.c ****     {
+ 101:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][2]);
+ 166              		.loc 1 101 9 is_stmt 1 view .LVU37
+ 167 0058 0749     		ldr	r1, .L13+4
+ 168 005a 8A69     		ldr	r2, [r1, #24]
+ 169 005c 094B     		ldr	r3, .L13+16
+ 170 005e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 171 0060 03EB4303 		add	r3, r3, r3, lsl #1
+ 172 0064 9800     		lsls	r0, r3, #2
+ 173 0066 094B     		ldr	r3, .L13+24
+ 174 0068 0344     		add	r3, r3, r0
+ 175 006a 9B68     		ldr	r3, [r3, #8]
+ 176 006c 1343     		orrs	r3, r3, r2
+ 177 006e 8B61     		str	r3, [r1, #24]
+ 102:Core/Src/main.c ****     }
+ 103:Core/Src/main.c **** 
+ 104:Core/Src/main.c **** }
+ 178              		.loc 1 104 1 is_stmt 0 view .LVU38
+ 179 0070 7047     		bx	lr
+ 180              	.L14:
+ 181 0072 00BF     		.align	2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 6
 
 
- 203              		.loc 1 84 1 is_stmt 0 view .LVU36
- 204 00a6 7047     		bx	lr
- 205              	.L14:
- 206              		.align	2
- 207              	.L13:
- 208 00a8 00000000 		.word	BUTTON_1_STATE
- 209 00ac 00000240 		.word	1073872896
- 210 00b0 00000000 		.word	MODE
- 211 00b4 00000000 		.word	MODE_SET
- 212 00b8 00000000 		.word	BUTTON_2_STATE
- 213 00bc 00000000 		.word	BUTTON_3_STATE
- 214 00c0 00000000 		.word	MODE_RESET
- 215              		.cfi_endproc
- 216              	.LFE131:
- 218              		.section	.text.main,"ax",%progbits
- 219              		.align	1
- 220              		.global	main
- 221              		.syntax unified
- 222              		.thumb
- 223              		.thumb_func
- 225              	main:
- 226              	.LFB132:
-  85:Core/Src/main.c **** 
-  86:Core/Src/main.c **** int main(void) 
-  87:Core/Src/main.c **** {
- 227              		.loc 1 87 1 is_stmt 1 view -0
- 228              		.cfi_startproc
- 229              		@ Volatile: function does not return.
- 230              		@ args = 0, pretend = 0, frame = 0
- 231              		@ frame_needed = 0, uses_anonymous_args = 0
- 232 0000 08B5     		push	{r3, lr}
- 233              	.LCFI0:
- 234              		.cfi_def_cfa_offset 8
- 235              		.cfi_offset 3, -8
- 236              		.cfi_offset 14, -4
-  88:Core/Src/main.c ****     GPIO_Init(); // подключение портов GPIOA|GPIOB|GPIOC
- 237              		.loc 1 88 5 view .LVU38
- 238 0002 FFF7FEFF 		bl	GPIO_Init
- 239              	.LVL0:
- 240              	.L16:
-  89:Core/Src/main.c **** 
-  90:Core/Src/main.c ****     while(1) {
- 241              		.loc 1 90 5 view .LVU39
-  91:Core/Src/main.c ****         // чтение состояния кнопки для управления светоди�
-  92:Core/Src/main.c ****         BUTTON_1_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_10);
- 242              		.loc 1 92 9 view .LVU40
- 243              		.loc 1 92 26 is_stmt 0 view .LVU41
- 244 0006 0D4B     		ldr	r3, .L18
- 245 0008 1A69     		ldr	r2, [r3, #16]
- 246 000a 02F48062 		and	r2, r2, #1024
- 247              		.loc 1 92 24 view .LVU42
- 248 000e 0C49     		ldr	r1, .L18+4
- 249 0010 0A60     		str	r2, [r1]
-  93:Core/Src/main.c ****         BUTTON_2_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_5);
- 250              		.loc 1 93 9 is_stmt 1 view .LVU43
- 251              		.loc 1 93 26 is_stmt 0 view .LVU44
- 252 0012 1A69     		ldr	r2, [r3, #16]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 7
+ 182              	.L13:
+ 183 0074 00000000 		.word	BUTTON_1_STATE
+ 184 0078 00000240 		.word	1073872896
+ 185 007c 00000000 		.word	BUTTON_2_STATE
+ 186 0080 00000000 		.word	BUTTON_3_STATE
+ 187 0084 00000000 		.word	MODE
+ 188 0088 00000000 		.word	MODE_SET
+ 189 008c 00000000 		.word	MODE_RESET
+ 190              		.cfi_endproc
+ 191              	.LFE131:
+ 193              		.section	.text.LED_MODE1,"ax",%progbits
+ 194              		.align	1
+ 195              		.global	LED_MODE1
+ 196              		.syntax unified
+ 197              		.thumb
+ 198              		.thumb_func
+ 200              	LED_MODE1:
+ 201              	.LFB132:
+ 105:Core/Src/main.c **** 
+ 106:Core/Src/main.c **** // функционал кнопок для режима №1
+ 107:Core/Src/main.c **** void LED_MODE1(void) 
+ 108:Core/Src/main.c **** {
+ 202              		.loc 1 108 1 is_stmt 1 view -0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206              		@ link register save eliminated.
+ 109:Core/Src/main.c ****     // включение 1-го в списке светодиода (по режиму)
+ 110:Core/Src/main.c ****     if (BUTTON_1_STATE != 0) 
+ 207              		.loc 1 110 5 view .LVU40
+ 208              		.loc 1 110 24 is_stmt 0 view .LVU41
+ 209 0000 1B4B     		ldr	r3, .L22
+ 210 0002 1B68     		ldr	r3, [r3]
+ 211              		.loc 1 110 8 view .LVU42
+ 212 0004 DBB1     		cbz	r3, .L16
+ 111:Core/Src/main.c ****     {
+ 112:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
+ 213              		.loc 1 112 9 is_stmt 1 view .LVU43
+ 214 0006 1B49     		ldr	r1, .L22+4
+ 215 0008 8A69     		ldr	r2, [r1, #24]
+ 216 000a 1B4B     		ldr	r3, .L22+8
+ 217 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 218 000e 03EB4303 		add	r3, r3, r3, lsl #1
+ 219 0012 9800     		lsls	r0, r3, #2
+ 220 0014 194B     		ldr	r3, .L22+12
+ 221 0016 1B58     		ldr	r3, [r3, r0]
+ 222 0018 1343     		orrs	r3, r3, r2
+ 223 001a 8B61     		str	r3, [r1, #24]
+ 224              	.L17:
+ 113:Core/Src/main.c ****     }
+ 114:Core/Src/main.c ****     else
+ 115:Core/Src/main.c ****     {
+ 116:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+ 117:Core/Src/main.c ****     }
+ 118:Core/Src/main.c ****     
+ 119:Core/Src/main.c ****     // включение 2-го в списке светодиода (по режиму)
+ 120:Core/Src/main.c ****     if (BUTTON_2_STATE != 0) 
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 7
 
 
- 253 0014 02F02002 		and	r2, r2, #32
- 254              		.loc 1 93 24 view .LVU45
- 255 0018 0A49     		ldr	r1, .L18+8
- 256 001a 0A60     		str	r2, [r1]
-  94:Core/Src/main.c ****         BUTTON_3_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_0);
- 257              		.loc 1 94 9 is_stmt 1 view .LVU46
- 258              		.loc 1 94 26 is_stmt 0 view .LVU47
- 259 001c 1B69     		ldr	r3, [r3, #16]
- 260 001e 03F00103 		and	r3, r3, #1
- 261              		.loc 1 94 24 view .LVU48
- 262 0022 094A     		ldr	r2, .L18+12
- 263 0024 1360     		str	r3, [r2]
-  95:Core/Src/main.c ****         
-  96:Core/Src/main.c ****         // чтение состояния кнопки для смены режима (инвер�
-  97:Core/Src/main.c ****         BUTTON_4_STATE = READ_BIT(GPIOC->IDR, GPIO_IDR_IDR_13);
- 264              		.loc 1 97 9 is_stmt 1 view .LVU49
- 265              		.loc 1 97 26 is_stmt 0 view .LVU50
- 266 0026 094B     		ldr	r3, .L18+16
- 267 0028 1B69     		ldr	r3, [r3, #16]
- 268 002a 03F40053 		and	r3, r3, #8192
- 269              		.loc 1 97 24 view .LVU51
- 270 002e 084A     		ldr	r2, .L18+20
- 271 0030 1360     		str	r3, [r2]
-  98:Core/Src/main.c ****        
-  99:Core/Src/main.c ****         // функция смены режима по состоянию 4 кнопки
- 100:Core/Src/main.c ****         MODE_SELECTION();
- 272              		.loc 1 100 9 is_stmt 1 view .LVU52
- 273 0032 FFF7FEFF 		bl	MODE_SELECTION
- 274              	.LVL1:
- 101:Core/Src/main.c ****         
- 102:Core/Src/main.c ****         // функция включения и выключения светодиодов
- 103:Core/Src/main.c ****         LED_STATE();
- 275              		.loc 1 103 9 discriminator 1 view .LVU53
- 276 0036 FFF7FEFF 		bl	LED_STATE
- 277              	.LVL2:
-  90:Core/Src/main.c ****         // чтение состояния кнопки для управления светоди�
- 278              		.loc 1 90 10 view .LVU54
- 279 003a E4E7     		b	.L16
- 280              	.L19:
- 281              		.align	2
- 282              	.L18:
- 283 003c 00040240 		.word	1073873920
- 284 0040 00000000 		.word	BUTTON_1_STATE
- 285 0044 00000000 		.word	BUTTON_2_STATE
- 286 0048 00000000 		.word	BUTTON_3_STATE
- 287 004c 00080240 		.word	1073874944
- 288 0050 00000000 		.word	BUTTON_4_STATE
+ 225              		.loc 1 120 5 view .LVU44
+ 226              		.loc 1 120 24 is_stmt 0 view .LVU45
+ 227 001c 184B     		ldr	r3, .L22+16
+ 228 001e 1B68     		ldr	r3, [r3]
+ 229              		.loc 1 120 8 view .LVU46
+ 230 0020 CBB1     		cbz	r3, .L18
+ 121:Core/Src/main.c ****     {
+ 122:Core/Src/main.c ****         // PA0
+ 123:Core/Src/main.c ****         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_SET);
+ 231              		.loc 1 123 9 is_stmt 1 view .LVU47
+ 232 0022 144A     		ldr	r2, .L22+4
+ 233 0024 9369     		ldr	r3, [r2, #24]
+ 234 0026 43F00103 		orr	r3, r3, #1
+ 235 002a 9361     		str	r3, [r2, #24]
+ 236              	.L19:
+ 124:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
+ 125:Core/Src/main.c ****     }
+ 126:Core/Src/main.c ****     else
+ 127:Core/Src/main.c ****     {
+ 128:Core/Src/main.c ****         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_RESET);
+ 129:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+ 130:Core/Src/main.c ****     }
+ 131:Core/Src/main.c **** 
+ 132:Core/Src/main.c ****     // включение 3-го в списке светодиода (по режиму)
+ 133:Core/Src/main.c ****     if (BUTTON_3_STATE != 0) 
+ 237              		.loc 1 133 5 view .LVU48
+ 238              		.loc 1 133 24 is_stmt 0 view .LVU49
+ 239 002c 154B     		ldr	r3, .L22+20
+ 240 002e 1B68     		ldr	r3, [r3]
+ 241              		.loc 1 133 8 view .LVU50
+ 242 0030 BBB1     		cbz	r3, .L20
+ 134:Core/Src/main.c ****     {
+ 135:Core/Src/main.c ****         // PA1
+ 136:Core/Src/main.c ****         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 1);
+ 243              		.loc 1 136 9 is_stmt 1 view .LVU51
+ 244 0032 104A     		ldr	r2, .L22+4
+ 245 0034 9369     		ldr	r3, [r2, #24]
+ 246              		.loc 1 136 47 is_stmt 0 view .LVU52
+ 247 0036 43F00203 		orr	r3, r3, #2
+ 248 003a 9361     		str	r3, [r2, #24]
+ 249 003c 7047     		bx	lr
+ 250              	.L16:
+ 116:Core/Src/main.c ****     }
+ 251              		.loc 1 116 9 is_stmt 1 view .LVU53
+ 252 003e 0D49     		ldr	r1, .L22+4
+ 253 0040 8A69     		ldr	r2, [r1, #24]
+ 254 0042 0D4B     		ldr	r3, .L22+8
+ 255 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 256 0046 03EB4303 		add	r3, r3, r3, lsl #1
+ 257 004a 9800     		lsls	r0, r3, #2
+ 258 004c 0E4B     		ldr	r3, .L22+24
+ 259 004e 1B58     		ldr	r3, [r3, r0]
+ 260 0050 1343     		orrs	r3, r3, r2
+ 261 0052 8B61     		str	r3, [r1, #24]
+ 262 0054 E2E7     		b	.L17
+ 263              	.L18:
+ 128:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 8
+
+
+ 264              		.loc 1 128 9 view .LVU54
+ 265 0056 074A     		ldr	r2, .L22+4
+ 266 0058 9369     		ldr	r3, [r2, #24]
+ 267 005a 43F48033 		orr	r3, r3, #65536
+ 268 005e 9361     		str	r3, [r2, #24]
+ 269 0060 E4E7     		b	.L19
+ 270              	.L20:
+ 137:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
+ 138:Core/Src/main.c ****     }
+ 139:Core/Src/main.c ****     else
+ 140:Core/Src/main.c ****     {
+ 141:Core/Src/main.c ****         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 17);
+ 271              		.loc 1 141 9 view .LVU55
+ 272 0062 044A     		ldr	r2, .L22+4
+ 273 0064 9369     		ldr	r3, [r2, #24]
+ 274              		.loc 1 141 47 is_stmt 0 view .LVU56
+ 275 0066 43F40033 		orr	r3, r3, #131072
+ 276 006a 9361     		str	r3, [r2, #24]
+ 142:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+ 143:Core/Src/main.c ****     }
+ 144:Core/Src/main.c **** }
+ 277              		.loc 1 144 1 view .LVU57
+ 278 006c 7047     		bx	lr
+ 279              	.L23:
+ 280 006e 00BF     		.align	2
+ 281              	.L22:
+ 282 0070 00000000 		.word	BUTTON_1_STATE
+ 283 0074 00000240 		.word	1073872896
+ 284 0078 00000000 		.word	MODE
+ 285 007c 00000000 		.word	MODE_SET
+ 286 0080 00000000 		.word	BUTTON_2_STATE
+ 287 0084 00000000 		.word	BUTTON_3_STATE
+ 288 0088 00000000 		.word	MODE_RESET
  289              		.cfi_endproc
  290              	.LFE132:
- 292              		.global	MODE_RESET
- 293              		.section	.rodata.MODE_RESET,"a"
- 294              		.align	2
- 297              	MODE_RESET:
- 298 0000 00000100 		.word	65536
- 299 0004 00000200 		.word	131072
- 300 0008 00001000 		.word	1048576
- 301 000c 00001000 		.word	1048576
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 8
+ 292              		.section	.text.LED_MODE2,"ax",%progbits
+ 293              		.align	1
+ 294              		.global	LED_MODE2
+ 295              		.syntax unified
+ 296              		.thumb
+ 297              		.thumb_func
+ 299              	LED_MODE2:
+ 300              	.LFB133:
+ 145:Core/Src/main.c **** 
+ 146:Core/Src/main.c **** // функционал кнопок для режима №2
+ 147:Core/Src/main.c **** void LED_MODE2(void) 
+ 148:Core/Src/main.c **** {
+ 301              		.loc 1 148 1 is_stmt 1 view -0
+ 302              		.cfi_startproc
+ 303              		@ args = 0, pretend = 0, frame = 0
+ 304              		@ frame_needed = 0, uses_anonymous_args = 0
+ 305              		@ link register save eliminated.
+ 149:Core/Src/main.c ****     // включение 1-го в списке светодиода (по режиму)
+ 150:Core/Src/main.c ****     if (BUTTON_1_STATE != 0) 
+ 306              		.loc 1 150 5 view .LVU59
+ 307              		.loc 1 150 24 is_stmt 0 view .LVU60
+ 308 0000 1C4B     		ldr	r3, .L31
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 9
 
 
- 302 0010 00000100 		.word	65536
- 303 0014 00000200 		.word	131072
- 304 0018 00000200 		.word	131072
- 305 001c 00001000 		.word	1048576
- 306 0020 00000100 		.word	65536
- 307              		.global	MODE_SET
- 308              		.section	.rodata.MODE_SET,"a"
- 309              		.align	2
- 312              	MODE_SET:
- 313 0000 01000000 		.word	1
- 314 0004 02000000 		.word	2
- 315 0008 10000000 		.word	16
- 316 000c 10000000 		.word	16
- 317 0010 01000000 		.word	1
- 318 0014 02000000 		.word	2
- 319 0018 02000000 		.word	2
- 320 001c 10000000 		.word	16
- 321 0020 01000000 		.word	1
- 322              		.global	MODE
- 323              		.section	.bss.MODE,"aw",%nobits
- 326              	MODE:
- 327 0000 00       		.space	1
- 328              		.global	flag
- 329              		.section	.bss.flag,"aw",%nobits
- 332              	flag:
- 333 0000 00       		.space	1
- 334              		.global	BUTTON_4_STATE
- 335              		.section	.bss.BUTTON_4_STATE,"aw",%nobits
- 336              		.align	2
- 339              	BUTTON_4_STATE:
- 340 0000 00000000 		.space	4
- 341              		.global	BUTTON_3_STATE
- 342              		.section	.bss.BUTTON_3_STATE,"aw",%nobits
- 343              		.align	2
- 346              	BUTTON_3_STATE:
- 347 0000 00000000 		.space	4
- 348              		.global	BUTTON_2_STATE
- 349              		.section	.bss.BUTTON_2_STATE,"aw",%nobits
- 350              		.align	2
- 353              	BUTTON_2_STATE:
- 354 0000 00000000 		.space	4
- 355              		.global	BUTTON_1_STATE
- 356              		.section	.bss.BUTTON_1_STATE,"aw",%nobits
- 357              		.align	2
- 360              	BUTTON_1_STATE:
- 361 0000 00000000 		.space	4
- 362              		.text
- 363              	.Letext0:
- 364              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
- 365              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
- 366              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
- 367              		.file 5 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s 			page 9
+ 309 0002 1B68     		ldr	r3, [r3]
+ 310              		.loc 1 150 8 view .LVU61
+ 311 0004 E3B1     		cbz	r3, .L25
+ 151:Core/Src/main.c ****     {
+ 152:Core/Src/main.c ****         // PA1
+ 153:Core/Src/main.c ****         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 1);
+ 312              		.loc 1 153 9 is_stmt 1 view .LVU62
+ 313 0006 1C4A     		ldr	r2, .L31+4
+ 314 0008 9369     		ldr	r3, [r2, #24]
+ 315              		.loc 1 153 47 is_stmt 0 view .LVU63
+ 316 000a 43F00203 		orr	r3, r3, #2
+ 317 000e 9361     		str	r3, [r2, #24]
+ 318              	.L26:
+ 154:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
+ 155:Core/Src/main.c ****     }
+ 156:Core/Src/main.c ****     else
+ 157:Core/Src/main.c ****     {
+ 158:Core/Src/main.c ****         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 17);
+ 159:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+ 160:Core/Src/main.c ****     }
+ 161:Core/Src/main.c ****     
+ 162:Core/Src/main.c ****     // включение 2-го в списке светодиода (по режиму)
+ 163:Core/Src/main.c ****     if (BUTTON_2_STATE != 0) 
+ 319              		.loc 1 163 5 is_stmt 1 view .LVU64
+ 320              		.loc 1 163 24 is_stmt 0 view .LVU65
+ 321 0010 1A4B     		ldr	r3, .L31+8
+ 322 0012 1B68     		ldr	r3, [r3]
+ 323              		.loc 1 163 8 view .LVU66
+ 324 0014 D3B1     		cbz	r3, .L27
+ 164:Core/Src/main.c ****     {
+ 165:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
+ 325              		.loc 1 165 9 is_stmt 1 view .LVU67
+ 326 0016 1849     		ldr	r1, .L31+4
+ 327 0018 8A69     		ldr	r2, [r1, #24]
+ 328 001a 194B     		ldr	r3, .L31+12
+ 329 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 330 001e 03EB4303 		add	r3, r3, r3, lsl #1
+ 331 0022 9800     		lsls	r0, r3, #2
+ 332 0024 174B     		ldr	r3, .L31+16
+ 333 0026 0344     		add	r3, r3, r0
+ 334 0028 5B68     		ldr	r3, [r3, #4]
+ 335 002a 1343     		orrs	r3, r3, r2
+ 336 002c 8B61     		str	r3, [r1, #24]
+ 337              	.L28:
+ 166:Core/Src/main.c ****     }
+ 167:Core/Src/main.c ****     else
+ 168:Core/Src/main.c ****     {
+ 169:Core/Src/main.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+ 170:Core/Src/main.c ****     }
+ 171:Core/Src/main.c **** 
+ 172:Core/Src/main.c ****     // включение 3-го в списке светодиода (по режиму)
+ 173:Core/Src/main.c ****     if (BUTTON_3_STATE != 0) 
+ 338              		.loc 1 173 5 view .LVU68
+ 339              		.loc 1 173 24 is_stmt 0 view .LVU69
+ 340 002e 164B     		ldr	r3, .L31+20
+ 341 0030 1B68     		ldr	r3, [r3]
+ 342              		.loc 1 173 8 view .LVU70
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 10
+
+
+ 343 0032 C3B1     		cbz	r3, .L29
+ 174:Core/Src/main.c ****     {
+ 175:Core/Src/main.c ****         // PA0
+ 176:Core/Src/main.c ****         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_SET);
+ 344              		.loc 1 176 9 is_stmt 1 view .LVU71
+ 345 0034 104A     		ldr	r2, .L31+4
+ 346 0036 9369     		ldr	r3, [r2, #24]
+ 347 0038 43F00103 		orr	r3, r3, #1
+ 348 003c 9361     		str	r3, [r2, #24]
+ 349 003e 7047     		bx	lr
+ 350              	.L25:
+ 158:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+ 351              		.loc 1 158 9 view .LVU72
+ 352 0040 0D4A     		ldr	r2, .L31+4
+ 353 0042 9369     		ldr	r3, [r2, #24]
+ 158:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+ 354              		.loc 1 158 47 is_stmt 0 view .LVU73
+ 355 0044 43F40033 		orr	r3, r3, #131072
+ 356 0048 9361     		str	r3, [r2, #24]
+ 357 004a E1E7     		b	.L26
+ 358              	.L27:
+ 169:Core/Src/main.c ****     }
+ 359              		.loc 1 169 9 is_stmt 1 view .LVU74
+ 360 004c 0A49     		ldr	r1, .L31+4
+ 361 004e 8A69     		ldr	r2, [r1, #24]
+ 362 0050 0B4B     		ldr	r3, .L31+12
+ 363 0052 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 364 0054 03EB4303 		add	r3, r3, r3, lsl #1
+ 365 0058 9800     		lsls	r0, r3, #2
+ 366 005a 0C4B     		ldr	r3, .L31+24
+ 367 005c 0344     		add	r3, r3, r0
+ 368 005e 5B68     		ldr	r3, [r3, #4]
+ 369 0060 1343     		orrs	r3, r3, r2
+ 370 0062 8B61     		str	r3, [r1, #24]
+ 371 0064 E3E7     		b	.L28
+ 372              	.L29:
+ 177:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
+ 178:Core/Src/main.c ****     }
+ 179:Core/Src/main.c ****     else
+ 180:Core/Src/main.c ****     {
+ 181:Core/Src/main.c ****         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_RESET);
+ 373              		.loc 1 181 9 view .LVU75
+ 374 0066 044A     		ldr	r2, .L31+4
+ 375 0068 9369     		ldr	r3, [r2, #24]
+ 376 006a 43F48033 		orr	r3, r3, #65536
+ 377 006e 9361     		str	r3, [r2, #24]
+ 182:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+ 183:Core/Src/main.c ****     }
+ 184:Core/Src/main.c **** }
+ 378              		.loc 1 184 1 is_stmt 0 view .LVU76
+ 379 0070 7047     		bx	lr
+ 380              	.L32:
+ 381 0072 00BF     		.align	2
+ 382              	.L31:
+ 383 0074 00000000 		.word	BUTTON_1_STATE
+ 384 0078 00000240 		.word	1073872896
+ 385 007c 00000000 		.word	BUTTON_2_STATE
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 11
+
+
+ 386 0080 00000000 		.word	MODE
+ 387 0084 00000000 		.word	MODE_SET
+ 388 0088 00000000 		.word	BUTTON_3_STATE
+ 389 008c 00000000 		.word	MODE_RESET
+ 390              		.cfi_endproc
+ 391              	.LFE133:
+ 393              		.section	.text.LED_STATE,"ax",%progbits
+ 394              		.align	1
+ 395              		.global	LED_STATE
+ 396              		.syntax unified
+ 397              		.thumb
+ 398              		.thumb_func
+ 400              	LED_STATE:
+ 401              	.LFB134:
+ 185:Core/Src/main.c **** 
+ 186:Core/Src/main.c **** // включение и выключение светодиодов
+ 187:Core/Src/main.c **** void LED_STATE(void) 
+ 188:Core/Src/main.c **** {
+ 402              		.loc 1 188 1 is_stmt 1 view -0
+ 403              		.cfi_startproc
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 0, uses_anonymous_args = 0
+ 406 0000 08B5     		push	{r3, lr}
+ 407              	.LCFI0:
+ 408              		.cfi_def_cfa_offset 8
+ 409              		.cfi_offset 3, -8
+ 410              		.cfi_offset 14, -4
+ 189:Core/Src/main.c ****     if (MODE == 0) {
+ 411              		.loc 1 189 5 view .LVU78
+ 412              		.loc 1 189 14 is_stmt 0 view .LVU79
+ 413 0002 084B     		ldr	r3, .L41
+ 414 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 415              		.loc 1 189 8 view .LVU80
+ 416 0006 23B1     		cbz	r3, .L38
+ 190:Core/Src/main.c ****         LED_MODE0();
+ 191:Core/Src/main.c ****     }
+ 192:Core/Src/main.c ****     else if (MODE == 1) {
+ 417              		.loc 1 192 10 is_stmt 1 view .LVU81
+ 418              		.loc 1 192 13 is_stmt 0 view .LVU82
+ 419 0008 012B     		cmp	r3, #1
+ 420 000a 05D0     		beq	.L39
+ 193:Core/Src/main.c ****         LED_MODE1();
+ 194:Core/Src/main.c ****     }
+ 195:Core/Src/main.c ****     else if (MODE == 2) {
+ 421              		.loc 1 195 10 is_stmt 1 view .LVU83
+ 422              		.loc 1 195 13 is_stmt 0 view .LVU84
+ 423 000c 022B     		cmp	r3, #2
+ 424 000e 06D0     		beq	.L40
+ 425              	.L33:
+ 196:Core/Src/main.c ****         LED_MODE2();
+ 197:Core/Src/main.c ****     }
+ 198:Core/Src/main.c **** 
+ 199:Core/Src/main.c **** }
+ 426              		.loc 1 199 1 view .LVU85
+ 427 0010 08BD     		pop	{r3, pc}
+ 428              	.L38:
+ 190:Core/Src/main.c ****     }
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 12
+
+
+ 429              		.loc 1 190 9 is_stmt 1 view .LVU86
+ 430 0012 FFF7FEFF 		bl	LED_MODE0
+ 431              	.LVL0:
+ 432 0016 FBE7     		b	.L33
+ 433              	.L39:
+ 193:Core/Src/main.c ****         LED_MODE1();
+ 434              		.loc 1 193 9 view .LVU87
+ 435 0018 FFF7FEFF 		bl	LED_MODE1
+ 436              	.LVL1:
+ 437 001c F8E7     		b	.L33
+ 438              	.L40:
+ 196:Core/Src/main.c ****         LED_MODE2();
+ 439              		.loc 1 196 9 view .LVU88
+ 440 001e FFF7FEFF 		bl	LED_MODE2
+ 441              	.LVL2:
+ 442              		.loc 1 199 1 is_stmt 0 view .LVU89
+ 443 0022 F5E7     		b	.L33
+ 444              	.L42:
+ 445              		.align	2
+ 446              	.L41:
+ 447 0024 00000000 		.word	MODE
+ 448              		.cfi_endproc
+ 449              	.LFE134:
+ 451              		.section	.text.main,"ax",%progbits
+ 452              		.align	1
+ 453              		.global	main
+ 454              		.syntax unified
+ 455              		.thumb
+ 456              		.thumb_func
+ 458              	main:
+ 459              	.LFB135:
+ 200:Core/Src/main.c **** 
+ 201:Core/Src/main.c **** int main(void) 
+ 202:Core/Src/main.c **** {
+ 460              		.loc 1 202 1 is_stmt 1 view -0
+ 461              		.cfi_startproc
+ 462              		@ Volatile: function does not return.
+ 463              		@ args = 0, pretend = 0, frame = 0
+ 464              		@ frame_needed = 0, uses_anonymous_args = 0
+ 465 0000 08B5     		push	{r3, lr}
+ 466              	.LCFI1:
+ 467              		.cfi_def_cfa_offset 8
+ 468              		.cfi_offset 3, -8
+ 469              		.cfi_offset 14, -4
+ 203:Core/Src/main.c ****     GPIO_Init(); // подключение портов GPIOA|GPIOB|GPIOC
+ 470              		.loc 1 203 5 view .LVU91
+ 471 0002 FFF7FEFF 		bl	GPIO_Init
+ 472              	.LVL3:
+ 473              	.L44:
+ 204:Core/Src/main.c **** 
+ 205:Core/Src/main.c ****     while(1) {
+ 474              		.loc 1 205 5 view .LVU92
+ 206:Core/Src/main.c ****         // чтение состояния кнопки для управления светоди�
+ 207:Core/Src/main.c ****         BUTTON_1_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_10);
+ 475              		.loc 1 207 9 view .LVU93
+ 476              		.loc 1 207 26 is_stmt 0 view .LVU94
+ 477 0006 0D4B     		ldr	r3, .L46
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 13
+
+
+ 478 0008 1A69     		ldr	r2, [r3, #16]
+ 479 000a 02F48062 		and	r2, r2, #1024
+ 480              		.loc 1 207 24 view .LVU95
+ 481 000e 0C49     		ldr	r1, .L46+4
+ 482 0010 0A60     		str	r2, [r1]
+ 208:Core/Src/main.c ****         BUTTON_2_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_5);
+ 483              		.loc 1 208 9 is_stmt 1 view .LVU96
+ 484              		.loc 1 208 26 is_stmt 0 view .LVU97
+ 485 0012 1A69     		ldr	r2, [r3, #16]
+ 486 0014 02F02002 		and	r2, r2, #32
+ 487              		.loc 1 208 24 view .LVU98
+ 488 0018 0A49     		ldr	r1, .L46+8
+ 489 001a 0A60     		str	r2, [r1]
+ 209:Core/Src/main.c ****         BUTTON_3_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_0);
+ 490              		.loc 1 209 9 is_stmt 1 view .LVU99
+ 491              		.loc 1 209 26 is_stmt 0 view .LVU100
+ 492 001c 1B69     		ldr	r3, [r3, #16]
+ 493 001e 03F00103 		and	r3, r3, #1
+ 494              		.loc 1 209 24 view .LVU101
+ 495 0022 094A     		ldr	r2, .L46+12
+ 496 0024 1360     		str	r3, [r2]
+ 210:Core/Src/main.c ****         
+ 211:Core/Src/main.c ****         // чтение состояния кнопки для смены режима (инвер�
+ 212:Core/Src/main.c ****         BUTTON_4_STATE = READ_BIT(GPIOC->IDR, GPIO_IDR_IDR_13);
+ 497              		.loc 1 212 9 is_stmt 1 view .LVU102
+ 498              		.loc 1 212 26 is_stmt 0 view .LVU103
+ 499 0026 094B     		ldr	r3, .L46+16
+ 500 0028 1B69     		ldr	r3, [r3, #16]
+ 501 002a 03F40053 		and	r3, r3, #8192
+ 502              		.loc 1 212 24 view .LVU104
+ 503 002e 084A     		ldr	r2, .L46+20
+ 504 0030 1360     		str	r3, [r2]
+ 213:Core/Src/main.c ****        
+ 214:Core/Src/main.c ****         // функция смены режима по состоянию 4 кнопки
+ 215:Core/Src/main.c ****         MODE_SELECTION();
+ 505              		.loc 1 215 9 is_stmt 1 view .LVU105
+ 506 0032 FFF7FEFF 		bl	MODE_SELECTION
+ 507              	.LVL4:
+ 216:Core/Src/main.c ****         
+ 217:Core/Src/main.c ****         // функция включения и выключения светодиодов
+ 218:Core/Src/main.c ****         LED_STATE();
+ 508              		.loc 1 218 9 discriminator 1 view .LVU106
+ 509 0036 FFF7FEFF 		bl	LED_STATE
+ 510              	.LVL5:
+ 205:Core/Src/main.c ****         // чтение состояния кнопки для управления светоди�
+ 511              		.loc 1 205 10 view .LVU107
+ 512 003a E4E7     		b	.L44
+ 513              	.L47:
+ 514              		.align	2
+ 515              	.L46:
+ 516 003c 00040240 		.word	1073873920
+ 517 0040 00000000 		.word	BUTTON_1_STATE
+ 518 0044 00000000 		.word	BUTTON_2_STATE
+ 519 0048 00000000 		.word	BUTTON_3_STATE
+ 520 004c 00080240 		.word	1073874944
+ 521 0050 00000000 		.word	BUTTON_4_STATE
+ 522              		.cfi_endproc
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 14
+
+
+ 523              	.LFE135:
+ 525              		.global	MODE_RESET
+ 526              		.section	.rodata.MODE_RESET,"a"
+ 527              		.align	2
+ 530              	MODE_RESET:
+ 531 0000 00000100 		.word	65536
+ 532 0004 00000200 		.word	131072
+ 533 0008 00001000 		.word	1048576
+ 534 000c 00001000 		.word	1048576
+ 535 0010 00000100 		.word	65536
+ 536 0014 00000200 		.word	131072
+ 537 0018 00000200 		.word	131072
+ 538 001c 00001000 		.word	1048576
+ 539 0020 00000100 		.word	65536
+ 540              		.global	MODE_SET
+ 541              		.section	.rodata.MODE_SET,"a"
+ 542              		.align	2
+ 545              	MODE_SET:
+ 546 0000 01000000 		.word	1
+ 547 0004 02000000 		.word	2
+ 548 0008 10000000 		.word	16
+ 549 000c 10000000 		.word	16
+ 550 0010 01000000 		.word	1
+ 551 0014 02000000 		.word	2
+ 552 0018 02000000 		.word	2
+ 553 001c 10000000 		.word	16
+ 554 0020 01000000 		.word	1
+ 555              		.global	MODE
+ 556              		.section	.bss.MODE,"aw",%nobits
+ 559              	MODE:
+ 560 0000 00       		.space	1
+ 561              		.global	flag
+ 562              		.section	.bss.flag,"aw",%nobits
+ 565              	flag:
+ 566 0000 00       		.space	1
+ 567              		.global	BUTTON_4_STATE
+ 568              		.section	.bss.BUTTON_4_STATE,"aw",%nobits
+ 569              		.align	2
+ 572              	BUTTON_4_STATE:
+ 573 0000 00000000 		.space	4
+ 574              		.global	BUTTON_3_STATE
+ 575              		.section	.bss.BUTTON_3_STATE,"aw",%nobits
+ 576              		.align	2
+ 579              	BUTTON_3_STATE:
+ 580 0000 00000000 		.space	4
+ 581              		.global	BUTTON_2_STATE
+ 582              		.section	.bss.BUTTON_2_STATE,"aw",%nobits
+ 583              		.align	2
+ 586              	BUTTON_2_STATE:
+ 587 0000 00000000 		.space	4
+ 588              		.global	BUTTON_1_STATE
+ 589              		.section	.bss.BUTTON_1_STATE,"aw",%nobits
+ 590              		.align	2
+ 593              	BUTTON_1_STATE:
+ 594 0000 00000000 		.space	4
+ 595              		.text
+ 596              	.Letext0:
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 15
+
+
+ 597              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
+ 598              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
+ 599              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
+ 600              		.file 5 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s 			page 16
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:21     .text.MODE_SELECTION:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:27     .text.MODE_SELECTION:00000000 MODE_SELECTION
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:86     .text.MODE_SELECTION:00000038 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:339    .bss.BUTTON_4_STATE:00000000 BUTTON_4_STATE
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:332    .bss.flag:00000000 flag
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:326    .bss.MODE:00000000 MODE
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:93     .text.LED_STATE:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:99     .text.LED_STATE:00000000 LED_STATE
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:208    .text.LED_STATE:000000a8 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:360    .bss.BUTTON_1_STATE:00000000 BUTTON_1_STATE
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:312    .rodata.MODE_SET:00000000 MODE_SET
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:353    .bss.BUTTON_2_STATE:00000000 BUTTON_2_STATE
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:346    .bss.BUTTON_3_STATE:00000000 BUTTON_3_STATE
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:297    .rodata.MODE_RESET:00000000 MODE_RESET
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:219    .text.main:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:225    .text.main:00000000 main
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:283    .text.main:0000003c $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:294    .rodata.MODE_RESET:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:309    .rodata.MODE_SET:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:327    .bss.MODE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:333    .bss.flag:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:336    .bss.BUTTON_4_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:343    .bss.BUTTON_3_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:350    .bss.BUTTON_2_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccZAnyHc.s:357    .bss.BUTTON_1_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:21     .text.MODE_SELECTION:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:27     .text.MODE_SELECTION:00000000 MODE_SELECTION
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:86     .text.MODE_SELECTION:00000038 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:572    .bss.BUTTON_4_STATE:00000000 BUTTON_4_STATE
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:565    .bss.flag:00000000 flag
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:559    .bss.MODE:00000000 MODE
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:93     .text.LED_MODE0:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:99     .text.LED_MODE0:00000000 LED_MODE0
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:183    .text.LED_MODE0:00000074 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:593    .bss.BUTTON_1_STATE:00000000 BUTTON_1_STATE
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:586    .bss.BUTTON_2_STATE:00000000 BUTTON_2_STATE
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:579    .bss.BUTTON_3_STATE:00000000 BUTTON_3_STATE
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:545    .rodata.MODE_SET:00000000 MODE_SET
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:530    .rodata.MODE_RESET:00000000 MODE_RESET
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:194    .text.LED_MODE1:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:200    .text.LED_MODE1:00000000 LED_MODE1
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:282    .text.LED_MODE1:00000070 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:293    .text.LED_MODE2:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:299    .text.LED_MODE2:00000000 LED_MODE2
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:383    .text.LED_MODE2:00000074 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:394    .text.LED_STATE:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:400    .text.LED_STATE:00000000 LED_STATE
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:447    .text.LED_STATE:00000024 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:452    .text.main:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:458    .text.main:00000000 main
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:516    .text.main:0000003c $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:527    .rodata.MODE_RESET:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:542    .rodata.MODE_SET:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:560    .bss.MODE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:566    .bss.flag:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:569    .bss.BUTTON_4_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:576    .bss.BUTTON_3_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:583    .bss.BUTTON_2_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccGLtY2t.s:590    .bss.BUTTON_1_STATE:00000000 $d
 
 UNDEFINED SYMBOLS
 GPIO_Init

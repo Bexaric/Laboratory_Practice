@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccWszeF1.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,138 +20,256 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccWszeF1.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/init.c"
-  20              		.section	.text.GPIO_Init,"ax",%progbits
+  20              		.section	.text.PA1_MEMORY,"ax",%progbits
   21              		.align	1
-  22              		.global	GPIO_Init
+  22              		.global	PA1_MEMORY
   23              		.syntax unified
   24              		.thumb
   25              		.thumb_func
-  27              	GPIO_Init:
+  27              	PA1_MEMORY:
   28              	.LFB130:
    1:Core/Src/init.c **** #include <C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h>
    2:Core/Src/init.c **** 
-   3:Core/Src/init.c **** void GPIO_Init(void) 
-   4:Core/Src/init.c **** {
-  29              		.loc 1 4 1 view -0
+   3:Core/Src/init.c **** // настройка пина PA1
+   4:Core/Src/init.c **** void PA1_MEMORY(void) 
+   5:Core/Src/init.c **** {
+  29              		.loc 1 5 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-   5:Core/Src/init.c ****     //Включение тактирования портов GPIOA|GPIOB|GPIOC
-   6:Core/Src/init.c ****     SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN);
-  34              		.loc 1 6 5 view .LVU1
-  35 0000 1B4A     		ldr	r2, .L2
-  36 0002 136B     		ldr	r3, [r2, #48]
-  37 0004 43F00703 		orr	r3, r3, #7
-  38 0008 1363     		str	r3, [r2, #48]
-   7:Core/Src/init.c **** 
-   8:Core/Src/init.c ****     // Режим порта 1-го и 4-го пинов GPIOA
-   9:Core/Src/init.c ****     SET_BIT(GPIOA->MODER, GPIO_MODER_MODE1_0);
-  39              		.loc 1 9 5 view .LVU2
-  40 000a 1A4B     		ldr	r3, .L2+4
-  41 000c 1A68     		ldr	r2, [r3]
-  42 000e 42F00402 		orr	r2, r2, #4
-  43 0012 1A60     		str	r2, [r3]
-  10:Core/Src/init.c ****     SET_BIT(GPIOA->MODER, GPIO_MODER_MODE4_0);
-  44              		.loc 1 10 5 view .LVU3
-  45 0014 1A68     		ldr	r2, [r3]
-  46 0016 42F48072 		orr	r2, r2, #256
-  47 001a 1A60     		str	r2, [r3]
-  11:Core/Src/init.c **** 
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccWszeF1.s 			page 2
+   6:Core/Src/init.c ****     // Включение тактирования на GPIOAEN
+   7:Core/Src/init.c ****     //*(uint32_t *)(0x40023800UL + 0x30UL) |= (1 << 0);
+   8:Core/Src/init.c **** 
+   9:Core/Src/init.c ****     *(uint32_t *)(0x40020000UL + 0x00UL) |= (1 << 2); // Режим порта PA1
+  34              		.loc 1 9 5 view .LVU1
+  35 0000 044B     		ldr	r3, .L2
+  36 0002 1A68     		ldr	r2, [r3]
+  37              		.loc 1 9 42 is_stmt 0 view .LVU2
+  38 0004 42F00402 		orr	r2, r2, #4
+  39 0008 1A60     		str	r2, [r3]
+  10:Core/Src/init.c ****     // Input mode (00). Режим считывания сигнала с порта микроко
+  11:Core/Src/init.c ****     // General Purpose Output mode (01). Режим вывода сигнала на порт ми�
+  12:Core/Src/init.c ****     // Alternate function mode (10). Режим альтернативных функций.
+  13:Core/Src/init.c ****     // Analog mode (11). Аналоговый режим.
+  14:Core/Src/init.c ****     
+  15:Core/Src/init.c ****     *(uint32_t *)(0x40020000UL + 0x04UL) |= 0x00; // PA1
+  40              		.loc 1 15 5 is_stmt 1 view .LVU3
+  16:Core/Src/init.c ****     // Output Push-Pull (PP) 0 – Стандартный двухтактный выход.
+  17:Core/Src/init.c ****     // Output Open-Drain (OD) 1 – Выход с открытым стоком.
+  18:Core/Src/init.c **** 
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 2
 
 
-  12:Core/Src/init.c ****     SET_BIT(GPIOA->MODER, GPIO_MODER_MODE0_0);
-  48              		.loc 1 12 5 view .LVU4
-  49 001c 1A68     		ldr	r2, [r3]
-  50 001e 42F00102 		orr	r2, r2, #1
-  51 0022 1A60     		str	r2, [r3]
-  13:Core/Src/init.c **** 
-  14:Core/Src/init.c ****     // Настройка на Push-Pull 1-го и 4-го пинов GPIOA
-  15:Core/Src/init.c ****     CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT1);
-  52              		.loc 1 15 5 view .LVU5
-  53 0024 5A68     		ldr	r2, [r3, #4]
-  54 0026 22F00202 		bic	r2, r2, #2
-  55 002a 5A60     		str	r2, [r3, #4]
-  16:Core/Src/init.c ****     CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT4);
-  56              		.loc 1 16 5 view .LVU6
-  57 002c 5A68     		ldr	r2, [r3, #4]
-  58 002e 22F01002 		bic	r2, r2, #16
-  59 0032 5A60     		str	r2, [r3, #4]
-  17:Core/Src/init.c **** 
-  18:Core/Src/init.c ****     CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT0);
-  60              		.loc 1 18 5 view .LVU7
-  61 0034 5A68     		ldr	r2, [r3, #4]
-  62 0036 22F00102 		bic	r2, r2, #1
-  63 003a 5A60     		str	r2, [r3, #4]
-  19:Core/Src/init.c **** 
-  20:Core/Src/init.c ****     // Настройка скорости работы 1-го и 4-го пинов GPIOA
-  21:Core/Src/init.c ****     SET_BIT(GPIOA->OSPEEDR, GPIO_OSPEEDER_OSPEEDR1_0);
-  64              		.loc 1 21 5 view .LVU8
-  65 003c 9A68     		ldr	r2, [r3, #8]
-  66 003e 42F00402 		orr	r2, r2, #4
-  67 0042 9A60     		str	r2, [r3, #8]
-  22:Core/Src/init.c ****     SET_BIT(GPIOA->OSPEEDR, GPIO_OSPEEDER_OSPEEDR4_0);
-  68              		.loc 1 22 5 view .LVU9
-  69 0044 9A68     		ldr	r2, [r3, #8]
-  70 0046 42F48072 		orr	r2, r2, #256
-  71 004a 9A60     		str	r2, [r3, #8]
-  23:Core/Src/init.c **** 
-  24:Core/Src/init.c ****     SET_BIT(GPIOA->OSPEEDR, GPIO_OSPEEDER_OSPEEDR0_0);
-  72              		.loc 1 24 5 view .LVU10
-  73 004c 9A68     		ldr	r2, [r3, #8]
-  74 004e 42F00102 		orr	r2, r2, #1
-  75 0052 9A60     		str	r2, [r3, #8]
-  25:Core/Src/init.c **** 
-  26:Core/Src/init.c ****     // Настройка подтяжки (отключение)
-  27:Core/Src/init.c ****     SET_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD1);
-  76              		.loc 1 27 5 view .LVU11
-  77 0054 DA68     		ldr	r2, [r3, #12]
-  78 0056 42F00C02 		orr	r2, r2, #12
-  79 005a DA60     		str	r2, [r3, #12]
-  28:Core/Src/init.c ****     SET_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD4);
-  80              		.loc 1 28 5 view .LVU12
-  81 005c DA68     		ldr	r2, [r3, #12]
-  82 005e 42F44072 		orr	r2, r2, #768
-  83 0062 DA60     		str	r2, [r3, #12]
-  29:Core/Src/init.c **** 
-  30:Core/Src/init.c ****     SET_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD0);
-  84              		.loc 1 30 5 view .LVU13
-  85 0064 DA68     		ldr	r2, [r3, #12]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccWszeF1.s 			page 3
+  19:Core/Src/init.c ****     *(uint32_t *)(0x40020000UL + 0x08UL) |= (1 << 2); // скорость одного бита PA1
+  41              		.loc 1 19 5 view .LVU4
+  42 000a 9A68     		ldr	r2, [r3, #8]
+  43              		.loc 1 19 42 is_stmt 0 view .LVU5
+  44 000c 42F00402 		orr	r2, r2, #4
+  45 0010 9A60     		str	r2, [r3, #8]
+  20:Core/Src/init.c ****     // 00: Low speed / Низкая скорость – диапазон частот от 2 до 
+  21:Core/Src/init.c ****     // 01: Medium speed / Средняя скорость – диапазон частот от 10
+  22:Core/Src/init.c ****     // 10: High speed / Высокая скорость – диапазон частот от 25 �
+  23:Core/Src/init.c ****     // 11: Very high speed / Очень высокая скорость – диапазон час
+  24:Core/Src/init.c **** 
+  25:Core/Src/init.c ****     *(uint32_t *)(0x40020000UL + 0x0CUL) |= (0x00); // настройка подтяжки
+  46              		.loc 1 25 5 is_stmt 1 view .LVU6
+  26:Core/Src/init.c ****     // 00: No pull-up, pull-down – Нед подтяжки к питанию и стяжки на
+  27:Core/Src/init.c ****     // 01: Pull-up – Подтяжка к положительному напряжению чер
+  28:Core/Src/init.c ****     // 10: Pull-down – Стяжка к общему проводу через резистор.
+  29:Core/Src/init.c ****     // 11: Reserved – Зарезервированное состояние, не использ�
+  30:Core/Src/init.c ****     
+  31:Core/Src/init.c **** }
+  47              		.loc 1 31 1 is_stmt 0 view .LVU7
+  48 0012 7047     		bx	lr
+  49              	.L3:
+  50              		.align	2
+  51              	.L2:
+  52 0014 00000240 		.word	1073872896
+  53              		.cfi_endproc
+  54              	.LFE130:
+  56              		.section	.text.PA0_MACRO,"ax",%progbits
+  57              		.align	1
+  58              		.global	PA0_MACRO
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	PA0_MACRO:
+  64              	.LFB131:
+  32:Core/Src/init.c **** 
+  33:Core/Src/init.c **** // настройка пина PA0
+  34:Core/Src/init.c **** void PA0_MACRO(void) 
+  35:Core/Src/init.c **** {
+  65              		.loc 1 35 1 is_stmt 1 view -0
+  66              		.cfi_startproc
+  67              		@ args = 0, pretend = 0, frame = 0
+  68              		@ frame_needed = 0, uses_anonymous_args = 0
+  69              		@ link register save eliminated.
+  36:Core/Src/init.c ****     //RCC_GPIO_EN |= RCC_GPIOA_EN; // Включение тактирования портов GPIO
+  37:Core/Src/init.c ****     GPIOA_MODER |= GPIOA_MODE_PIN0_OUT; // Режим порта 0-го пина GPIOA
+  70              		.loc 1 37 5 view .LVU9
+  71 0000 044B     		ldr	r3, .L5
+  72 0002 1A68     		ldr	r2, [r3]
+  73              		.loc 1 37 17 is_stmt 0 view .LVU10
+  74 0004 42F00102 		orr	r2, r2, #1
+  75 0008 1A60     		str	r2, [r3]
+  38:Core/Src/init.c ****     GPIOA_OTYPER |= GPIOA_OTYPE_PIN0_PP; // Настройка на Push-Pull 0-го пина GPIOA
+  76              		.loc 1 38 5 is_stmt 1 view .LVU11
+  39:Core/Src/init.c ****     GPIOA_OSPEEDR |= GPIOA_OSPEED_PIN0_MID; // Настройка скорости работы 0-�
+  77              		.loc 1 39 5 view .LVU12
+  78 000a 9A68     		ldr	r2, [r3, #8]
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 3
 
 
-  86 0066 42F00302 		orr	r2, r2, #3
-  87 006a DA60     		str	r2, [r3, #12]
-  31:Core/Src/init.c **** 
-  32:Core/Src/init.c ****     // настройка пина PA0
-  33:Core/Src/init.c ****     //RCC_GPIO_EN |= RCC_GPIOA_EN; // Включение тактирования портов GPIO
-  34:Core/Src/init.c ****     //GPIOA_MODER |= GPIOA_MODE_PIN0_OUT; // Режим порта 0-го пина GPIOA
-  35:Core/Src/init.c ****     //GPIOA_OTYPER |= GPIOA_OTYPE_PIN0_PP; // Настройка на Push-Pull 0-го пина GPI
-  36:Core/Src/init.c ****     //GPIOA_OSPEEDR |= GPIOA_OSPEED_PIN0_MID; // Настройка скорости работы 0
-  37:Core/Src/init.c ****     //GPIOA_PUPDR |= GPIOA_PUPDR_PIN0_NOPUPD; // Настройка подтяжки (отключ�
-  38:Core/Src/init.c **** }...
-  88              		.loc 1 38 1 is_stmt 0 view .LVU14
-  89 006c 7047     		bx	lr
-  90              	.L3:
-  91 006e 00BF     		.align	2
-  92              	.L2:
-  93 0070 00380240 		.word	1073887232
-  94 0074 00000240 		.word	1073872896
-  95              		.cfi_endproc
-  96              	.LFE130:
-  98              		.text
-  99              	.Letext0:
- 100              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
- 101              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
- 102              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccWszeF1.s 			page 4
+  79              		.loc 1 39 19 is_stmt 0 view .LVU13
+  80 000c 42F00102 		orr	r2, r2, #1
+  81 0010 9A60     		str	r2, [r3, #8]
+  40:Core/Src/init.c ****     GPIOA_PUPDR |= GPIOA_PUPDR_PIN0_NOPUPD; // Настройка подтяжки (отключе�
+  82              		.loc 1 40 5 is_stmt 1 view .LVU14
+  41:Core/Src/init.c **** }
+  83              		.loc 1 41 1 is_stmt 0 view .LVU15
+  84 0012 7047     		bx	lr
+  85              	.L6:
+  86              		.align	2
+  87              	.L5:
+  88 0014 00000240 		.word	1073872896
+  89              		.cfi_endproc
+  90              	.LFE131:
+  92              		.section	.text.PA4_CMSIS,"ax",%progbits
+  93              		.align	1
+  94              		.global	PA4_CMSIS
+  95              		.syntax unified
+  96              		.thumb
+  97              		.thumb_func
+  99              	PA4_CMSIS:
+ 100              	.LFB132:
+  42:Core/Src/init.c **** 
+  43:Core/Src/init.c **** // настройка пина PA4
+  44:Core/Src/init.c **** void PA4_CMSIS(void) 
+  45:Core/Src/init.c **** {
+ 101              		.loc 1 45 1 is_stmt 1 view -0
+ 102              		.cfi_startproc
+ 103              		@ args = 0, pretend = 0, frame = 0
+ 104              		@ frame_needed = 0, uses_anonymous_args = 0
+ 105              		@ link register save eliminated.
+  46:Core/Src/init.c ****     SET_BIT(GPIOA->MODER, GPIO_MODER_MODE4_0);
+ 106              		.loc 1 46 5 view .LVU17
+ 107 0000 084B     		ldr	r3, .L8
+ 108 0002 1A68     		ldr	r2, [r3]
+ 109 0004 42F48072 		orr	r2, r2, #256
+ 110 0008 1A60     		str	r2, [r3]
+  47:Core/Src/init.c **** 
+  48:Core/Src/init.c ****     // Настройка на Push-Pull 4-го пина GPIOA
+  49:Core/Src/init.c ****     CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT4);
+ 111              		.loc 1 49 5 view .LVU18
+ 112 000a 5A68     		ldr	r2, [r3, #4]
+ 113 000c 22F01002 		bic	r2, r2, #16
+ 114 0010 5A60     		str	r2, [r3, #4]
+  50:Core/Src/init.c **** 
+  51:Core/Src/init.c ****     // Настройка скорости работы 4-го пина GPIOA
+  52:Core/Src/init.c ****     SET_BIT(GPIOA->OSPEEDR, GPIO_OSPEEDER_OSPEEDR4_0);
+ 115              		.loc 1 52 5 view .LVU19
+ 116 0012 9A68     		ldr	r2, [r3, #8]
+ 117 0014 42F48072 		orr	r2, r2, #256
+ 118 0018 9A60     		str	r2, [r3, #8]
+  53:Core/Src/init.c **** 
+  54:Core/Src/init.c ****     // Настройка подтяжки (отключение)
+  55:Core/Src/init.c ****     SET_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD4);
+ 119              		.loc 1 55 5 view .LVU20
+ 120 001a DA68     		ldr	r2, [r3, #12]
+ 121 001c 42F44072 		orr	r2, r2, #768
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 4
+
+
+ 122 0020 DA60     		str	r2, [r3, #12]
+  56:Core/Src/init.c **** }
+ 123              		.loc 1 56 1 is_stmt 0 view .LVU21
+ 124 0022 7047     		bx	lr
+ 125              	.L9:
+ 126              		.align	2
+ 127              	.L8:
+ 128 0024 00000240 		.word	1073872896
+ 129              		.cfi_endproc
+ 130              	.LFE132:
+ 132              		.section	.text.GPIO_Init,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	GPIO_Init
+ 135              		.syntax unified
+ 136              		.thumb
+ 137              		.thumb_func
+ 139              	GPIO_Init:
+ 140              	.LFB133:
+  57:Core/Src/init.c **** 
+  58:Core/Src/init.c **** void GPIO_Init(void) 
+  59:Core/Src/init.c **** {
+ 141              		.loc 1 59 1 is_stmt 1 view -0
+ 142              		.cfi_startproc
+ 143              		@ args = 0, pretend = 0, frame = 0
+ 144              		@ frame_needed = 0, uses_anonymous_args = 0
+ 145 0000 08B5     		push	{r3, lr}
+ 146              	.LCFI0:
+ 147              		.cfi_def_cfa_offset 8
+ 148              		.cfi_offset 3, -8
+ 149              		.cfi_offset 14, -4
+  60:Core/Src/init.c ****     //Включение тактирования портов GPIOA|GPIOB|GPIOC
+  61:Core/Src/init.c ****     
+  62:Core/Src/init.c ****     SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN);
+ 150              		.loc 1 62 5 view .LVU23
+ 151 0002 064A     		ldr	r2, .L12
+ 152 0004 136B     		ldr	r3, [r2, #48]
+ 153 0006 43F00703 		orr	r3, r3, #7
+ 154 000a 1363     		str	r3, [r2, #48]
+  63:Core/Src/init.c **** 
+  64:Core/Src/init.c ****     // Прямое обращение к памяти (PA1)
+  65:Core/Src/init.c ****     PA1_MEMORY();
+ 155              		.loc 1 65 5 view .LVU24
+ 156 000c FFF7FEFF 		bl	PA1_MEMORY
+ 157              	.LVL0:
+  66:Core/Src/init.c **** 
+  67:Core/Src/init.c ****     // Собственные директивы и макросы (PA0)
+  68:Core/Src/init.c ****     PA0_MACRO();
+ 158              		.loc 1 68 5 view .LVU25
+ 159 0010 FFF7FEFF 		bl	PA0_MACRO
+ 160              	.LVL1:
+  69:Core/Src/init.c **** 
+  70:Core/Src/init.c ****     // Использование CMSIS (PA0)
+  71:Core/Src/init.c ****     PA4_CMSIS();
+ 161              		.loc 1 71 5 view .LVU26
+ 162 0014 FFF7FEFF 		bl	PA4_CMSIS
+ 163              	.LVL2:
+  72:Core/Src/init.c **** }...
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 5
+
+
+ 164              		.loc 1 72 1 is_stmt 0 view .LVU27
+ 165 0018 08BD     		pop	{r3, pc}
+ 166              	.L13:
+ 167 001a 00BF     		.align	2
+ 168              	.L12:
+ 169 001c 00380240 		.word	1073887232
+ 170              		.cfi_endproc
+ 171              	.LFE133:
+ 173              		.text
+ 174              	.Letext0:
+ 175              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
+ 176              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
+ 177              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\nicki\AppData\Local\Temp\ccWszeF1.s:21     .text.GPIO_Init:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccWszeF1.s:27     .text.GPIO_Init:00000000 GPIO_Init
-C:\Users\nicki\AppData\Local\Temp\ccWszeF1.s:93     .text.GPIO_Init:00000070 $d
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:21     .text.PA1_MEMORY:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:27     .text.PA1_MEMORY:00000000 PA1_MEMORY
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:52     .text.PA1_MEMORY:00000014 $d
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:57     .text.PA0_MACRO:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:63     .text.PA0_MACRO:00000000 PA0_MACRO
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:88     .text.PA0_MACRO:00000014 $d
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:93     .text.PA4_CMSIS:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:99     .text.PA4_CMSIS:00000000 PA4_CMSIS
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:128    .text.PA4_CMSIS:00000024 $d
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:133    .text.GPIO_Init:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:139    .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:169    .text.GPIO_Init:0000001c $d
 
 NO UNDEFINED SYMBOLS
