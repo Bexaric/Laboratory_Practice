@@ -18,6 +18,5 @@
 #define GPIOA_BSRR                (*(uint32_t *)(0x40020000UL + 0x18UL)) 
 
 #define SET__BIT(REG, BIT)        (REG |= BIT)
-#define READ__BIT(REG, BIT)       (REG & BIT)
 
 void GPIO_Init(void);

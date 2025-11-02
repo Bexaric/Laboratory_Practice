@@ -1,0 +1,294 @@
+[elf]
+file_path = STM32F446RE.elf
+relative_path = true
+
+[general]
+version = 2
+
+[settings]
+sample_frequency_hz = 100
+max_points = 10000
+max_viewport_points = 5000
+viewport_width_ms = 10000,000000
+refresh_on_elf_change = true
+stop_acq_on_elf_change = true
+probe_type = 0
+target_name = 
+probe_mode = 0
+probe_speed_khz = 10000
+probe_sn = 0669FF555071494867133655
+should_log = false
+log_directory = 
+gdb_command = ./gdb
+recorder_enabled = false
+restart_on_group_change = true
+keep_connection = true
+ip_address = 127.0.0.1
+port = 3333
+
+[trace_settings]
+core_frequency = 160000
+trace_prescaler = 10
+max_points = 10000
+max_viewport_points_percent = 10
+viewport_width_ms = 5,000000
+trigger_channel = -1
+trigger_level = 0,900000
+timeout = 2
+probe_type = 0
+target_name = 
+probe_speed_khz = 10000
+probe_sn = 
+should_log = false
+log_directory = 
+
+[var0]
+name = BUTTON_1_STATE
+tracked_name = BUTTON_1_STATE
+address = 536870956
+type = 5
+color = 2244310722
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var1]
+name = BUTTON_2_STATE
+tracked_name = BUTTON_2_STATE
+address = 536870952
+type = 5
+color = 20425267
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var2]
+name = BUTTON_3_STATE
+tracked_name = BUTTON_3_STATE
+address = 536870948
+type = 5
+color = 4163846304
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var3]
+name = BUTTON_4_STATE
+tracked_name = BUTTON_4_STATE
+address = 536870944
+type = 5
+color = 2684157180
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var4]
+name = LED_1_STATE
+tracked_name = LED_1_STATE
+address = 536870962
+type = 1
+color = 403558216
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var5]
+name = LED_2_STATE
+tracked_name = LED_2_STATE
+address = 536870961
+type = 1
+color = 3273254385
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var6]
+name = LED_3_STATE
+tracked_name = LED_3_STATE
+address = 536870960
+type = 1
+color = 4094632680
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var7]
+name = MODE
+tracked_name = MODE
+address = 536870940
+type = 1
+color = 2590624123
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var8]
+name = flag
+tracked_name = flag
+address = 536870941
+type = 1
+color = 2527879818
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[group0]
+name = new group0
+acquisition_type = 0
+
+[group0-plot0]
+name = Button1
+type = 0
+visibility = true
+
+[group0-plot0-series0]
+name = BUTTON_1_STATE
+visibility = true
+format = DEC
+
+[group0-plot1]
+name = Button2
+type = 0
+visibility = true
+
+[group0-plot1-series0]
+name = BUTTON_2_STATE
+visibility = true
+format = DEC
+
+[group0-plot2]
+name = Button3
+type = 0
+visibility = true
+
+[group0-plot2-series0]
+name = BUTTON_3_STATE
+visibility = true
+format = DEC
+
+[group0-plot3]
+name = Button4
+type = 0
+visibility = true
+
+[group0-plot3-series0]
+name = BUTTON_4_STATE
+visibility = true
+format = DEC
+
+[group0-plot4]
+name = Led1
+type = 0
+visibility = true
+
+[group0-plot4-series0]
+name = LED_1_STATE
+visibility = true
+format = DEC
+
+[group0-plot4-series1]
+name = LED_2_STATE
+visibility = true
+format = DEC
+
+[group0-plot4-series2]
+name = LED_3_STATE
+visibility = true
+format = DEC
+
+[group0-plot5]
+name = Mode
+type = 2
+visibility = true
+
+[group0-plot5-series0]
+name = MODE
+visibility = true
+format = DEC
+
+[trace_plot0]
+name = CH0
+alias = CH0
+visibility = true
+domain = 1
+
+[trace_plot1]
+name = CH1
+alias = CH1
+visibility = true
+domain = 1
+
+[trace_plot2]
+name = CH2
+alias = CH2
+visibility = true
+domain = 1
+
+[trace_plot3]
+name = CH3
+alias = CH3
+visibility = true
+domain = 1
+
+[trace_plot4]
+name = CH4
+alias = CH4
+visibility = true
+domain = 1
+
+[trace_plot5]
+name = CH5
+alias = CH5
+visibility = true
+domain = 1
+
+[trace_plot6]
+name = CH6
+alias = CH6
+visibility = true
+domain = 1
+
+[trace_plot7]
+name = CH7
+alias = CH7
+visibility = true
+domain = 1
+
+[trace_plot8]
+name = CH8
+alias = CH8
+visibility = true
+domain = 1
+
+[trace_plot9]
+name = CH9
+alias = CH9
+visibility = true
+domain = 1

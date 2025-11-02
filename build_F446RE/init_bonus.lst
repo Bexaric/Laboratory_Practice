@@ -1,0 +1,143 @@
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"init_bonus.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/init_bonus.c"
+  20              		.section	.text.GPIO_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	GPIO_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	GPIO_Init:
+  28              	.LFB130:
+   1:Core/Src/init_bonus.c **** #include <C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h>
+   2:Core/Src/init_bonus.c **** 
+   3:Core/Src/init_bonus.c **** void GPIO_Init(void) 
+   4:Core/Src/init_bonus.c **** {
+  29              		.loc 1 4 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+   5:Core/Src/init_bonus.c ****     //Включение тактирования портов GPIOA|GPIOB|GPIOC
+   6:Core/Src/init_bonus.c ****     
+   7:Core/Src/init_bonus.c ****     SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN);
+  34              		.loc 1 7 5 view .LVU1
+  35 0000 1B4A     		ldr	r2, .L2
+  36 0002 136B     		ldr	r3, [r2, #48]
+  37 0004 43F00703 		orr	r3, r3, #7
+  38 0008 1363     		str	r3, [r2, #48]
+   8:Core/Src/init_bonus.c **** 
+   9:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->MODER, GPIO_MODER_MODE0_0);
+  39              		.loc 1 9 5 view .LVU2
+  40 000a 1A4B     		ldr	r3, .L2+4
+  41 000c 1A68     		ldr	r2, [r3]
+  42 000e 42F00102 		orr	r2, r2, #1
+  43 0012 1A60     		str	r2, [r3]
+  10:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->MODER, GPIO_MODER_MODE1_0);
+  44              		.loc 1 10 5 view .LVU3
+  45 0014 1A68     		ldr	r2, [r3]
+  46 0016 42F00402 		orr	r2, r2, #4
+  47 001a 1A60     		str	r2, [r3]
+  11:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->MODER, GPIO_MODER_MODE4_0);
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 2
+
+
+  48              		.loc 1 11 5 view .LVU4
+  49 001c 1A68     		ldr	r2, [r3]
+  50 001e 42F48072 		orr	r2, r2, #256
+  51 0022 1A60     		str	r2, [r3]
+  12:Core/Src/init_bonus.c **** 
+  13:Core/Src/init_bonus.c ****     CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT0);
+  52              		.loc 1 13 5 view .LVU5
+  53 0024 5A68     		ldr	r2, [r3, #4]
+  54 0026 22F00102 		bic	r2, r2, #1
+  55 002a 5A60     		str	r2, [r3, #4]
+  14:Core/Src/init_bonus.c ****     CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT1);
+  56              		.loc 1 14 5 view .LVU6
+  57 002c 5A68     		ldr	r2, [r3, #4]
+  58 002e 22F00202 		bic	r2, r2, #2
+  59 0032 5A60     		str	r2, [r3, #4]
+  15:Core/Src/init_bonus.c ****     CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT4);
+  60              		.loc 1 15 5 view .LVU7
+  61 0034 5A68     		ldr	r2, [r3, #4]
+  62 0036 22F01002 		bic	r2, r2, #16
+  63 003a 5A60     		str	r2, [r3, #4]
+  16:Core/Src/init_bonus.c **** 
+  17:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->OSPEEDR, GPIO_OSPEEDER_OSPEEDR0_0);
+  64              		.loc 1 17 5 view .LVU8
+  65 003c 9A68     		ldr	r2, [r3, #8]
+  66 003e 42F00102 		orr	r2, r2, #1
+  67 0042 9A60     		str	r2, [r3, #8]
+  18:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->OSPEEDR, GPIO_OSPEEDER_OSPEEDR1_0);
+  68              		.loc 1 18 5 view .LVU9
+  69 0044 9A68     		ldr	r2, [r3, #8]
+  70 0046 42F00402 		orr	r2, r2, #4
+  71 004a 9A60     		str	r2, [r3, #8]
+  19:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->OSPEEDR, GPIO_OSPEEDER_OSPEEDR4_0);
+  72              		.loc 1 19 5 view .LVU10
+  73 004c 9A68     		ldr	r2, [r3, #8]
+  74 004e 42F48072 		orr	r2, r2, #256
+  75 0052 9A60     		str	r2, [r3, #8]
+  20:Core/Src/init_bonus.c **** 
+  21:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD0);
+  76              		.loc 1 21 5 view .LVU11
+  77 0054 DA68     		ldr	r2, [r3, #12]
+  78 0056 42F00302 		orr	r2, r2, #3
+  79 005a DA60     		str	r2, [r3, #12]
+  22:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD1);
+  80              		.loc 1 22 5 view .LVU12
+  81 005c DA68     		ldr	r2, [r3, #12]
+  82 005e 42F00C02 		orr	r2, r2, #12
+  83 0062 DA60     		str	r2, [r3, #12]
+  23:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD4);
+  84              		.loc 1 23 5 view .LVU13
+  85 0064 DA68     		ldr	r2, [r3, #12]
+  86 0066 42F44072 		orr	r2, r2, #768
+  87 006a DA60     		str	r2, [r3, #12]
+  24:Core/Src/init_bonus.c **** }...
+  88              		.loc 1 24 1 is_stmt 0 view .LVU14
+  89 006c 7047     		bx	lr
+  90              	.L3:
+  91 006e 00BF     		.align	2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 3
+
+
+  92              	.L2:
+  93 0070 00380240 		.word	1073887232
+  94 0074 00000240 		.word	1073872896
+  95              		.cfi_endproc
+  96              	.LFE130:
+  98              		.text
+  99              	.Letext0:
+ 100              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
+ 101              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
+ 102              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 init_bonus.c
+C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s:21     .text.GPIO_Init:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s:27     .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s:93     .text.GPIO_Init:00000070 $d
+
+NO UNDEFINED SYMBOLS

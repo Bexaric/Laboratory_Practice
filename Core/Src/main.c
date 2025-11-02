@@ -12,6 +12,10 @@
 
 #include <C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h>
 
+uint8_t LED_1_STATE = 0; 
+uint8_t LED_2_STATE = 0;
+uint8_t LED_3_STATE = 0;  
+
 uint32_t BUTTON_1_STATE = 0; // состояние 1-ой внешней кнопки
 uint32_t BUTTON_2_STATE = 0; // состояние 2-ой внешней кнопки
 uint32_t BUTTON_3_STATE = 0; // состояние 3-ой внешней кнопки
@@ -70,11 +74,13 @@ void LED_MODE0(void)
         // PA0
         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_SET);
         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
+        LED_1_STATE = 1; 
     }
     else
     {
         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_RESET);
         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+        LED_1_STATE = 0;
     }
 
     // включение 2-го в списке светодиода (по режиму)
@@ -83,11 +89,13 @@ void LED_MODE0(void)
         // PA1
         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 1);
         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
+        LED_2_STATE = 1;
     }
     else
     {
         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 17);
         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+        LED_2_STATE = 0;
     }
 
     // включение 1-го в списке светодиода (по режиму)
@@ -95,10 +103,12 @@ void LED_MODE0(void)
     {
         // PA4
         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][2]);
+        LED_3_STATE = 1;
     }
     else
     {
         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][2]);
+        LED_3_STATE = 0;
     }
 
 }
@@ -110,10 +120,12 @@ void LED_MODE1(void)
     if (BUTTON_1_STATE != 0) 
     {
         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
+        LED_3_STATE = 1;
     }
     else
     {
         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+        LED_3_STATE = 0;
     }
     
     // включение 2-го в списке светодиода (по режиму)
@@ -122,11 +134,13 @@ void LED_MODE1(void)
         // PA0
         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_SET);
         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
+        LED_1_STATE = 1;
     }
     else
     {
         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_RESET);
         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+        LED_1_STATE = 0;
     }
 
     // включение 3-го в списке светодиода (по режиму)
@@ -135,11 +149,13 @@ void LED_MODE1(void)
         // PA1
         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 1);
         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
+        LED_2_STATE = 1;
     }
     else
     {
         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 17);
         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+        LED_2_STATE = 0;
     }
 }
 
@@ -152,21 +168,25 @@ void LED_MODE2(void)
         // PA1
         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 1);
         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
+        LED_2_STATE = 1;
     }
     else
     {
         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 17);
         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+        LED_2_STATE = 0;
     }
     
     // включение 2-го в списке светодиода (по режиму)
     if (BUTTON_2_STATE != 0) 
     {
         SET_BIT(GPIOA->BSRR, MODE_SET[MODE][1]);
+        LED_3_STATE = 1;
     }
     else
     {
         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
+        LED_3_STATE = 0;
     }
 
     // включение 3-го в списке светодиода (по режиму)
@@ -175,11 +195,13 @@ void LED_MODE2(void)
         // PA0
         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_SET);
         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
+        LED_1_STATE = 1;
     }
     else
     {
         SET__BIT(GPIOA_BSRR, GPIOA_BSRR_PIN0_RESET);
         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
+        LED_1_STATE = 0;
     }
 }
 
