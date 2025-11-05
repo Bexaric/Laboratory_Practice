@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
   28:Core/Src/main.c **** // режим 2:  жёлтый,  красный, зелёный
   29:Core/Src/main.c **** 
   30:Core/Src/main.c **** // массив для включения светодиодов
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 2
 
 
   31:Core/Src/main.c **** const uint32_t MODE_SET[3][3] = 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
   57:Core/Src/main.c ****         if (MODE > 2) 
   57              		.loc 1 57 9 is_stmt 1 view .LVU10
   58              		.loc 1 57 12 is_stmt 0 view .LVU11
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 3
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 3
 
 
   59 001c 022B     		cmp	r3, #2
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  102              		.cfi_startproc
  103              		@ args = 0, pretend = 0, frame = 0
  104              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 4
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 4
 
 
  105              		@ link register save eliminated.
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  137 0026 204B     		ldr	r3, .L13+16
  138 0028 0122     		movs	r2, #1
  139 002a 1A70     		strb	r2, [r3]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 5
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 5
 
 
  140              	.L10:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  177              	.L9:
   96:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
  178              		.loc 1 96 9 is_stmt 1 view .LVU43
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 6
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 6
 
 
  179 0064 0D4A     		ldr	r2, .L13+4
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  222 00bc 00000000 		.word	MODE_RESET
  223              		.cfi_endproc
  224              	.LFE131:
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 7
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 7
 
 
  226              		.section	.text.LED_MODE1,"ax",%progbits
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  263              		.loc 1 132 5 is_stmt 1 view .LVU58
  264              		.loc 1 132 24 is_stmt 0 view .LVU59
  265 0022 214B     		ldr	r3, .L22+20
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 8
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 8
 
 
  266 0024 1B68     		ldr	r3, [r3]
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  299              		.loc 1 127 9 is_stmt 1 view .LVU71
  300 0050 1149     		ldr	r1, .L22+4
  301 0052 8A69     		ldr	r2, [r1, #24]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 9
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 9
 
 
  302 0054 114B     		ldr	r3, .L22+8
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  343 0092 00BF     		.align	2
  344              	.L22:
  345 0094 00000000 		.word	BUTTON_1_STATE
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 10
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 10
 
 
  346 0098 00000240 		.word	1073872896
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  173:Core/Src/main.c ****     else
  174:Core/Src/main.c ****     {
  175:Core/Src/main.c ****         *(uint32_t *)(0x640020000UL + 0x18UL) |= (1 << 17);
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 11
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 11
 
 
  176:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][1]);
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  423 0044 43F00103 		orr	r3, r3, #1
  424 0048 9361     		str	r3, [r2, #24]
  197:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_SET[MODE][0]);
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 12
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 12
 
 
  198:Core/Src/main.c ****         LED_1_STATE = 1;
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  467 0088 43F48033 		orr	r3, r3, #65536
  468 008c 9361     		str	r3, [r2, #24]
  203:Core/Src/main.c ****         //SET_BIT(GPIOA->BSRR, MODE_RESET[MODE][0]);
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 13
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 13
 
 
  204:Core/Src/main.c ****         LED_1_STATE = 0;
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  213:Core/Src/main.c ****     }
  214:Core/Src/main.c ****     else if (MODE == 1) {
  516              		.loc 1 214 10 is_stmt 1 view .LVU117
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 14
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 14
 
 
  517              		.loc 1 214 13 is_stmt 0 view .LVU118
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  560              		.cfi_startproc
  561              		@ Volatile: function does not return.
  562              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 15
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 15
 
 
  563              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  604              		.loc 1 237 9 is_stmt 1 view .LVU141
  605 0032 FFF7FEFF 		bl	MODE_SELECTION
  606              	.LVL4:
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 16
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 16
 
 
  238:Core/Src/main.c ****         
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  666              		.global	BUTTON_4_STATE
  667              		.section	.bss.BUTTON_4_STATE,"aw",%nobits
  668              		.align	2
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 17
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 17
 
 
  671              	BUTTON_4_STATE:
@@ -996,51 +996,51 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 1
  715              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
  716              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
  717              		.file 5 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s 			page 18
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:21     .text.MODE_SELECTION:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:27     .text.MODE_SELECTION:00000000 MODE_SELECTION
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:86     .text.MODE_SELECTION:00000038 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:671    .bss.BUTTON_4_STATE:00000000 BUTTON_4_STATE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:664    .bss.flag:00000000 flag
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:658    .bss.MODE:00000000 MODE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:93     .text.LED_MODE0:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:99     .text.LED_MODE0:00000000 LED_MODE0
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:213    .text.LED_MODE0:00000098 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:692    .bss.BUTTON_1_STATE:00000000 BUTTON_1_STATE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:710    .bss.LED_1_STATE:00000000 LED_1_STATE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:685    .bss.BUTTON_2_STATE:00000000 BUTTON_2_STATE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:704    .bss.LED_2_STATE:00000000 LED_2_STATE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:678    .bss.BUTTON_3_STATE:00000000 BUTTON_3_STATE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:644    .rodata.MODE_SET:00000000 MODE_SET
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:698    .bss.LED_3_STATE:00000000 LED_3_STATE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:629    .rodata.MODE_RESET:00000000 MODE_RESET
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:227    .text.LED_MODE1:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:233    .text.LED_MODE1:00000000 LED_MODE1
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:345    .text.LED_MODE1:00000094 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:359    .text.LED_MODE2:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:365    .text.LED_MODE2:00000000 LED_MODE2
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:479    .text.LED_MODE2:00000098 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:493    .text.LED_STATE:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:499    .text.LED_STATE:00000000 LED_STATE
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:546    .text.LED_STATE:00000024 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:551    .text.main:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:557    .text.main:00000000 main
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:615    .text.main:0000003c $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:626    .rodata.MODE_RESET:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:641    .rodata.MODE_SET:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:659    .bss.MODE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:665    .bss.flag:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:668    .bss.BUTTON_4_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:675    .bss.BUTTON_3_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:682    .bss.BUTTON_2_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:689    .bss.BUTTON_1_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:699    .bss.LED_3_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:705    .bss.LED_2_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\cc0I6Ltv.s:711    .bss.LED_1_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:21     .text.MODE_SELECTION:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:27     .text.MODE_SELECTION:00000000 MODE_SELECTION
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:86     .text.MODE_SELECTION:00000038 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:671    .bss.BUTTON_4_STATE:00000000 BUTTON_4_STATE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:664    .bss.flag:00000000 flag
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:658    .bss.MODE:00000000 MODE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:93     .text.LED_MODE0:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:99     .text.LED_MODE0:00000000 LED_MODE0
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:213    .text.LED_MODE0:00000098 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:692    .bss.BUTTON_1_STATE:00000000 BUTTON_1_STATE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:710    .bss.LED_1_STATE:00000000 LED_1_STATE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:685    .bss.BUTTON_2_STATE:00000000 BUTTON_2_STATE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:704    .bss.LED_2_STATE:00000000 LED_2_STATE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:678    .bss.BUTTON_3_STATE:00000000 BUTTON_3_STATE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:644    .rodata.MODE_SET:00000000 MODE_SET
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:698    .bss.LED_3_STATE:00000000 LED_3_STATE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:629    .rodata.MODE_RESET:00000000 MODE_RESET
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:227    .text.LED_MODE1:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:233    .text.LED_MODE1:00000000 LED_MODE1
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:345    .text.LED_MODE1:00000094 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:359    .text.LED_MODE2:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:365    .text.LED_MODE2:00000000 LED_MODE2
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:479    .text.LED_MODE2:00000098 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:493    .text.LED_STATE:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:499    .text.LED_STATE:00000000 LED_STATE
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:546    .text.LED_STATE:00000024 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:551    .text.main:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:557    .text.main:00000000 main
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:615    .text.main:0000003c $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:626    .rodata.MODE_RESET:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:641    .rodata.MODE_SET:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:659    .bss.MODE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:665    .bss.flag:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:668    .bss.BUTTON_4_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:675    .bss.BUTTON_3_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:682    .bss.BUTTON_2_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:689    .bss.BUTTON_1_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:699    .bss.LED_3_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:705    .bss.LED_2_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\ccIVbg1s.s:711    .bss.LED_1_STATE:00000000 $d
 
 UNDEFINED SYMBOLS
 GPIO_Init

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccj9POtf.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 1
   46 0016 42F00402 		orr	r2, r2, #4
   47 001a 1A60     		str	r2, [r3]
   11:Core/Src/init_bonus.c ****     SET_BIT(GPIOA->MODER, GPIO_MODER_MODE4_0);
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccj9POtf.s 			page 2
 
 
   48              		.loc 1 11 5 view .LVU4
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 1
   89 006c 7047     		bx	lr
   90              	.L3:
   91 006e 00BF     		.align	2
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 3
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccj9POtf.s 			page 3
 
 
   92              	.L2:
@@ -131,13 +131,13 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 1
  100              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
  101              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
  102              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s 			page 4
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccj9POtf.s 			page 4
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init_bonus.c
-C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s:21     .text.GPIO_Init:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s:27     .text.GPIO_Init:00000000 GPIO_Init
-C:\Users\nicki\AppData\Local\Temp\ccPHx3ej.s:93     .text.GPIO_Init:00000070 $d
+C:\Users\nicki\AppData\Local\Temp\ccj9POtf.s:21     .text.GPIO_Init:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\ccj9POtf.s:27     .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\nicki\AppData\Local\Temp\ccj9POtf.s:93     .text.GPIO_Init:00000070 $d
 
 NO UNDEFINED SYMBOLS

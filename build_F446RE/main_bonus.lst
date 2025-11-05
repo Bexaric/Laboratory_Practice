@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -30,8 +30,8 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 1
   28              	.LFB130:
    1:Core/Src/main_bonus.c **** // Кнопка 1
    2:Core/Src/main_bonus.c **** // Короткое нажатие: меняет частоту моргания светодиод
-   3:Core/Src/main_bonus.c **** // Длинное нажатие: переключает светодиод на один (если
-   4:Core/Src/main_bonus.c **** // Светодиоды при длинном не горят
+   3:Core/Src/main_bonus.c **** // Длинное нажатие: переключает светодиод на один
+   4:Core/Src/main_bonus.c **** // Светодиоды при длинном нажатии не горят
    5:Core/Src/main_bonus.c **** // Кнопка 2
    6:Core/Src/main_bonus.c **** // Единичное нажатие: меняет количество светодиодов (е�
    7:Core/Src/main_bonus.c **** 
@@ -45,1593 +45,2164 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 1
   15:Core/Src/main_bonus.c **** uint32_t BUTTON_2_STATE = 0; // состояние 2-ой внешней кнопки
   16:Core/Src/main_bonus.c **** uint32_t counter = 0;        // переменная-счётчик для первой кнопк�
   17:Core/Src/main_bonus.c **** uint8_t flag = 0;            // проверка на единичное нажатие 2-ой кн
-  18:Core/Src/main_bonus.c **** uint32_t counter_led = 0;        // переменная-счётчик для первой кно�
-  19:Core/Src/main_bonus.c **** 
-  20:Core/Src/main_bonus.c **** uint8_t MODE1 = 0;            // режим работы
-  21:Core/Src/main_bonus.c **** // режим 0:  2 Гц
-  22:Core/Src/main_bonus.c **** // режим 1:  5 Гц
-  23:Core/Src/main_bonus.c **** // режим 2:  10 Гц
-  24:Core/Src/main_bonus.c **** 
-  25:Core/Src/main_bonus.c **** uint8_t MODE1_1 = 0;
-  26:Core/Src/main_bonus.c **** // режим 0: зелёный светодиод
-  27:Core/Src/main_bonus.c **** // режим 1: жёлтый светодиод
-  28:Core/Src/main_bonus.c **** // режим 2: красный светодиод
+  18:Core/Src/main_bonus.c **** uint8_t flag1 = 0;
+  19:Core/Src/main_bonus.c **** uint8_t flag2 = 0;  
+  20:Core/Src/main_bonus.c **** uint8_t flag3 = 0; 
+  21:Core/Src/main_bonus.c **** uint32_t counter_led = 0;        // переменная-счётчик для первой кно�
+  22:Core/Src/main_bonus.c **** uint32_t counter_led1 = 0;
+  23:Core/Src/main_bonus.c **** uint32_t counter_led2 = 0;
+  24:Core/Src/main_bonus.c **** uint32_t counter_led3 = 0;
+  25:Core/Src/main_bonus.c **** 
+  26:Core/Src/main_bonus.c **** uint8_t MODE11 = 0;            // режим работы
+  27:Core/Src/main_bonus.c **** uint8_t MODE12 = 0;
+  28:Core/Src/main_bonus.c **** uint8_t MODE13 = 0;
   29:Core/Src/main_bonus.c **** 
-  30:Core/Src/main_bonus.c **** uint8_t MODE2 = 0;
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 2
+  30:Core/Src/main_bonus.c **** uint8_t MODE1_1 = 0;
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 2
 
 
-  31:Core/Src/main_bonus.c **** // режим 0: один светодиод
-  32:Core/Src/main_bonus.c **** // режим 1: два светодиода
-  33:Core/Src/main_bonus.c **** // режим 2: три светодиода
+  31:Core/Src/main_bonus.c **** // режим 0: зелёный светодиод
+  32:Core/Src/main_bonus.c **** // режим 1: жёлтый светодиод
+  33:Core/Src/main_bonus.c **** // режим 2: красный светодиод
   34:Core/Src/main_bonus.c **** 
-  35:Core/Src/main_bonus.c **** 
-  36:Core/Src/main_bonus.c **** const uint32_t frequency = 1000000 * 1.1; // примерно секунда
-  37:Core/Src/main_bonus.c **** 
-  38:Core/Src/main_bonus.c **** // массив для включения светодиодов
-  39:Core/Src/main_bonus.c **** uint32_t MODE_1[3][3] = 
-  40:Core/Src/main_bonus.c **** {
-  41:Core/Src/main_bonus.c ****     {GPIO_BSRR_BS0, GPIO_BSRR_BR1, GPIO_BSRR_BR4},
-  42:Core/Src/main_bonus.c ****     
-  43:Core/Src/main_bonus.c ****     {GPIO_BSRR_BR0, GPIO_BSRR_BS1, GPIO_BSRR_BR4},
-  44:Core/Src/main_bonus.c ****     
-  45:Core/Src/main_bonus.c ****     {GPIO_BSRR_BR0, GPIO_BSRR_BR1, GPIO_BSRR_BS4}
-  46:Core/Src/main_bonus.c **** };
-  47:Core/Src/main_bonus.c **** 
-  48:Core/Src/main_bonus.c **** // массив для выключения светодиодов
-  49:Core/Src/main_bonus.c **** const uint32_t MODE_RESET[3][3] = 
-  50:Core/Src/main_bonus.c **** {
-  51:Core/Src/main_bonus.c ****     {GPIO_BSRR_BR0, GPIO_BSRR_BR1, GPIO_BSRR_BR4},
-  52:Core/Src/main_bonus.c ****     
-  53:Core/Src/main_bonus.c ****     {GPIO_BSRR_BR4, GPIO_BSRR_BR0, GPIO_BSRR_BR1},
-  54:Core/Src/main_bonus.c ****     
-  55:Core/Src/main_bonus.c ****     {GPIO_BSRR_BR1, GPIO_BSRR_BR4, GPIO_BSRR_BR0}
-  56:Core/Src/main_bonus.c **** };
-  57:Core/Src/main_bonus.c **** 
-  58:Core/Src/main_bonus.c **** void MODE_SELECTION_BUT1(void) 
-  59:Core/Src/main_bonus.c **** {
-  29              		.loc 1 59 1 view -0
+  35:Core/Src/main_bonus.c **** int8_t MODE2 = -1;
+  36:Core/Src/main_bonus.c **** // режим 0: один светодиод
+  37:Core/Src/main_bonus.c **** // режим 1: два светодиода
+  38:Core/Src/main_bonus.c **** // режим 2: три светодиода
+  39:Core/Src/main_bonus.c **** 
+  40:Core/Src/main_bonus.c **** 
+  41:Core/Src/main_bonus.c **** const uint32_t frequency = 1000000; // примерно секунда
+  42:Core/Src/main_bonus.c **** uint32_t frequency1;
+  43:Core/Src/main_bonus.c **** uint32_t frequency2;
+  44:Core/Src/main_bonus.c **** uint32_t frequency3;
+  45:Core/Src/main_bonus.c **** 
+  46:Core/Src/main_bonus.c **** void MODE_SELECTION_BUT1(void) 
+  47:Core/Src/main_bonus.c **** {
+  29              		.loc 1 47 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-  60:Core/Src/main_bonus.c ****     counter = 0;
-  34              		.loc 1 60 5 view .LVU1
-  35              		.loc 1 60 13 is_stmt 0 view .LVU2
-  36 0000 1A4B     		ldr	r3, .L8
+  48:Core/Src/main_bonus.c ****     counter = 0;
+  34              		.loc 1 48 5 view .LVU1
+  35              		.loc 1 48 13 is_stmt 0 view .LVU2
+  36 0000 294B     		ldr	r3, .L13
   37 0002 0022     		movs	r2, #0
   38 0004 1A60     		str	r2, [r3]
-  61:Core/Src/main_bonus.c ****     while(BUTTON_1_STATE != 0) 
-  39              		.loc 1 61 5 is_stmt 1 view .LVU3
-  40              		.loc 1 61 10 is_stmt 0 view .LVU4
+  49:Core/Src/main_bonus.c ****     while(BUTTON_1_STATE != 0) 
+  39              		.loc 1 49 5 is_stmt 1 view .LVU3
+  40              		.loc 1 49 10 is_stmt 0 view .LVU4
   41 0006 09E0     		b	.L2
   42              	.L3:
-  62:Core/Src/main_bonus.c ****     {
-  63:Core/Src/main_bonus.c ****         counter++;
-  43              		.loc 1 63 9 is_stmt 1 view .LVU5
-  44              		.loc 1 63 16 is_stmt 0 view .LVU6
-  45 0008 184A     		ldr	r2, .L8
+  50:Core/Src/main_bonus.c ****     {
+  51:Core/Src/main_bonus.c ****         counter++;
+  43              		.loc 1 51 9 is_stmt 1 view .LVU5
+  44              		.loc 1 51 16 is_stmt 0 view .LVU6
+  45 0008 274A     		ldr	r2, .L13
   46 000a 1368     		ldr	r3, [r2]
   47 000c 0133     		adds	r3, r3, #1
   48 000e 1360     		str	r3, [r2]
-  64:Core/Src/main_bonus.c ****         BUTTON_1_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_10);
-  49              		.loc 1 64 9 is_stmt 1 view .LVU7
-  50              		.loc 1 64 26 is_stmt 0 view .LVU8
-  51 0010 174B     		ldr	r3, .L8+4
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 3
-
-
+  52:Core/Src/main_bonus.c ****         BUTTON_1_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_10);
+  49              		.loc 1 52 9 is_stmt 1 view .LVU7
+  50              		.loc 1 52 26 is_stmt 0 view .LVU8
+  51 0010 264B     		ldr	r3, .L13+4
   52 0012 1B69     		ldr	r3, [r3, #16]
   53 0014 03F48063 		and	r3, r3, #1024
-  54              		.loc 1 64 24 view .LVU9
-  55 0018 164A     		ldr	r2, .L8+8
+  54              		.loc 1 52 24 view .LVU9
+  55 0018 254A     		ldr	r2, .L13+8
   56 001a 1360     		str	r3, [r2]
   57              	.L2:
-  61:Core/Src/main_bonus.c ****     while(BUTTON_1_STATE != 0) 
-  58              		.loc 1 61 26 is_stmt 1 view .LVU10
-  59 001c 154B     		ldr	r3, .L8+8
+  49:Core/Src/main_bonus.c ****     while(BUTTON_1_STATE != 0) 
+  58              		.loc 1 49 26 is_stmt 1 view .LVU10
+  59 001c 244B     		ldr	r3, .L13+8
   60 001e 1B68     		ldr	r3, [r3]
   61 0020 002B     		cmp	r3, #0
   62 0022 F1D1     		bne	.L3
-  65:Core/Src/main_bonus.c ****     }
-  66:Core/Src/main_bonus.c **** 
-  67:Core/Src/main_bonus.c ****     if (counter != 0) 
-  63              		.loc 1 67 5 view .LVU11
-  64              		.loc 1 67 17 is_stmt 0 view .LVU12
-  65 0024 114B     		ldr	r3, .L8
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 3
+
+
+  53:Core/Src/main_bonus.c ****     }
+  54:Core/Src/main_bonus.c **** 
+  55:Core/Src/main_bonus.c ****     if (counter != 0) 
+  63              		.loc 1 55 5 view .LVU11
+  64              		.loc 1 55 17 is_stmt 0 view .LVU12
+  65 0024 204B     		ldr	r3, .L13
   66 0026 1B68     		ldr	r3, [r3]
-  67              		.loc 1 67 8 view .LVU13
-  68 0028 4BB1     		cbz	r3, .L4
-  68:Core/Src/main_bonus.c ****     {
-  69:Core/Src/main_bonus.c ****         if (counter > 20000 && counter < frequency / 3) 
-  69              		.loc 1 69 9 is_stmt 1 view .LVU14
-  70              		.loc 1 69 29 is_stmt 0 view .LVU15
+  67              		.loc 1 55 8 view .LVU13
+  68 0028 63B1     		cbz	r3, .L4
+  56:Core/Src/main_bonus.c ****     {
+  57:Core/Src/main_bonus.c ****         if (counter > 20000 && counter < frequency / 3) 
+  69              		.loc 1 57 9 is_stmt 1 view .LVU14
+  70              		.loc 1 57 29 is_stmt 0 view .LVU15
   71 002a A3F59C42 		sub	r2, r3, #19968
   72 002e 213A     		subs	r2, r2, #33
-  73              		.loc 1 69 12 view .LVU16
-  74 0030 1149     		ldr	r1, .L8+12
+  73              		.loc 1 57 12 view .LVU16
+  74 0030 2049     		ldr	r1, .L13+12
   75 0032 8A42     		cmp	r2, r1
-  76 0034 12D8     		bhi	.L5
-  70:Core/Src/main_bonus.c ****         {
-  71:Core/Src/main_bonus.c ****             MODE1++;
-  77              		.loc 1 71 13 is_stmt 1 view .LVU17
-  78              		.loc 1 71 18 is_stmt 0 view .LVU18
-  79 0036 114A     		ldr	r2, .L8+16
-  80 0038 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-  81 003a 0133     		adds	r3, r3, #1
-  82 003c 1370     		strb	r3, [r2]
-  83              	.L4:
-  72:Core/Src/main_bonus.c ****         }
-  73:Core/Src/main_bonus.c ****         else if (counter >= frequency / 3)
-  74:Core/Src/main_bonus.c ****         {
-  75:Core/Src/main_bonus.c ****             MODE1_1++;
-  76:Core/Src/main_bonus.c ****         }
-  77:Core/Src/main_bonus.c ****     }
-  78:Core/Src/main_bonus.c **** 
-  79:Core/Src/main_bonus.c ****     if (MODE1 > 2) {
-  84              		.loc 1 79 5 is_stmt 1 view .LVU19
-  85              		.loc 1 79 15 is_stmt 0 view .LVU20
-  86 003e 0F4B     		ldr	r3, .L8+16
-  87 0040 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-  88              		.loc 1 79 8 view .LVU21
-  89 0042 022B     		cmp	r3, #2
-  90 0044 02D9     		bls	.L6
-  80:Core/Src/main_bonus.c ****         MODE1 = 0;
-  91              		.loc 1 80 9 is_stmt 1 view .LVU22
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 4
+  76 0034 2FD8     		bhi	.L5
+  58:Core/Src/main_bonus.c ****         {
+  59:Core/Src/main_bonus.c ****             if (MODE1_1 == 0) 
+  77              		.loc 1 59 13 is_stmt 1 view .LVU17
+  78              		.loc 1 59 25 is_stmt 0 view .LVU18
+  79 0036 204B     		ldr	r3, .L13+16
+  80 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  81              		.loc 1 59 16 view .LVU19
+  82 003a 03BB     		cbnz	r3, .L6
+  60:Core/Src/main_bonus.c ****             {
+  61:Core/Src/main_bonus.c ****                 MODE11++;
+  83              		.loc 1 61 17 is_stmt 1 view .LVU20
+  84              		.loc 1 61 23 is_stmt 0 view .LVU21
+  85 003c 1F4A     		ldr	r2, .L13+20
+  86 003e 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  87 0040 0133     		adds	r3, r3, #1
+  88 0042 1370     		strb	r3, [r2]
+  89              	.L4:
+  62:Core/Src/main_bonus.c ****             } else if (MODE1_1 == 1) {
+  63:Core/Src/main_bonus.c ****                 MODE12++;
+  64:Core/Src/main_bonus.c ****             } else {
+  65:Core/Src/main_bonus.c ****                 MODE13++;
+  66:Core/Src/main_bonus.c ****             }
+  67:Core/Src/main_bonus.c ****         }
+  68:Core/Src/main_bonus.c ****         else if (counter >= frequency / 3)
+  69:Core/Src/main_bonus.c ****         {
+  70:Core/Src/main_bonus.c ****             MODE1_1++;
+  71:Core/Src/main_bonus.c ****         }
+  72:Core/Src/main_bonus.c ****     }
+  73:Core/Src/main_bonus.c **** 
+  74:Core/Src/main_bonus.c ****     if (MODE11 > 2) {
+  90              		.loc 1 74 5 is_stmt 1 view .LVU22
+  91              		.loc 1 74 16 is_stmt 0 view .LVU23
+  92 0044 1D4B     		ldr	r3, .L13+20
+  93 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  94              		.loc 1 74 8 view .LVU24
+  95 0048 022B     		cmp	r3, #2
+  96 004a 02D9     		bls	.L8
+  75:Core/Src/main_bonus.c ****         MODE11 = 0;
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 4
 
 
-  92              		.loc 1 80 15 is_stmt 0 view .LVU23
-  93 0046 0D4B     		ldr	r3, .L8+16
-  94 0048 0022     		movs	r2, #0
-  95 004a 1A70     		strb	r2, [r3]
-  96              	.L6:
-  81:Core/Src/main_bonus.c ****     }
-  82:Core/Src/main_bonus.c **** 
-  83:Core/Src/main_bonus.c ****     if (MODE1_1 > 2) {
-  97              		.loc 1 83 5 is_stmt 1 view .LVU24
-  98              		.loc 1 83 17 is_stmt 0 view .LVU25
-  99 004c 0C4B     		ldr	r3, .L8+20
- 100 004e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 101              		.loc 1 83 8 view .LVU26
- 102 0050 022B     		cmp	r3, #2
- 103 0052 02D9     		bls	.L1
-  84:Core/Src/main_bonus.c ****         MODE1_1 = 0;
- 104              		.loc 1 84 9 is_stmt 1 view .LVU27
- 105              		.loc 1 84 17 is_stmt 0 view .LVU28
- 106 0054 0A4B     		ldr	r3, .L8+20
- 107 0056 0022     		movs	r2, #0
- 108 0058 1A70     		strb	r2, [r3]
- 109              	.L1:
-  85:Core/Src/main_bonus.c ****     }
-  86:Core/Src/main_bonus.c **** }
- 110              		.loc 1 86 1 view .LVU29
- 111 005a 7047     		bx	lr
- 112              	.L5:
-  73:Core/Src/main_bonus.c ****         {
- 113              		.loc 1 73 14 is_stmt 1 view .LVU30
-  73:Core/Src/main_bonus.c ****         {
- 114              		.loc 1 73 17 is_stmt 0 view .LVU31
- 115 005c 094A     		ldr	r2, .L8+24
- 116 005e 9342     		cmp	r3, r2
- 117 0060 EDD9     		bls	.L4
-  75:Core/Src/main_bonus.c ****         }
- 118              		.loc 1 75 13 is_stmt 1 view .LVU32
-  75:Core/Src/main_bonus.c ****         }
- 119              		.loc 1 75 20 is_stmt 0 view .LVU33
- 120 0062 074A     		ldr	r2, .L8+20
- 121 0064 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
- 122 0066 0133     		adds	r3, r3, #1
- 123 0068 1370     		strb	r3, [r2]
- 124 006a E8E7     		b	.L4
- 125              	.L9:
- 126              		.align	2
- 127              	.L8:
- 128 006c 00000000 		.word	counter
- 129 0070 00040240 		.word	1073873920
- 130 0074 00000000 		.word	BUTTON_1_STATE
- 131 0078 284A0500 		.word	346664
- 132 007c 00000000 		.word	MODE1
- 133 0080 00000000 		.word	MODE1_1
- 134 0084 49980500 		.word	366665
- 135              		.cfi_endproc
- 136              	.LFE130:
- 138              		.section	.text.MODE_SELECTION_BUT2,"ax",%progbits
- 139              		.align	1
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 5
+  97              		.loc 1 75 9 is_stmt 1 view .LVU25
+  98              		.loc 1 75 16 is_stmt 0 view .LVU26
+  99 004c 1B4B     		ldr	r3, .L13+20
+ 100 004e 0022     		movs	r2, #0
+ 101 0050 1A70     		strb	r2, [r3]
+ 102              	.L8:
+  76:Core/Src/main_bonus.c ****     }
+  77:Core/Src/main_bonus.c **** 
+  78:Core/Src/main_bonus.c ****     if (MODE12 > 2) {
+ 103              		.loc 1 78 5 is_stmt 1 view .LVU27
+ 104              		.loc 1 78 16 is_stmt 0 view .LVU28
+ 105 0052 1B4B     		ldr	r3, .L13+24
+ 106 0054 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 107              		.loc 1 78 8 view .LVU29
+ 108 0056 022B     		cmp	r3, #2
+ 109 0058 02D9     		bls	.L9
+  79:Core/Src/main_bonus.c ****         MODE12 = 0;
+ 110              		.loc 1 79 9 is_stmt 1 view .LVU30
+ 111              		.loc 1 79 16 is_stmt 0 view .LVU31
+ 112 005a 194B     		ldr	r3, .L13+24
+ 113 005c 0022     		movs	r2, #0
+ 114 005e 1A70     		strb	r2, [r3]
+ 115              	.L9:
+  80:Core/Src/main_bonus.c ****     }
+  81:Core/Src/main_bonus.c **** 
+  82:Core/Src/main_bonus.c ****     if (MODE13 > 2) {
+ 116              		.loc 1 82 5 is_stmt 1 view .LVU32
+ 117              		.loc 1 82 16 is_stmt 0 view .LVU33
+ 118 0060 184B     		ldr	r3, .L13+28
+ 119 0062 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 120              		.loc 1 82 8 view .LVU34
+ 121 0064 022B     		cmp	r3, #2
+ 122 0066 02D9     		bls	.L10
+  83:Core/Src/main_bonus.c ****         MODE13 = 0;
+ 123              		.loc 1 83 9 is_stmt 1 view .LVU35
+ 124              		.loc 1 83 16 is_stmt 0 view .LVU36
+ 125 0068 164B     		ldr	r3, .L13+28
+ 126 006a 0022     		movs	r2, #0
+ 127 006c 1A70     		strb	r2, [r3]
+ 128              	.L10:
+  84:Core/Src/main_bonus.c ****     }
+  85:Core/Src/main_bonus.c **** 
+  86:Core/Src/main_bonus.c ****     if (MODE1_1 > 2) {
+ 129              		.loc 1 86 5 is_stmt 1 view .LVU37
+ 130              		.loc 1 86 17 is_stmt 0 view .LVU38
+ 131 006e 124B     		ldr	r3, .L13+16
+ 132 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 133              		.loc 1 86 8 view .LVU39
+ 134 0072 022B     		cmp	r3, #2
+ 135 0074 02D9     		bls	.L1
+  87:Core/Src/main_bonus.c ****         MODE1_1 = 0;
+ 136              		.loc 1 87 9 is_stmt 1 view .LVU40
+ 137              		.loc 1 87 17 is_stmt 0 view .LVU41
+ 138 0076 104B     		ldr	r3, .L13+16
+ 139 0078 0022     		movs	r2, #0
+ 140 007a 1A70     		strb	r2, [r3]
+ 141              	.L1:
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 5
 
 
- 140              		.global	MODE_SELECTION_BUT2
- 141              		.syntax unified
- 142              		.thumb
- 143              		.thumb_func
- 145              	MODE_SELECTION_BUT2:
- 146              	.LFB131:
-  87:Core/Src/main_bonus.c **** 
-  88:Core/Src/main_bonus.c **** // смена режима по состоянию 4 кнопки
-  89:Core/Src/main_bonus.c **** void MODE_SELECTION_BUT2(void) 
-  90:Core/Src/main_bonus.c **** {
- 147              		.loc 1 90 1 is_stmt 1 view -0
- 148              		.cfi_startproc
- 149              		@ args = 0, pretend = 0, frame = 0
- 150              		@ frame_needed = 0, uses_anonymous_args = 0
- 151              		@ link register save eliminated.
-  91:Core/Src/main_bonus.c ****     if (BUTTON_2_STATE > 0 && flag == 0) 
- 152              		.loc 1 91 5 view .LVU35
- 153              		.loc 1 91 24 is_stmt 0 view .LVU36
- 154 0000 134B     		ldr	r3, .L16
- 155 0002 1B68     		ldr	r3, [r3]
- 156              		.loc 1 91 8 view .LVU37
- 157 0004 E3B1     		cbz	r3, .L11
- 158              		.loc 1 91 36 discriminator 1 view .LVU38
- 159 0006 134A     		ldr	r2, .L16+4
- 160 0008 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 161              		.loc 1 91 28 discriminator 1 view .LVU39
- 162 000a CAB9     		cbnz	r2, .L11
-  92:Core/Src/main_bonus.c ****     {
-  93:Core/Src/main_bonus.c ****         flag = 1;
- 163              		.loc 1 93 9 is_stmt 1 view .LVU40
- 164              		.loc 1 93 14 is_stmt 0 view .LVU41
- 165 000c 114B     		ldr	r3, .L16+4
- 166 000e 0122     		movs	r2, #1
- 167 0010 1A70     		strb	r2, [r3]
-  94:Core/Src/main_bonus.c ****         MODE2++;
- 168              		.loc 1 94 9 is_stmt 1 view .LVU42
- 169              		.loc 1 94 14 is_stmt 0 view .LVU43
- 170 0012 114A     		ldr	r2, .L16+8
- 171 0014 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
- 172 0016 0133     		adds	r3, r3, #1
- 173 0018 DBB2     		uxtb	r3, r3
- 174 001a 1370     		strb	r3, [r2]
-  95:Core/Src/main_bonus.c ****         if (MODE2 > 2) 
- 175              		.loc 1 95 9 is_stmt 1 view .LVU44
- 176              		.loc 1 95 12 is_stmt 0 view .LVU45
- 177 001c 022B     		cmp	r3, #2
- 178 001e 02D9     		bls	.L12
-  96:Core/Src/main_bonus.c ****         {
-  97:Core/Src/main_bonus.c ****             MODE2 = 0;
- 179              		.loc 1 97 13 is_stmt 1 view .LVU46
- 180              		.loc 1 97 19 is_stmt 0 view .LVU47
- 181 0020 1346     		mov	r3, r2
- 182 0022 0022     		movs	r2, #0
- 183 0024 1A70     		strb	r2, [r3]
- 184              	.L12:
-  98:Core/Src/main_bonus.c ****         }
-  99:Core/Src/main_bonus.c ****         counter = 0;
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 6
+  88:Core/Src/main_bonus.c ****     }
+  89:Core/Src/main_bonus.c **** }
+ 142              		.loc 1 89 1 view .LVU42
+ 143 007c 7047     		bx	lr
+ 144              	.L6:
+  62:Core/Src/main_bonus.c ****                 MODE12++;
+ 145              		.loc 1 62 20 is_stmt 1 view .LVU43
+  62:Core/Src/main_bonus.c ****                 MODE12++;
+ 146              		.loc 1 62 23 is_stmt 0 view .LVU44
+ 147 007e 012B     		cmp	r3, #1
+ 148 0080 04D0     		beq	.L12
+  65:Core/Src/main_bonus.c ****             }
+ 149              		.loc 1 65 17 is_stmt 1 view .LVU45
+  65:Core/Src/main_bonus.c ****             }
+ 150              		.loc 1 65 23 is_stmt 0 view .LVU46
+ 151 0082 104A     		ldr	r2, .L13+28
+ 152 0084 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 153 0086 0133     		adds	r3, r3, #1
+ 154 0088 1370     		strb	r3, [r2]
+ 155 008a DBE7     		b	.L4
+ 156              	.L12:
+  63:Core/Src/main_bonus.c ****             } else {
+ 157              		.loc 1 63 17 is_stmt 1 view .LVU47
+  63:Core/Src/main_bonus.c ****             } else {
+ 158              		.loc 1 63 23 is_stmt 0 view .LVU48
+ 159 008c 0C4A     		ldr	r2, .L13+24
+ 160 008e 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 161 0090 0133     		adds	r3, r3, #1
+ 162 0092 1370     		strb	r3, [r2]
+ 163 0094 D6E7     		b	.L4
+ 164              	.L5:
+  68:Core/Src/main_bonus.c ****         {
+ 165              		.loc 1 68 14 is_stmt 1 view .LVU49
+  68:Core/Src/main_bonus.c ****         {
+ 166              		.loc 1 68 17 is_stmt 0 view .LVU50
+ 167 0096 0C4A     		ldr	r2, .L13+32
+ 168 0098 9342     		cmp	r3, r2
+ 169 009a D3D9     		bls	.L4
+  70:Core/Src/main_bonus.c ****         }
+ 170              		.loc 1 70 13 is_stmt 1 view .LVU51
+  70:Core/Src/main_bonus.c ****         }
+ 171              		.loc 1 70 20 is_stmt 0 view .LVU52
+ 172 009c 064A     		ldr	r2, .L13+16
+ 173 009e 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 174 00a0 0133     		adds	r3, r3, #1
+ 175 00a2 1370     		strb	r3, [r2]
+ 176 00a4 CEE7     		b	.L4
+ 177              	.L14:
+ 178 00a6 00BF     		.align	2
+ 179              	.L13:
+ 180 00a8 00000000 		.word	counter
+ 181 00ac 00040240 		.word	1073873920
+ 182 00b0 00000000 		.word	BUTTON_1_STATE
+ 183 00b4 F3C70400 		.word	313331
+ 184 00b8 00000000 		.word	MODE1_1
+ 185 00bc 00000000 		.word	MODE11
+ 186 00c0 00000000 		.word	MODE12
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 6
 
 
- 185              		.loc 1 99 9 is_stmt 1 view .LVU48
- 186              		.loc 1 99 17 is_stmt 0 view .LVU49
- 187 0026 0D4B     		ldr	r3, .L16+12
- 188 0028 0022     		movs	r2, #0
- 189 002a 1A60     		str	r2, [r3]
- 100:Core/Src/main_bonus.c ****         while(counter < 400000) 
- 190              		.loc 1 100 9 is_stmt 1 view .LVU50
- 191              		.loc 1 100 14 is_stmt 0 view .LVU51
- 192 002c 02E0     		b	.L13
- 193              	.L14:
- 101:Core/Src/main_bonus.c ****         {
- 102:Core/Src/main_bonus.c ****             counter++;
- 194              		.loc 1 102 13 is_stmt 1 view .LVU52
- 195              		.loc 1 102 20 is_stmt 0 view .LVU53
- 196 002e 0133     		adds	r3, r3, #1
- 197 0030 0A4A     		ldr	r2, .L16+12
- 198 0032 1360     		str	r3, [r2]
- 199              	.L13:
- 100:Core/Src/main_bonus.c ****         while(counter < 400000) 
- 200              		.loc 1 100 23 is_stmt 1 view .LVU54
- 201 0034 094B     		ldr	r3, .L16+12
- 202 0036 1B68     		ldr	r3, [r3]
- 203 0038 094A     		ldr	r2, .L16+16
- 204 003a 9342     		cmp	r3, r2
- 205 003c F7D9     		bls	.L14
- 206 003e 7047     		bx	lr
- 207              	.L11:
- 103:Core/Src/main_bonus.c ****         }
- 104:Core/Src/main_bonus.c ****     }
- 105:Core/Src/main_bonus.c ****     else if (BUTTON_2_STATE == 0 && flag) // проверка зажатия
- 208              		.loc 1 105 10 view .LVU55
- 209              		.loc 1 105 13 is_stmt 0 view .LVU56
- 210 0040 2BB9     		cbnz	r3, .L10
- 211              		.loc 1 105 34 discriminator 1 view .LVU57
- 212 0042 044B     		ldr	r3, .L16+4
- 213 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 214 0046 13B1     		cbz	r3, .L10
- 106:Core/Src/main_bonus.c ****     {
- 107:Core/Src/main_bonus.c ****         flag = 0;
- 215              		.loc 1 107 9 is_stmt 1 view .LVU58
- 216              		.loc 1 107 14 is_stmt 0 view .LVU59
- 217 0048 024B     		ldr	r3, .L16+4
- 218 004a 0022     		movs	r2, #0
- 219 004c 1A70     		strb	r2, [r3]
- 220              	.L10:
- 108:Core/Src/main_bonus.c ****     }
- 109:Core/Src/main_bonus.c **** }
- 221              		.loc 1 109 1 view .LVU60
- 222 004e 7047     		bx	lr
- 223              	.L17:
- 224              		.align	2
- 225              	.L16:
- 226 0050 00000000 		.word	BUTTON_2_STATE
- 227 0054 00000000 		.word	flag
- 228 0058 00000000 		.word	MODE2
- 229 005c 00000000 		.word	counter
- 230 0060 7F1A0600 		.word	399999
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 7
+ 187 00c4 00000000 		.word	MODE13
+ 188 00c8 14160500 		.word	333332
+ 189              		.cfi_endproc
+ 190              	.LFE130:
+ 192              		.section	.text.MODE_SELECTION_BUT2,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	MODE_SELECTION_BUT2
+ 195              		.syntax unified
+ 196              		.thumb
+ 197              		.thumb_func
+ 199              	MODE_SELECTION_BUT2:
+ 200              	.LFB131:
+  90:Core/Src/main_bonus.c **** 
+  91:Core/Src/main_bonus.c **** // смена режима по состоянию 4 кнопки
+  92:Core/Src/main_bonus.c **** void MODE_SELECTION_BUT2(void) 
+  93:Core/Src/main_bonus.c **** {
+ 201              		.loc 1 93 1 is_stmt 1 view -0
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 0
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205              		@ link register save eliminated.
+  94:Core/Src/main_bonus.c ****     if (BUTTON_2_STATE > 0 && flag == 0) 
+ 206              		.loc 1 94 5 view .LVU54
+ 207              		.loc 1 94 24 is_stmt 0 view .LVU55
+ 208 0000 134B     		ldr	r3, .L21
+ 209 0002 1B68     		ldr	r3, [r3]
+ 210              		.loc 1 94 8 view .LVU56
+ 211 0004 E3B1     		cbz	r3, .L16
+ 212              		.loc 1 94 36 discriminator 1 view .LVU57
+ 213 0006 134A     		ldr	r2, .L21+4
+ 214 0008 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 215              		.loc 1 94 28 discriminator 1 view .LVU58
+ 216 000a CAB9     		cbnz	r2, .L16
+  95:Core/Src/main_bonus.c ****     {
+  96:Core/Src/main_bonus.c ****         flag = 1;
+ 217              		.loc 1 96 9 is_stmt 1 view .LVU59
+ 218              		.loc 1 96 14 is_stmt 0 view .LVU60
+ 219 000c 114B     		ldr	r3, .L21+4
+ 220 000e 0122     		movs	r2, #1
+ 221 0010 1A70     		strb	r2, [r3]
+  97:Core/Src/main_bonus.c ****         MODE2++;
+ 222              		.loc 1 97 9 is_stmt 1 view .LVU61
+ 223              		.loc 1 97 14 is_stmt 0 view .LVU62
+ 224 0012 114A     		ldr	r2, .L21+8
+ 225 0014 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 226 0016 0133     		adds	r3, r3, #1
+ 227 0018 5BB2     		sxtb	r3, r3
+ 228 001a 1370     		strb	r3, [r2]
+  98:Core/Src/main_bonus.c ****         if (MODE2 > 2) 
+ 229              		.loc 1 98 9 is_stmt 1 view .LVU63
+ 230              		.loc 1 98 12 is_stmt 0 view .LVU64
+ 231 001c 022B     		cmp	r3, #2
+ 232 001e 02DD     		ble	.L17
+  99:Core/Src/main_bonus.c ****         {
+ 100:Core/Src/main_bonus.c ****             MODE2 = -1;
+ 233              		.loc 1 100 13 is_stmt 1 view .LVU65
+ 234              		.loc 1 100 19 is_stmt 0 view .LVU66
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 7
 
 
- 231              		.cfi_endproc
- 232              	.LFE131:
- 234              		.section	.text.BUTTON_STATE,"ax",%progbits
- 235              		.align	1
- 236              		.global	BUTTON_STATE
- 237              		.syntax unified
- 238              		.thumb
- 239              		.thumb_func
- 241              	BUTTON_STATE:
- 242              	.LFB132:
- 110:Core/Src/main_bonus.c **** 
- 111:Core/Src/main_bonus.c **** uint8_t BUTTON_STATE(void) 
- 112:Core/Src/main_bonus.c **** {
- 243              		.loc 1 112 1 is_stmt 1 view -0
- 244              		.cfi_startproc
- 245              		@ args = 0, pretend = 0, frame = 0
- 246              		@ frame_needed = 0, uses_anonymous_args = 0
- 247              		@ link register save eliminated.
- 113:Core/Src/main_bonus.c ****     BUTTON_1_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_10);
- 248              		.loc 1 113 5 view .LVU62
- 249              		.loc 1 113 22 is_stmt 0 view .LVU63
- 250 0000 0E4B     		ldr	r3, .L24
- 251 0002 1A69     		ldr	r2, [r3, #16]
- 252 0004 02F48062 		and	r2, r2, #1024
- 253              		.loc 1 113 20 view .LVU64
- 254 0008 0D49     		ldr	r1, .L24+4
- 255 000a 0A60     		str	r2, [r1]
- 114:Core/Src/main_bonus.c ****     BUTTON_2_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_5);
- 256              		.loc 1 114 5 is_stmt 1 view .LVU65
- 257              		.loc 1 114 22 is_stmt 0 view .LVU66
- 258 000c 1B69     		ldr	r3, [r3, #16]
- 259 000e 03F02003 		and	r3, r3, #32
- 260              		.loc 1 114 20 view .LVU67
- 261 0012 0C49     		ldr	r1, .L24+8
- 262 0014 0B60     		str	r3, [r1]
- 115:Core/Src/main_bonus.c ****     if (BUTTON_1_STATE > 0 || (BUTTON_2_STATE > 0 && flag == 0) || (BUTTON_2_STATE == 0 && flag == 
- 263              		.loc 1 115 5 is_stmt 1 view .LVU68
- 264              		.loc 1 115 8 is_stmt 0 view .LVU69
- 265 0016 52B9     		cbnz	r2, .L21
- 266              		.loc 1 115 28 discriminator 1 view .LVU70
- 267 0018 13B1     		cbz	r3, .L20
- 268              		.loc 1 115 59 discriminator 2 view .LVU71
- 269 001a 0B4A     		ldr	r2, .L24+12
- 270 001c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 271              		.loc 1 115 51 discriminator 2 view .LVU72
- 272 001e 42B1     		cbz	r2, .L22
- 273              	.L20:
- 274              		.loc 1 115 65 discriminator 4 view .LVU73
- 275 0020 4BB9     		cbnz	r3, .L23
- 276              		.loc 1 115 97 discriminator 5 view .LVU74
- 277 0022 094B     		ldr	r3, .L24+12
- 278 0024 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
- 279              		.loc 1 115 89 discriminator 5 view .LVU75
- 280 0026 0128     		cmp	r0, #1
- 281 0028 06D0     		beq	.L19
- 116:Core/Src/main_bonus.c ****     {
- 117:Core/Src/main_bonus.c ****         return 1;
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 8
+ 235 0020 1346     		mov	r3, r2
+ 236 0022 FF22     		movs	r2, #255
+ 237 0024 1A70     		strb	r2, [r3]
+ 238              	.L17:
+ 101:Core/Src/main_bonus.c ****         }
+ 102:Core/Src/main_bonus.c ****         counter = 0;
+ 239              		.loc 1 102 9 is_stmt 1 view .LVU67
+ 240              		.loc 1 102 17 is_stmt 0 view .LVU68
+ 241 0026 0D4B     		ldr	r3, .L21+12
+ 242 0028 0022     		movs	r2, #0
+ 243 002a 1A60     		str	r2, [r3]
+ 103:Core/Src/main_bonus.c ****         while(counter < 400000) 
+ 244              		.loc 1 103 9 is_stmt 1 view .LVU69
+ 245              		.loc 1 103 14 is_stmt 0 view .LVU70
+ 246 002c 02E0     		b	.L18
+ 247              	.L19:
+ 104:Core/Src/main_bonus.c ****         {
+ 105:Core/Src/main_bonus.c ****             counter++;
+ 248              		.loc 1 105 13 is_stmt 1 view .LVU71
+ 249              		.loc 1 105 20 is_stmt 0 view .LVU72
+ 250 002e 0133     		adds	r3, r3, #1
+ 251 0030 0A4A     		ldr	r2, .L21+12
+ 252 0032 1360     		str	r3, [r2]
+ 253              	.L18:
+ 103:Core/Src/main_bonus.c ****         while(counter < 400000) 
+ 254              		.loc 1 103 23 is_stmt 1 view .LVU73
+ 255 0034 094B     		ldr	r3, .L21+12
+ 256 0036 1B68     		ldr	r3, [r3]
+ 257 0038 094A     		ldr	r2, .L21+16
+ 258 003a 9342     		cmp	r3, r2
+ 259 003c F7D9     		bls	.L19
+ 260 003e 7047     		bx	lr
+ 261              	.L16:
+ 106:Core/Src/main_bonus.c ****         }
+ 107:Core/Src/main_bonus.c ****     }
+ 108:Core/Src/main_bonus.c ****     else if (BUTTON_2_STATE == 0 && flag) // проверка зажатия
+ 262              		.loc 1 108 10 view .LVU74
+ 263              		.loc 1 108 13 is_stmt 0 view .LVU75
+ 264 0040 2BB9     		cbnz	r3, .L15
+ 265              		.loc 1 108 34 discriminator 1 view .LVU76
+ 266 0042 044B     		ldr	r3, .L21+4
+ 267 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 268 0046 13B1     		cbz	r3, .L15
+ 109:Core/Src/main_bonus.c ****     {
+ 110:Core/Src/main_bonus.c ****         flag = 0;
+ 269              		.loc 1 110 9 is_stmt 1 view .LVU77
+ 270              		.loc 1 110 14 is_stmt 0 view .LVU78
+ 271 0048 024B     		ldr	r3, .L21+4
+ 272 004a 0022     		movs	r2, #0
+ 273 004c 1A70     		strb	r2, [r3]
+ 274              	.L15:
+ 111:Core/Src/main_bonus.c ****     }
+ 112:Core/Src/main_bonus.c **** }
+ 275              		.loc 1 112 1 view .LVU79
+ 276 004e 7047     		bx	lr
+ 277              	.L22:
+ 278              		.align	2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 8
 
 
- 118:Core/Src/main_bonus.c ****     }
- 119:Core/Src/main_bonus.c ****     else 
- 120:Core/Src/main_bonus.c ****     {
- 121:Core/Src/main_bonus.c ****         return 0;
- 282              		.loc 1 121 16 view .LVU76
- 283 002a 0020     		movs	r0, #0
- 284 002c 7047     		bx	lr
- 285              	.L21:
- 117:Core/Src/main_bonus.c ****     }
- 286              		.loc 1 117 16 view .LVU77
- 287 002e 0120     		movs	r0, #1
- 288 0030 7047     		bx	lr
- 289              	.L22:
- 290 0032 0120     		movs	r0, #1
- 291 0034 7047     		bx	lr
- 292              	.L23:
- 293              		.loc 1 121 16 view .LVU78
- 294 0036 0020     		movs	r0, #0
- 295              	.L19:
- 122:Core/Src/main_bonus.c ****     }
- 123:Core/Src/main_bonus.c **** }
- 296              		.loc 1 123 1 view .LVU79
- 297 0038 7047     		bx	lr
- 298              	.L25:
- 299 003a 00BF     		.align	2
- 300              	.L24:
- 301 003c 00040240 		.word	1073873920
- 302 0040 00000000 		.word	BUTTON_1_STATE
- 303 0044 00000000 		.word	BUTTON_2_STATE
- 304 0048 00000000 		.word	flag
- 305              		.cfi_endproc
- 306              	.LFE132:
- 308              		.section	.text.LED_MODE1,"ax",%progbits
- 309              		.align	1
- 310              		.global	LED_MODE1
- 311              		.syntax unified
- 312              		.thumb
- 313              		.thumb_func
- 315              	LED_MODE1:
- 316              	.LFB133:
- 124:Core/Src/main_bonus.c **** 
- 125:Core/Src/main_bonus.c **** void LED_MODE1(void) 
- 126:Core/Src/main_bonus.c **** {
- 317              		.loc 1 126 1 is_stmt 1 view -0
- 318              		.cfi_startproc
- 319              		@ args = 0, pretend = 0, frame = 0
- 320              		@ frame_needed = 0, uses_anonymous_args = 0
- 321 0000 38B5     		push	{r3, r4, r5, lr}
- 322              	.LCFI0:
- 323              		.cfi_def_cfa_offset 16
- 324              		.cfi_offset 3, -16
- 325              		.cfi_offset 4, -12
- 326              		.cfi_offset 5, -8
- 327              		.cfi_offset 14, -4
- 127:Core/Src/main_bonus.c ****     if (MODE1 == 0) 
- 328              		.loc 1 127 5 view .LVU81
- 329              		.loc 1 127 15 is_stmt 0 view .LVU82
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 9
+ 279              	.L21:
+ 280 0050 00000000 		.word	BUTTON_2_STATE
+ 281 0054 00000000 		.word	flag
+ 282 0058 00000000 		.word	MODE2
+ 283 005c 00000000 		.word	counter
+ 284 0060 7F1A0600 		.word	399999
+ 285              		.cfi_endproc
+ 286              	.LFE131:
+ 288              		.section	.text.BUTTON_STATE,"ax",%progbits
+ 289              		.align	1
+ 290              		.global	BUTTON_STATE
+ 291              		.syntax unified
+ 292              		.thumb
+ 293              		.thumb_func
+ 295              	BUTTON_STATE:
+ 296              	.LFB132:
+ 113:Core/Src/main_bonus.c **** 
+ 114:Core/Src/main_bonus.c **** uint8_t BUTTON_STATE(void) 
+ 115:Core/Src/main_bonus.c **** {
+ 297              		.loc 1 115 1 is_stmt 1 view -0
+ 298              		.cfi_startproc
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301              		@ link register save eliminated.
+ 116:Core/Src/main_bonus.c ****     BUTTON_1_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_10);
+ 302              		.loc 1 116 5 view .LVU81
+ 303              		.loc 1 116 22 is_stmt 0 view .LVU82
+ 304 0000 114A     		ldr	r2, .L30
+ 305 0002 1369     		ldr	r3, [r2, #16]
+ 306 0004 03F48063 		and	r3, r3, #1024
+ 307              		.loc 1 116 20 view .LVU83
+ 308 0008 1049     		ldr	r1, .L30+4
+ 309 000a 0B60     		str	r3, [r1]
+ 117:Core/Src/main_bonus.c ****     BUTTON_2_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_5);
+ 310              		.loc 1 117 5 is_stmt 1 view .LVU84
+ 311              		.loc 1 117 22 is_stmt 0 view .LVU85
+ 312 000c 1269     		ldr	r2, [r2, #16]
+ 313 000e 02F02002 		and	r2, r2, #32
+ 314              		.loc 1 117 20 view .LVU86
+ 315 0012 0F49     		ldr	r1, .L30+8
+ 316 0014 0A60     		str	r2, [r1]
+ 118:Core/Src/main_bonus.c ****     if (BUTTON_1_STATE > 0) {
+ 317              		.loc 1 118 5 is_stmt 1 view .LVU87
+ 318              		.loc 1 118 8 is_stmt 0 view .LVU88
+ 319 0016 2BB1     		cbz	r3, .L24
+ 119:Core/Src/main_bonus.c ****         MODE2 = -1;
+ 320              		.loc 1 119 9 is_stmt 1 view .LVU89
+ 321              		.loc 1 119 15 is_stmt 0 view .LVU90
+ 322 0018 0E49     		ldr	r1, .L30+12
+ 323 001a FF20     		movs	r0, #255
+ 324 001c 0870     		strb	r0, [r1]
+ 120:Core/Src/main_bonus.c ****         MODE1_1 = 0;
+ 325              		.loc 1 120 9 is_stmt 1 view .LVU91
+ 326              		.loc 1 120 17 is_stmt 0 view .LVU92
+ 327 001e 0E49     		ldr	r1, .L30+16
+ 328 0020 0020     		movs	r0, #0
+ 329 0022 0870     		strb	r0, [r1]
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 9
 
 
- 330 0002 784B     		ldr	r3, .L47
- 331 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 332              		.loc 1 127 8 view .LVU83
- 333 0006 002B     		cmp	r3, #0
- 334 0008 76D1     		bne	.L27
+ 330              	.L24:
+ 121:Core/Src/main_bonus.c ****     }
+ 122:Core/Src/main_bonus.c ****     
+ 123:Core/Src/main_bonus.c ****     if (BUTTON_1_STATE > 0 || (BUTTON_2_STATE > 0 && flag == 0) || (BUTTON_2_STATE == 0 && flag == 
+ 331              		.loc 1 123 5 is_stmt 1 view .LVU93
+ 332              		.loc 1 123 8 is_stmt 0 view .LVU94
+ 333 0024 53B9     		cbnz	r3, .L27
+ 334              		.loc 1 123 28 discriminator 1 view .LVU95
+ 335 0026 12B1     		cbz	r2, .L26
+ 336              		.loc 1 123 59 discriminator 2 view .LVU96
+ 337 0028 0C4B     		ldr	r3, .L30+20
+ 338 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 339              		.loc 1 123 51 discriminator 2 view .LVU97
+ 340 002c 43B1     		cbz	r3, .L28
+ 341              	.L26:
+ 342              		.loc 1 123 65 discriminator 4 view .LVU98
+ 343 002e 4AB9     		cbnz	r2, .L29
+ 344              		.loc 1 123 97 discriminator 5 view .LVU99
+ 345 0030 0A4B     		ldr	r3, .L30+20
+ 346 0032 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 347              		.loc 1 123 89 discriminator 5 view .LVU100
+ 348 0034 0128     		cmp	r0, #1
+ 349 0036 06D0     		beq	.L25
+ 124:Core/Src/main_bonus.c ****     {
+ 125:Core/Src/main_bonus.c ****         return 1;
+ 126:Core/Src/main_bonus.c ****     }
+ 127:Core/Src/main_bonus.c ****     else 
  128:Core/Src/main_bonus.c ****     {
- 129:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][0]);
- 335              		.loc 1 129 9 is_stmt 1 view .LVU84
- 336 000a 774B     		ldr	r3, .L47+4
- 337 000c 9869     		ldr	r0, [r3, #24]
- 338 000e 774A     		ldr	r2, .L47+8
- 339 0010 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 340 0012 7749     		ldr	r1, .L47+12
- 341 0014 02EB420C 		add	ip, r2, r2, lsl #1
- 342 0018 01EB8C04 		add	r4, r1, ip, lsl #2
- 343 001c 51F82C50 		ldr	r5, [r1, ip, lsl #2]
- 344 0020 2843     		orrs	r0, r0, r5
- 345 0022 9861     		str	r0, [r3, #24]
- 130:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][1]);
- 346              		.loc 1 130 9 view .LVU85
- 347 0024 9869     		ldr	r0, [r3, #24]
- 348 0026 6468     		ldr	r4, [r4, #4]
- 349 0028 2043     		orrs	r0, r0, r4
- 350 002a 9861     		str	r0, [r3, #24]
- 131:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][2]);
- 351              		.loc 1 131 9 view .LVU86
- 352 002c 9869     		ldr	r0, [r3, #24]
- 353 002e 01EB8C01 		add	r1, r1, ip, lsl #2
- 354 0032 8A68     		ldr	r2, [r1, #8]
- 355 0034 0243     		orrs	r2, r2, r0
- 356 0036 9A61     		str	r2, [r3, #24]
- 132:Core/Src/main_bonus.c ****         counter_led = 0;
- 357              		.loc 1 132 9 view .LVU87
- 358              		.loc 1 132 21 is_stmt 0 view .LVU88
- 359 0038 6E4B     		ldr	r3, .L47+16
- 360 003a 0022     		movs	r2, #0
- 361 003c 1A60     		str	r2, [r3]
- 133:Core/Src/main_bonus.c ****         while (counter_led < frequency / 2) 
- 362              		.loc 1 133 9 is_stmt 1 view .LVU89
- 363              	.L28:
- 364              		.loc 1 133 28 view .LVU90
- 365 003e 6D4B     		ldr	r3, .L47+16
- 366 0040 1B68     		ldr	r3, [r3]
- 367 0042 6D4A     		ldr	r2, .L47+20
- 368 0044 9342     		cmp	r3, r2
- 369 0046 1BD8     		bhi	.L29
- 134:Core/Src/main_bonus.c ****         {
- 135:Core/Src/main_bonus.c ****             counter_led++;
- 370              		.loc 1 135 13 view .LVU91
- 371              		.loc 1 135 24 is_stmt 0 view .LVU92
- 372 0048 0133     		adds	r3, r3, #1
- 373 004a 6A4A     		ldr	r2, .L47+16
- 374 004c 1360     		str	r3, [r2]
- 136:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 375              		.loc 1 136 13 is_stmt 1 view .LVU93
- 376              		.loc 1 136 17 is_stmt 0 view .LVU94
- 377 004e FFF7FEFF 		bl	BUTTON_STATE
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 10
+ 129:Core/Src/main_bonus.c ****         return 0;
+ 350              		.loc 1 129 16 view .LVU101
+ 351 0038 0020     		movs	r0, #0
+ 352 003a 7047     		bx	lr
+ 353              	.L27:
+ 125:Core/Src/main_bonus.c ****     }
+ 354              		.loc 1 125 16 view .LVU102
+ 355 003c 0120     		movs	r0, #1
+ 356 003e 7047     		bx	lr
+ 357              	.L28:
+ 358 0040 0120     		movs	r0, #1
+ 359 0042 7047     		bx	lr
+ 360              	.L29:
+ 361              		.loc 1 129 16 view .LVU103
+ 362 0044 0020     		movs	r0, #0
+ 363              	.L25:
+ 130:Core/Src/main_bonus.c ****     }
+ 131:Core/Src/main_bonus.c **** }
+ 364              		.loc 1 131 1 view .LVU104
+ 365 0046 7047     		bx	lr
+ 366              	.L31:
+ 367              		.align	2
+ 368              	.L30:
+ 369 0048 00040240 		.word	1073873920
+ 370 004c 00000000 		.word	BUTTON_1_STATE
+ 371 0050 00000000 		.word	BUTTON_2_STATE
+ 372 0054 00000000 		.word	MODE2
+ 373 0058 00000000 		.word	MODE1_1
+ 374 005c 00000000 		.word	flag
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 10
 
 
- 378              	.LVL0:
- 379              		.loc 1 136 16 discriminator 1 view .LVU95
- 380 0052 0028     		cmp	r0, #0
- 381 0054 F3D0     		beq	.L28
- 137:Core/Src/main_bonus.c ****             {
- 138:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
- 382              		.loc 1 138 17 is_stmt 1 view .LVU96
- 383 0056 644B     		ldr	r3, .L47+4
- 384 0058 9869     		ldr	r0, [r3, #24]
- 385 005a 644A     		ldr	r2, .L47+8
- 386 005c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 387 005e 6749     		ldr	r1, .L47+24
- 388 0060 02EB4204 		add	r4, r2, r2, lsl #1
- 389 0064 01EB8405 		add	r5, r1, r4, lsl #2
- 390 0068 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 391 006c 2043     		orrs	r0, r0, r4
- 392 006e 9861     		str	r0, [r3, #24]
- 139:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 393              		.loc 1 139 17 view .LVU97
- 394 0070 9869     		ldr	r0, [r3, #24]
- 395 0072 6C68     		ldr	r4, [r5, #4]
- 396 0074 2043     		orrs	r0, r0, r4
- 397 0076 9861     		str	r0, [r3, #24]
- 140:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 398              		.loc 1 140 17 view .LVU98
- 399 0078 9869     		ldr	r0, [r3, #24]
- 400 007a AA68     		ldr	r2, [r5, #8]
- 401 007c 0243     		orrs	r2, r2, r0
- 402 007e 9A61     		str	r2, [r3, #24]
- 141:Core/Src/main_bonus.c ****                 break;
- 403              		.loc 1 141 17 view .LVU99
- 404              	.L29:
- 142:Core/Src/main_bonus.c ****             }
- 143:Core/Src/main_bonus.c ****         }
- 144:Core/Src/main_bonus.c **** 
- 145:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
- 405              		.loc 1 145 9 view .LVU100
- 406 0080 594B     		ldr	r3, .L47+4
- 407 0082 9869     		ldr	r0, [r3, #24]
- 408 0084 594A     		ldr	r2, .L47+8
- 409 0086 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 410 0088 5C49     		ldr	r1, .L47+24
- 411 008a 02EB420C 		add	ip, r2, r2, lsl #1
- 412 008e 01EB8C04 		add	r4, r1, ip, lsl #2
- 413 0092 51F82C50 		ldr	r5, [r1, ip, lsl #2]
- 414 0096 2843     		orrs	r0, r0, r5
- 415 0098 9861     		str	r0, [r3, #24]
- 146:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 416              		.loc 1 146 9 view .LVU101
- 417 009a 9869     		ldr	r0, [r3, #24]
- 418 009c 6468     		ldr	r4, [r4, #4]
- 419 009e 2043     		orrs	r0, r0, r4
- 420 00a0 9861     		str	r0, [r3, #24]
- 147:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);  
- 421              		.loc 1 147 9 view .LVU102
- 422 00a2 9869     		ldr	r0, [r3, #24]
- 423 00a4 01EB8C01 		add	r1, r1, ip, lsl #2
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 11
+ 375              		.cfi_endproc
+ 376              	.LFE132:
+ 378              		.section	.text.LED_FREQUENCY,"ax",%progbits
+ 379              		.align	1
+ 380              		.global	LED_FREQUENCY
+ 381              		.syntax unified
+ 382              		.thumb
+ 383              		.thumb_func
+ 385              	LED_FREQUENCY:
+ 386              	.LFB133:
+ 132:Core/Src/main_bonus.c **** 
+ 133:Core/Src/main_bonus.c **** void LED_FREQUENCY(void) 
+ 134:Core/Src/main_bonus.c **** {
+ 387              		.loc 1 134 1 is_stmt 1 view -0
+ 388              		.cfi_startproc
+ 389              		@ args = 0, pretend = 0, frame = 0
+ 390              		@ frame_needed = 0, uses_anonymous_args = 0
+ 391              		@ link register save eliminated.
+ 135:Core/Src/main_bonus.c ****     if (MODE11 == 0) 
+ 392              		.loc 1 135 5 view .LVU106
+ 393              		.loc 1 135 16 is_stmt 0 view .LVU107
+ 394 0000 1E4B     		ldr	r3, .L46
+ 395 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 396              		.loc 1 135 8 view .LVU108
+ 397 0004 7BB9     		cbnz	r3, .L33
+ 136:Core/Src/main_bonus.c ****     {
+ 137:Core/Src/main_bonus.c ****         frequency1 = frequency / 10;
+ 398              		.loc 1 137 9 is_stmt 1 view .LVU109
+ 399              		.loc 1 137 20 is_stmt 0 view .LVU110
+ 400 0006 1E4B     		ldr	r3, .L46+4
+ 401 0008 1E4A     		ldr	r2, .L46+8
+ 402 000a 1A60     		str	r2, [r3]
+ 403              	.L34:
+ 138:Core/Src/main_bonus.c ****     } else if (MODE11 == 1) {
+ 139:Core/Src/main_bonus.c ****         frequency1 = frequency / 20;
+ 140:Core/Src/main_bonus.c ****     } else if (MODE11 == 2) {
+ 141:Core/Src/main_bonus.c ****         frequency1 = frequency / 30;
+ 142:Core/Src/main_bonus.c ****     }
+ 143:Core/Src/main_bonus.c **** 
+ 144:Core/Src/main_bonus.c ****     if (MODE12 == 0) 
+ 404              		.loc 1 144 5 is_stmt 1 view .LVU111
+ 405              		.loc 1 144 16 is_stmt 0 view .LVU112
+ 406 000c 1E4B     		ldr	r3, .L46+12
+ 407 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 408              		.loc 1 144 8 view .LVU113
+ 409 0010 BBB9     		cbnz	r3, .L36
+ 145:Core/Src/main_bonus.c ****     {
+ 146:Core/Src/main_bonus.c ****         frequency2 = frequency / 5;
+ 410              		.loc 1 146 9 is_stmt 1 view .LVU114
+ 411              		.loc 1 146 20 is_stmt 0 view .LVU115
+ 412 0012 1E4B     		ldr	r3, .L46+16
+ 413 0014 1E4A     		ldr	r2, .L46+20
+ 414 0016 1A60     		str	r2, [r3]
+ 415              	.L37:
+ 147:Core/Src/main_bonus.c ****     } else if (MODE12 == 1) {
+ 148:Core/Src/main_bonus.c ****         frequency2 = frequency / 20;
+ 149:Core/Src/main_bonus.c ****     } else if (MODE12 == 2) {
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 11
 
 
- 424 00a8 8A68     		ldr	r2, [r1, #8]
- 425 00aa 0243     		orrs	r2, r2, r0
- 426 00ac 9A61     		str	r2, [r3, #24]
- 148:Core/Src/main_bonus.c ****         
- 149:Core/Src/main_bonus.c ****         counter_led = 0;
- 427              		.loc 1 149 9 view .LVU103
- 428              		.loc 1 149 21 is_stmt 0 view .LVU104
- 429 00ae 514B     		ldr	r3, .L47+16
- 430 00b0 0022     		movs	r2, #0
- 431 00b2 1A60     		str	r2, [r3]
- 150:Core/Src/main_bonus.c ****         while (counter_led < frequency / 2) 
- 432              		.loc 1 150 9 is_stmt 1 view .LVU105
- 433              	.L31:
- 434              		.loc 1 150 28 view .LVU106
- 435 00b4 4F4B     		ldr	r3, .L47+16
- 436 00b6 1B68     		ldr	r3, [r3]
- 437 00b8 4F4A     		ldr	r2, .L47+20
- 438 00ba 9342     		cmp	r3, r2
- 439 00bc 1BD8     		bhi	.L26
- 151:Core/Src/main_bonus.c ****         {
- 152:Core/Src/main_bonus.c ****             counter_led++;
- 440              		.loc 1 152 13 view .LVU107
- 441              		.loc 1 152 24 is_stmt 0 view .LVU108
- 442 00be 0133     		adds	r3, r3, #1
- 443 00c0 4C4A     		ldr	r2, .L47+16
- 444 00c2 1360     		str	r3, [r2]
- 153:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 445              		.loc 1 153 13 is_stmt 1 view .LVU109
- 446              		.loc 1 153 17 is_stmt 0 view .LVU110
- 447 00c4 FFF7FEFF 		bl	BUTTON_STATE
- 448              	.LVL1:
- 449              		.loc 1 153 16 discriminator 1 view .LVU111
- 450 00c8 0028     		cmp	r0, #0
- 451 00ca F3D0     		beq	.L31
- 154:Core/Src/main_bonus.c ****             {
- 155:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
- 452              		.loc 1 155 17 is_stmt 1 view .LVU112
- 453 00cc 464B     		ldr	r3, .L47+4
- 454 00ce 9869     		ldr	r0, [r3, #24]
- 455 00d0 464A     		ldr	r2, .L47+8
- 456 00d2 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 457 00d4 4949     		ldr	r1, .L47+24
- 458 00d6 02EB4204 		add	r4, r2, r2, lsl #1
- 459 00da 01EB8405 		add	r5, r1, r4, lsl #2
- 460 00de 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 461 00e2 2043     		orrs	r0, r0, r4
- 462 00e4 9861     		str	r0, [r3, #24]
- 156:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 463              		.loc 1 156 17 view .LVU113
- 464 00e6 9869     		ldr	r0, [r3, #24]
- 465 00e8 6C68     		ldr	r4, [r5, #4]
- 466 00ea 2043     		orrs	r0, r0, r4
- 467 00ec 9861     		str	r0, [r3, #24]
- 157:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 468              		.loc 1 157 17 view .LVU114
- 469 00ee 9869     		ldr	r0, [r3, #24]
- 470 00f0 AA68     		ldr	r2, [r5, #8]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 12
+ 150:Core/Src/main_bonus.c ****         frequency2 = frequency / 40;
+ 151:Core/Src/main_bonus.c ****     }
+ 152:Core/Src/main_bonus.c **** 
+ 153:Core/Src/main_bonus.c ****     if (MODE13 == 0) 
+ 416              		.loc 1 153 5 is_stmt 1 view .LVU116
+ 417              		.loc 1 153 16 is_stmt 0 view .LVU117
+ 418 0018 1E4B     		ldr	r3, .L46+24
+ 419 001a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 420              		.loc 1 153 8 view .LVU118
+ 421 001c FBB9     		cbnz	r3, .L39
+ 154:Core/Src/main_bonus.c ****     {
+ 155:Core/Src/main_bonus.c ****         frequency3 = frequency / 5;
+ 422              		.loc 1 155 9 is_stmt 1 view .LVU119
+ 423              		.loc 1 155 20 is_stmt 0 view .LVU120
+ 424 001e 1E4B     		ldr	r3, .L46+28
+ 425 0020 1B4A     		ldr	r2, .L46+20
+ 426 0022 1A60     		str	r2, [r3]
+ 427 0024 7047     		bx	lr
+ 428              	.L33:
+ 138:Core/Src/main_bonus.c ****         frequency1 = frequency / 20;
+ 429              		.loc 1 138 12 is_stmt 1 view .LVU121
+ 138:Core/Src/main_bonus.c ****         frequency1 = frequency / 20;
+ 430              		.loc 1 138 15 is_stmt 0 view .LVU122
+ 431 0026 012B     		cmp	r3, #1
+ 432 0028 06D0     		beq	.L42
+ 140:Core/Src/main_bonus.c ****         frequency1 = frequency / 30;
+ 433              		.loc 1 140 12 is_stmt 1 view .LVU123
+ 140:Core/Src/main_bonus.c ****         frequency1 = frequency / 30;
+ 434              		.loc 1 140 15 is_stmt 0 view .LVU124
+ 435 002a 022B     		cmp	r3, #2
+ 436 002c EED1     		bne	.L34
+ 141:Core/Src/main_bonus.c ****     }
+ 437              		.loc 1 141 9 is_stmt 1 view .LVU125
+ 141:Core/Src/main_bonus.c ****     }
+ 438              		.loc 1 141 20 is_stmt 0 view .LVU126
+ 439 002e 144B     		ldr	r3, .L46+4
+ 440 0030 48F23522 		movw	r2, #33333
+ 441 0034 1A60     		str	r2, [r3]
+ 442 0036 E9E7     		b	.L34
+ 443              	.L42:
+ 139:Core/Src/main_bonus.c ****     } else if (MODE11 == 2) {
+ 444              		.loc 1 139 9 is_stmt 1 view .LVU127
+ 139:Core/Src/main_bonus.c ****     } else if (MODE11 == 2) {
+ 445              		.loc 1 139 20 is_stmt 0 view .LVU128
+ 446 0038 114B     		ldr	r3, .L46+4
+ 447 003a 4CF25032 		movw	r2, #50000
+ 448 003e 1A60     		str	r2, [r3]
+ 449 0040 E4E7     		b	.L34
+ 450              	.L36:
+ 147:Core/Src/main_bonus.c ****         frequency2 = frequency / 20;
+ 451              		.loc 1 147 12 is_stmt 1 view .LVU129
+ 147:Core/Src/main_bonus.c ****         frequency2 = frequency / 20;
+ 452              		.loc 1 147 15 is_stmt 0 view .LVU130
+ 453 0042 012B     		cmp	r3, #1
+ 454 0044 06D0     		beq	.L43
+ 149:Core/Src/main_bonus.c ****         frequency2 = frequency / 40;
+ 455              		.loc 1 149 12 is_stmt 1 view .LVU131
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 12
 
 
- 471 00f2 0243     		orrs	r2, r2, r0
- 472 00f4 9A61     		str	r2, [r3, #24]
- 158:Core/Src/main_bonus.c ****                 break;
- 473              		.loc 1 158 17 view .LVU115
- 474              	.L26:
- 159:Core/Src/main_bonus.c ****             }
- 160:Core/Src/main_bonus.c ****         }
- 161:Core/Src/main_bonus.c **** 
- 162:Core/Src/main_bonus.c ****     }
- 163:Core/Src/main_bonus.c ****     else if (MODE1 == 1) 
- 164:Core/Src/main_bonus.c ****     {
- 165:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][0]);
- 166:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][1]);
- 167:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][2]);
+ 149:Core/Src/main_bonus.c ****         frequency2 = frequency / 40;
+ 456              		.loc 1 149 15 is_stmt 0 view .LVU132
+ 457 0046 022B     		cmp	r3, #2
+ 458 0048 E6D1     		bne	.L37
+ 150:Core/Src/main_bonus.c ****     }
+ 459              		.loc 1 150 9 is_stmt 1 view .LVU133
+ 150:Core/Src/main_bonus.c ****     }
+ 460              		.loc 1 150 20 is_stmt 0 view .LVU134
+ 461 004a 104B     		ldr	r3, .L46+16
+ 462 004c 46F2A812 		movw	r2, #25000
+ 463 0050 1A60     		str	r2, [r3]
+ 464 0052 E1E7     		b	.L37
+ 465              	.L43:
+ 148:Core/Src/main_bonus.c ****     } else if (MODE12 == 2) {
+ 466              		.loc 1 148 9 is_stmt 1 view .LVU135
+ 148:Core/Src/main_bonus.c ****     } else if (MODE12 == 2) {
+ 467              		.loc 1 148 20 is_stmt 0 view .LVU136
+ 468 0054 0D4B     		ldr	r3, .L46+16
+ 469 0056 4CF25032 		movw	r2, #50000
+ 470 005a 1A60     		str	r2, [r3]
+ 471 005c DCE7     		b	.L37
+ 472              	.L39:
+ 156:Core/Src/main_bonus.c ****     } else if (MODE13 == 1) {
+ 473              		.loc 1 156 12 is_stmt 1 view .LVU137
+ 474              		.loc 1 156 15 is_stmt 0 view .LVU138
+ 475 005e 012B     		cmp	r3, #1
+ 476 0060 02D0     		beq	.L44
+ 157:Core/Src/main_bonus.c ****         frequency3 = frequency / 20;
+ 158:Core/Src/main_bonus.c ****     } else if (MODE13 == 2) {
+ 477              		.loc 1 158 12 is_stmt 1 view .LVU139
+ 478              		.loc 1 158 15 is_stmt 0 view .LVU140
+ 479 0062 022B     		cmp	r3, #2
+ 480 0064 05D0     		beq	.L45
+ 481              	.L32:
+ 159:Core/Src/main_bonus.c ****         frequency3 = frequency / 40;
+ 160:Core/Src/main_bonus.c ****     }
+ 161:Core/Src/main_bonus.c **** }
+ 482              		.loc 1 161 1 view .LVU141
+ 483 0066 7047     		bx	lr
+ 484              	.L44:
+ 157:Core/Src/main_bonus.c ****         frequency3 = frequency / 20;
+ 485              		.loc 1 157 9 is_stmt 1 view .LVU142
+ 157:Core/Src/main_bonus.c ****         frequency3 = frequency / 20;
+ 486              		.loc 1 157 20 is_stmt 0 view .LVU143
+ 487 0068 0B4B     		ldr	r3, .L46+28
+ 488 006a 4CF25032 		movw	r2, #50000
+ 489 006e 1A60     		str	r2, [r3]
+ 490 0070 7047     		bx	lr
+ 491              	.L45:
+ 159:Core/Src/main_bonus.c ****         frequency3 = frequency / 40;
+ 492              		.loc 1 159 9 is_stmt 1 view .LVU144
+ 159:Core/Src/main_bonus.c ****         frequency3 = frequency / 40;
+ 493              		.loc 1 159 20 is_stmt 0 view .LVU145
+ 494 0072 094B     		ldr	r3, .L46+28
+ 495 0074 46F2A812 		movw	r2, #25000
+ 496 0078 1A60     		str	r2, [r3]
+ 497              		.loc 1 161 1 view .LVU146
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 13
+
+
+ 498 007a F4E7     		b	.L32
+ 499              	.L47:
+ 500              		.align	2
+ 501              	.L46:
+ 502 007c 00000000 		.word	MODE11
+ 503 0080 00000000 		.word	frequency1
+ 504 0084 A0860100 		.word	100000
+ 505 0088 00000000 		.word	MODE12
+ 506 008c 00000000 		.word	frequency2
+ 507 0090 400D0300 		.word	200000
+ 508 0094 00000000 		.word	MODE13
+ 509 0098 00000000 		.word	frequency3
+ 510              		.cfi_endproc
+ 511              	.LFE133:
+ 513              		.section	.text.LED1_MODE20,"ax",%progbits
+ 514              		.align	1
+ 515              		.global	LED1_MODE20
+ 516              		.syntax unified
+ 517              		.thumb
+ 518              		.thumb_func
+ 520              	LED1_MODE20:
+ 521              	.LFB134:
+ 162:Core/Src/main_bonus.c **** 
+ 163:Core/Src/main_bonus.c **** void LED1_MODE20(void) {
+ 522              		.loc 1 163 24 is_stmt 1 view -0
+ 523              		.cfi_startproc
+ 524              		@ args = 0, pretend = 0, frame = 0
+ 525              		@ frame_needed = 0, uses_anonymous_args = 0
+ 526 0000 08B5     		push	{r3, lr}
+ 527              	.LCFI0:
+ 528              		.cfi_def_cfa_offset 8
+ 529              		.cfi_offset 3, -8
+ 530              		.cfi_offset 14, -4
+ 164:Core/Src/main_bonus.c ****     if (MODE2 == 0) {
+ 531              		.loc 1 164 5 view .LVU148
+ 532              		.loc 1 164 15 is_stmt 0 view .LVU149
+ 533 0002 374B     		ldr	r3, .L58
+ 534 0004 93F90030 		ldrsb	r3, [r3]
+ 535              		.loc 1 164 8 view .LVU150
+ 536 0008 002B     		cmp	r3, #0
+ 537 000a 68D1     		bne	.L48
+ 165:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 538              		.loc 1 165 9 is_stmt 1 view .LVU151
+ 539 000c 354B     		ldr	r3, .L58+4
+ 540 000e 9A69     		ldr	r2, [r3, #24]
+ 541 0010 42F00102 		orr	r2, r2, #1
+ 542 0014 9A61     		str	r2, [r3, #24]
+ 166:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 543              		.loc 1 166 9 view .LVU152
+ 544 0016 9A69     		ldr	r2, [r3, #24]
+ 545 0018 42F40032 		orr	r2, r2, #131072
+ 546 001c 9A61     		str	r2, [r3, #24]
+ 167:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 547              		.loc 1 167 9 view .LVU153
+ 548 001e 9A69     		ldr	r2, [r3, #24]
+ 549 0020 42F48012 		orr	r2, r2, #1048576
+ 550 0024 9A61     		str	r2, [r3, #24]
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 14
+
+
  168:Core/Src/main_bonus.c ****         counter_led = 0;
- 169:Core/Src/main_bonus.c ****         while (counter_led < frequency / 10) 
+ 551              		.loc 1 168 9 view .LVU154
+ 552              		.loc 1 168 21 is_stmt 0 view .LVU155
+ 553 0026 0023     		movs	r3, #0
+ 554 0028 2F4A     		ldr	r2, .L58+8
+ 555 002a 1360     		str	r3, [r2]
+ 169:Core/Src/main_bonus.c ****         counter_led1 = 0;
+ 556              		.loc 1 169 9 is_stmt 1 view .LVU156
+ 557              		.loc 1 169 22 is_stmt 0 view .LVU157
+ 558 002c 2F4A     		ldr	r2, .L58+12
+ 559 002e 1360     		str	r3, [r2]
+ 170:Core/Src/main_bonus.c ****         while (counter_led <= frequency) 
+ 560              		.loc 1 170 9 is_stmt 1 view .LVU158
+ 561              		.loc 1 170 15 is_stmt 0 view .LVU159
+ 562 0030 09E0     		b	.L50
+ 563              	.L51:
+ 171:Core/Src/main_bonus.c ****         {
+ 172:Core/Src/main_bonus.c ****             counter_led++;
+ 173:Core/Src/main_bonus.c ****             counter_led1++;
+ 174:Core/Src/main_bonus.c **** 
+ 175:Core/Src/main_bonus.c ****             if (counter_led1 >= frequency1 && flag1 == 0) {
+ 176:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 177:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 178:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 179:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 && flag1 == 1) 
+ 564              		.loc 1 179 20 is_stmt 1 view .LVU160
+ 565              		.loc 1 179 23 is_stmt 0 view .LVU161
+ 566 0032 9342     		cmp	r3, r2
+ 567 0034 03D3     		bcc	.L52
+ 568              		.loc 1 179 60 discriminator 1 view .LVU162
+ 569 0036 2E4B     		ldr	r3, .L58+16
+ 570 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 571              		.loc 1 179 51 discriminator 1 view .LVU163
+ 572 003a 012B     		cmp	r3, #1
+ 573 003c 23D0     		beq	.L56
+ 574              	.L52:
+ 180:Core/Src/main_bonus.c ****             {
+ 181:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 182:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 183:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 184:Core/Src/main_bonus.c ****             }
+ 185:Core/Src/main_bonus.c **** 
+ 186:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
+ 575              		.loc 1 186 13 is_stmt 1 view .LVU164
+ 576              		.loc 1 186 17 is_stmt 0 view .LVU165
+ 577 003e FFF7FEFF 		bl	BUTTON_STATE
+ 578              	.LVL0:
+ 579              		.loc 1 186 16 discriminator 1 view .LVU166
+ 580 0042 0028     		cmp	r0, #0
+ 581 0044 2AD1     		bne	.L57
+ 582              	.L50:
  170:Core/Src/main_bonus.c ****         {
- 171:Core/Src/main_bonus.c ****             counter_led++;
- 172:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 173:Core/Src/main_bonus.c ****             {
- 174:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
- 175:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 176:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 177:Core/Src/main_bonus.c ****                 break;
- 178:Core/Src/main_bonus.c ****             }
- 179:Core/Src/main_bonus.c ****         }
- 180:Core/Src/main_bonus.c **** 
- 181:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
- 182:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 183:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 184:Core/Src/main_bonus.c **** 
- 185:Core/Src/main_bonus.c ****         counter_led = 0;
- 186:Core/Src/main_bonus.c ****         while (counter_led < frequency / 10) 
- 187:Core/Src/main_bonus.c ****         {
- 188:Core/Src/main_bonus.c ****             counter_led++;
- 189:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 190:Core/Src/main_bonus.c ****             {
- 191:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
- 192:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 193:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 194:Core/Src/main_bonus.c ****                 break;
- 195:Core/Src/main_bonus.c ****             }
- 196:Core/Src/main_bonus.c ****         }
+ 583              		.loc 1 170 28 is_stmt 1 view .LVU167
+ 584 0046 284B     		ldr	r3, .L58+8
+ 585 0048 1B68     		ldr	r3, [r3]
+ 586 004a 2A4A     		ldr	r2, .L58+20
+ 587 004c 9342     		cmp	r3, r2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 15
+
+
+ 588 004e 32D8     		bhi	.L53
+ 172:Core/Src/main_bonus.c ****             counter_led1++;
+ 589              		.loc 1 172 13 view .LVU168
+ 172:Core/Src/main_bonus.c ****             counter_led1++;
+ 590              		.loc 1 172 24 is_stmt 0 view .LVU169
+ 591 0050 0133     		adds	r3, r3, #1
+ 592 0052 254A     		ldr	r2, .L58+8
+ 593 0054 1360     		str	r3, [r2]
+ 173:Core/Src/main_bonus.c **** 
+ 594              		.loc 1 173 13 is_stmt 1 view .LVU170
+ 173:Core/Src/main_bonus.c **** 
+ 595              		.loc 1 173 25 is_stmt 0 view .LVU171
+ 596 0056 254A     		ldr	r2, .L58+12
+ 597 0058 1368     		ldr	r3, [r2]
+ 598 005a 0133     		adds	r3, r3, #1
+ 599 005c 1360     		str	r3, [r2]
+ 175:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 600              		.loc 1 175 13 is_stmt 1 view .LVU172
+ 175:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 601              		.loc 1 175 30 is_stmt 0 view .LVU173
+ 602 005e 264A     		ldr	r2, .L58+24
+ 603 0060 1268     		ldr	r2, [r2]
+ 175:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 604              		.loc 1 175 16 view .LVU174
+ 605 0062 9342     		cmp	r3, r2
+ 606 0064 E5D3     		bcc	.L51
+ 175:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 607              		.loc 1 175 53 discriminator 1 view .LVU175
+ 608 0066 2249     		ldr	r1, .L58+16
+ 609 0068 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 175:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 610              		.loc 1 175 44 discriminator 1 view .LVU176
+ 611 006a 0029     		cmp	r1, #0
+ 612 006c E1D1     		bne	.L51
+ 176:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 613              		.loc 1 176 17 is_stmt 1 view .LVU177
+ 614 006e 1D4A     		ldr	r2, .L58+4
+ 615 0070 9369     		ldr	r3, [r2, #24]
+ 616 0072 43F00103 		orr	r3, r3, #1
+ 617 0076 9361     		str	r3, [r2, #24]
+ 177:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 618              		.loc 1 177 17 view .LVU178
+ 177:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 619              		.loc 1 177 30 is_stmt 0 view .LVU179
+ 620 0078 1C4B     		ldr	r3, .L58+12
+ 621 007a 0022     		movs	r2, #0
+ 622 007c 1A60     		str	r2, [r3]
+ 178:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 && flag1 == 1) 
+ 623              		.loc 1 178 17 is_stmt 1 view .LVU180
+ 178:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 && flag1 == 1) 
+ 624              		.loc 1 178 23 is_stmt 0 view .LVU181
+ 625 007e 1C4B     		ldr	r3, .L58+16
+ 626 0080 0122     		movs	r2, #1
+ 627 0082 1A70     		strb	r2, [r3]
+ 628 0084 DBE7     		b	.L52
+ 629              	.L56:
+ 181:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 16
+
+
+ 630              		.loc 1 181 17 is_stmt 1 view .LVU182
+ 631 0086 174A     		ldr	r2, .L58+4
+ 632 0088 9369     		ldr	r3, [r2, #24]
+ 633 008a 43F48033 		orr	r3, r3, #65536
+ 634 008e 9361     		str	r3, [r2, #24]
+ 182:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 635              		.loc 1 182 17 view .LVU183
+ 182:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 636              		.loc 1 182 30 is_stmt 0 view .LVU184
+ 637 0090 0023     		movs	r3, #0
+ 638 0092 164A     		ldr	r2, .L58+12
+ 639 0094 1360     		str	r3, [r2]
+ 183:Core/Src/main_bonus.c ****             }
+ 640              		.loc 1 183 17 is_stmt 1 view .LVU185
+ 183:Core/Src/main_bonus.c ****             }
+ 641              		.loc 1 183 23 is_stmt 0 view .LVU186
+ 642 0096 164A     		ldr	r2, .L58+16
+ 643 0098 1370     		strb	r3, [r2]
+ 644 009a D0E7     		b	.L52
+ 645              	.L57:
+ 187:Core/Src/main_bonus.c ****             {
+ 188:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 646              		.loc 1 188 17 is_stmt 1 view .LVU187
+ 647 009c 114B     		ldr	r3, .L58+4
+ 648 009e 9A69     		ldr	r2, [r3, #24]
+ 649 00a0 42F48032 		orr	r2, r2, #65536
+ 650 00a4 9A61     		str	r2, [r3, #24]
+ 189:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 651              		.loc 1 189 17 view .LVU188
+ 652 00a6 9A69     		ldr	r2, [r3, #24]
+ 653 00a8 42F40032 		orr	r2, r2, #131072
+ 654 00ac 9A61     		str	r2, [r3, #24]
+ 190:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 655              		.loc 1 190 17 view .LVU189
+ 656 00ae 9A69     		ldr	r2, [r3, #24]
+ 657 00b0 42F48012 		orr	r2, r2, #1048576
+ 658 00b4 9A61     		str	r2, [r3, #24]
+ 191:Core/Src/main_bonus.c ****                 break;
+ 659              		.loc 1 191 17 view .LVU190
+ 660              	.L53:
+ 192:Core/Src/main_bonus.c ****             }
+ 193:Core/Src/main_bonus.c ****         }
+ 194:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 661              		.loc 1 194 9 view .LVU191
+ 662 00b6 0B4B     		ldr	r3, .L58+4
+ 663 00b8 9A69     		ldr	r2, [r3, #24]
+ 664 00ba 42F48032 		orr	r2, r2, #65536
+ 665 00be 9A61     		str	r2, [r3, #24]
+ 195:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 666              		.loc 1 195 9 view .LVU192
+ 667 00c0 9A69     		ldr	r2, [r3, #24]
+ 668 00c2 42F40032 		orr	r2, r2, #131072
+ 669 00c6 9A61     		str	r2, [r3, #24]
+ 196:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);  
+ 670              		.loc 1 196 9 view .LVU193
+ 671 00c8 9A69     		ldr	r2, [r3, #24]
+ 672 00ca 42F48012 		orr	r2, r2, #1048576
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 17
+
+
+ 673 00ce 9A61     		str	r2, [r3, #24]
  197:Core/Src/main_bonus.c **** 
- 198:Core/Src/main_bonus.c ****     }
- 199:Core/Src/main_bonus.c ****     else 
- 200:Core/Src/main_bonus.c ****     {
- 201:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][0]);
- 202:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][1]);
- 203:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][2]);
- 204:Core/Src/main_bonus.c ****         counter_led = 0;
- 205:Core/Src/main_bonus.c ****         while (counter_led < frequency / 15) 
- 206:Core/Src/main_bonus.c ****         {
- 207:Core/Src/main_bonus.c ****             counter_led++;
- 208:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 209:Core/Src/main_bonus.c ****             {
- 210:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 13
+ 198:Core/Src/main_bonus.c ****         counter_led = 0;
+ 674              		.loc 1 198 9 view .LVU194
+ 675              		.loc 1 198 21 is_stmt 0 view .LVU195
+ 676 00d0 0023     		movs	r3, #0
+ 677 00d2 054A     		ldr	r2, .L58+8
+ 678 00d4 1360     		str	r3, [r2]
+ 199:Core/Src/main_bonus.c ****         counter_led1 = 0;
+ 679              		.loc 1 199 9 is_stmt 1 view .LVU196
+ 680              		.loc 1 199 22 is_stmt 0 view .LVU197
+ 681 00d6 054A     		ldr	r2, .L58+12
+ 682 00d8 1360     		str	r3, [r2]
+ 200:Core/Src/main_bonus.c ****         flag1 = 0;
+ 683              		.loc 1 200 9 is_stmt 1 view .LVU198
+ 684              		.loc 1 200 15 is_stmt 0 view .LVU199
+ 685 00da 054A     		ldr	r2, .L58+16
+ 686 00dc 1370     		strb	r3, [r2]
+ 687              	.L48:
+ 201:Core/Src/main_bonus.c ****     }
+ 202:Core/Src/main_bonus.c **** }
+ 688              		.loc 1 202 1 view .LVU200
+ 689 00de 08BD     		pop	{r3, pc}
+ 690              	.L59:
+ 691              		.align	2
+ 692              	.L58:
+ 693 00e0 00000000 		.word	MODE2
+ 694 00e4 00000240 		.word	1073872896
+ 695 00e8 00000000 		.word	counter_led
+ 696 00ec 00000000 		.word	counter_led1
+ 697 00f0 00000000 		.word	flag1
+ 698 00f4 40420F00 		.word	1000000
+ 699 00f8 00000000 		.word	frequency1
+ 700              		.cfi_endproc
+ 701              	.LFE134:
+ 703              		.section	.text.LED2_MODE21,"ax",%progbits
+ 704              		.align	1
+ 705              		.global	LED2_MODE21
+ 706              		.syntax unified
+ 707              		.thumb
+ 708              		.thumb_func
+ 710              	LED2_MODE21:
+ 711              	.LFB135:
+ 203:Core/Src/main_bonus.c **** 
+ 204:Core/Src/main_bonus.c **** void LED2_MODE21(void) {
+ 712              		.loc 1 204 24 is_stmt 1 view -0
+ 713              		.cfi_startproc
+ 714              		@ args = 0, pretend = 0, frame = 0
+ 715              		@ frame_needed = 0, uses_anonymous_args = 0
+ 716 0000 08B5     		push	{r3, lr}
+ 717              	.LCFI1:
+ 718              		.cfi_def_cfa_offset 8
+ 719              		.cfi_offset 3, -8
+ 720              		.cfi_offset 14, -4
+ 205:Core/Src/main_bonus.c ****     if (MODE2 == 1) {
+ 721              		.loc 1 205 5 view .LVU202
+ 722              		.loc 1 205 15 is_stmt 0 view .LVU203
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 18
 
 
- 211:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 212:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 213:Core/Src/main_bonus.c ****                 break;
- 214:Core/Src/main_bonus.c ****             }
- 215:Core/Src/main_bonus.c ****         }
- 216:Core/Src/main_bonus.c **** 
- 217:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
- 218:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 219:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 220:Core/Src/main_bonus.c **** 
- 221:Core/Src/main_bonus.c ****         counter_led = 0;
- 222:Core/Src/main_bonus.c ****         while (counter_led < frequency / 15) 
- 223:Core/Src/main_bonus.c ****         {
- 224:Core/Src/main_bonus.c ****             counter_led++;
- 225:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 226:Core/Src/main_bonus.c ****             {
- 227:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][0]);
- 228:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 229:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 230:Core/Src/main_bonus.c ****                 break;
- 231:Core/Src/main_bonus.c ****             }
- 232:Core/Src/main_bonus.c ****         }
- 233:Core/Src/main_bonus.c **** 
- 234:Core/Src/main_bonus.c ****     }
- 235:Core/Src/main_bonus.c **** }
- 475              		.loc 1 235 1 is_stmt 0 view .LVU116
- 476 00f6 38BD     		pop	{r3, r4, r5, pc}
- 477              	.L27:
- 163:Core/Src/main_bonus.c ****     {
- 478              		.loc 1 163 10 is_stmt 1 view .LVU117
- 163:Core/Src/main_bonus.c ****     {
- 479              		.loc 1 163 13 is_stmt 0 view .LVU118
- 480 00f8 012B     		cmp	r3, #1
- 481 00fa 00F08380 		beq	.L46
- 201:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][1]);
- 482              		.loc 1 201 9 is_stmt 1 view .LVU119
- 483 00fe 3A4B     		ldr	r3, .L47+4
- 484 0100 9869     		ldr	r0, [r3, #24]
- 485 0102 3A4A     		ldr	r2, .L47+8
- 486 0104 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 487 0106 3A49     		ldr	r1, .L47+12
- 488 0108 02EB4204 		add	r4, r2, r2, lsl #1
- 489 010c 01EB8405 		add	r5, r1, r4, lsl #2
- 490 0110 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 491 0114 2043     		orrs	r0, r0, r4
- 492 0116 9861     		str	r0, [r3, #24]
- 202:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][2]);
- 493              		.loc 1 202 9 view .LVU120
- 494 0118 9869     		ldr	r0, [r3, #24]
- 495 011a 6C68     		ldr	r4, [r5, #4]
- 496 011c 2043     		orrs	r0, r0, r4
- 497 011e 9861     		str	r0, [r3, #24]
- 203:Core/Src/main_bonus.c ****         counter_led = 0;
- 498              		.loc 1 203 9 view .LVU121
- 499 0120 9869     		ldr	r0, [r3, #24]
- 500 0122 AA68     		ldr	r2, [r5, #8]
- 501 0124 0243     		orrs	r2, r2, r0
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 14
-
-
- 502 0126 9A61     		str	r2, [r3, #24]
- 204:Core/Src/main_bonus.c ****         while (counter_led < frequency / 15) 
- 503              		.loc 1 204 9 view .LVU122
- 204:Core/Src/main_bonus.c ****         while (counter_led < frequency / 15) 
- 504              		.loc 1 204 21 is_stmt 0 view .LVU123
- 505 0128 324B     		ldr	r3, .L47+16
- 506 012a 0022     		movs	r2, #0
- 507 012c 1A60     		str	r2, [r3]
- 205:Core/Src/main_bonus.c ****         {
- 508              		.loc 1 205 9 is_stmt 1 view .LVU124
- 509              	.L40:
- 205:Core/Src/main_bonus.c ****         {
- 510              		.loc 1 205 28 view .LVU125
- 511 012e 314B     		ldr	r3, .L47+16
- 512 0130 1B68     		ldr	r3, [r3]
- 513 0132 334A     		ldr	r2, .L47+28
- 514 0134 9342     		cmp	r3, r2
- 515 0136 1BD8     		bhi	.L41
- 207:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 516              		.loc 1 207 13 view .LVU126
- 207:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 517              		.loc 1 207 24 is_stmt 0 view .LVU127
- 518 0138 0133     		adds	r3, r3, #1
- 519 013a 2E4A     		ldr	r2, .L47+16
- 520 013c 1360     		str	r3, [r2]
- 208:Core/Src/main_bonus.c ****             {
- 521              		.loc 1 208 13 is_stmt 1 view .LVU128
- 208:Core/Src/main_bonus.c ****             {
- 522              		.loc 1 208 17 is_stmt 0 view .LVU129
- 523 013e FFF7FEFF 		bl	BUTTON_STATE
- 524              	.LVL2:
- 208:Core/Src/main_bonus.c ****             {
- 525              		.loc 1 208 16 discriminator 1 view .LVU130
- 526 0142 0028     		cmp	r0, #0
- 527 0144 F3D0     		beq	.L40
- 210:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 528              		.loc 1 210 17 is_stmt 1 view .LVU131
- 529 0146 284B     		ldr	r3, .L47+4
- 530 0148 9869     		ldr	r0, [r3, #24]
- 531 014a 284A     		ldr	r2, .L47+8
- 532 014c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 533 014e 2B49     		ldr	r1, .L47+24
- 534 0150 02EB4204 		add	r4, r2, r2, lsl #1
- 535 0154 01EB8405 		add	r5, r1, r4, lsl #2
- 536 0158 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 537 015c 2043     		orrs	r0, r0, r4
- 538 015e 9861     		str	r0, [r3, #24]
- 211:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 539              		.loc 1 211 17 view .LVU132
- 540 0160 9869     		ldr	r0, [r3, #24]
- 541 0162 6C68     		ldr	r4, [r5, #4]
- 542 0164 2043     		orrs	r0, r0, r4
- 543 0166 9861     		str	r0, [r3, #24]
- 212:Core/Src/main_bonus.c ****                 break;
- 544              		.loc 1 212 17 view .LVU133
- 545 0168 9869     		ldr	r0, [r3, #24]
- 546 016a AA68     		ldr	r2, [r5, #8]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 15
-
-
- 547 016c 0243     		orrs	r2, r2, r0
- 548 016e 9A61     		str	r2, [r3, #24]
- 213:Core/Src/main_bonus.c ****             }
- 549              		.loc 1 213 17 view .LVU134
- 550              	.L41:
- 217:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 551              		.loc 1 217 9 view .LVU135
- 552 0170 1D4B     		ldr	r3, .L47+4
- 553 0172 9869     		ldr	r0, [r3, #24]
- 554 0174 1D4A     		ldr	r2, .L47+8
- 555 0176 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 556 0178 2049     		ldr	r1, .L47+24
- 557 017a 02EB4204 		add	r4, r2, r2, lsl #1
- 558 017e 01EB8405 		add	r5, r1, r4, lsl #2
- 559 0182 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 560 0186 2043     		orrs	r0, r0, r4
- 561 0188 9861     		str	r0, [r3, #24]
- 218:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 562              		.loc 1 218 9 view .LVU136
- 563 018a 9869     		ldr	r0, [r3, #24]
- 564 018c 6C68     		ldr	r4, [r5, #4]
- 565 018e 2043     		orrs	r0, r0, r4
- 566 0190 9861     		str	r0, [r3, #24]
- 219:Core/Src/main_bonus.c **** 
- 567              		.loc 1 219 9 view .LVU137
- 568 0192 9869     		ldr	r0, [r3, #24]
- 569 0194 AA68     		ldr	r2, [r5, #8]
- 570 0196 0243     		orrs	r2, r2, r0
- 571 0198 9A61     		str	r2, [r3, #24]
- 221:Core/Src/main_bonus.c ****         while (counter_led < frequency / 15) 
- 572              		.loc 1 221 9 view .LVU138
- 221:Core/Src/main_bonus.c ****         while (counter_led < frequency / 15) 
- 573              		.loc 1 221 21 is_stmt 0 view .LVU139
- 574 019a 164B     		ldr	r3, .L47+16
- 575 019c 0022     		movs	r2, #0
- 576 019e 1A60     		str	r2, [r3]
- 222:Core/Src/main_bonus.c ****         {
- 577              		.loc 1 222 9 is_stmt 1 view .LVU140
- 578              	.L43:
- 222:Core/Src/main_bonus.c ****         {
- 579              		.loc 1 222 28 view .LVU141
- 580 01a0 144B     		ldr	r3, .L47+16
- 581 01a2 1B68     		ldr	r3, [r3]
- 582 01a4 164A     		ldr	r2, .L47+28
- 583 01a6 9342     		cmp	r3, r2
- 584 01a8 A5D8     		bhi	.L26
- 224:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 585              		.loc 1 224 13 view .LVU142
- 224:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 586              		.loc 1 224 24 is_stmt 0 view .LVU143
- 587 01aa 0133     		adds	r3, r3, #1
- 588 01ac 114A     		ldr	r2, .L47+16
- 589 01ae 1360     		str	r3, [r2]
- 225:Core/Src/main_bonus.c ****             {
- 590              		.loc 1 225 13 is_stmt 1 view .LVU144
- 225:Core/Src/main_bonus.c ****             {
- 591              		.loc 1 225 17 is_stmt 0 view .LVU145
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 16
-
-
- 592 01b0 FFF7FEFF 		bl	BUTTON_STATE
- 593              	.LVL3:
- 225:Core/Src/main_bonus.c ****             {
- 594              		.loc 1 225 16 discriminator 1 view .LVU146
- 595 01b4 0028     		cmp	r0, #0
- 596 01b6 F3D0     		beq	.L43
- 227:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 597              		.loc 1 227 17 is_stmt 1 view .LVU147
- 598 01b8 0B4B     		ldr	r3, .L47+4
- 599 01ba 9869     		ldr	r0, [r3, #24]
- 600 01bc 0B4A     		ldr	r2, .L47+8
- 601 01be 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 602 01c0 0E49     		ldr	r1, .L47+24
- 603 01c2 02EB4204 		add	r4, r2, r2, lsl #1
- 604 01c6 01EB8405 		add	r5, r1, r4, lsl #2
- 605 01ca 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 606 01ce 2043     		orrs	r0, r0, r4
- 607 01d0 9861     		str	r0, [r3, #24]
- 228:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 608              		.loc 1 228 17 view .LVU148
- 609 01d2 9869     		ldr	r0, [r3, #24]
- 610 01d4 6C68     		ldr	r4, [r5, #4]
- 611 01d6 2043     		orrs	r0, r0, r4
- 612 01d8 9861     		str	r0, [r3, #24]
- 229:Core/Src/main_bonus.c ****                 break;
- 613              		.loc 1 229 17 view .LVU149
- 614 01da 9869     		ldr	r0, [r3, #24]
- 615 01dc AA68     		ldr	r2, [r5, #8]
- 616 01de 0243     		orrs	r2, r2, r0
- 617 01e0 9A61     		str	r2, [r3, #24]
- 230:Core/Src/main_bonus.c ****             }
- 618              		.loc 1 230 17 view .LVU150
- 619 01e2 88E7     		b	.L26
- 620              	.L48:
- 621              		.align	2
- 622              	.L47:
- 623 01e4 00000000 		.word	MODE1
- 624 01e8 00000240 		.word	1073872896
- 625 01ec 00000000 		.word	MODE1_1
- 626 01f0 00000000 		.word	MODE_1
- 627 01f4 00000000 		.word	counter_led
- 628 01f8 6F640800 		.word	549999
- 629 01fc 00000000 		.word	MODE_RESET
- 630 0200 741E0100 		.word	73332
- 631              	.L46:
- 165:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][1]);
- 632              		.loc 1 165 9 view .LVU151
- 633 0204 394B     		ldr	r3, .L49
- 634 0206 9869     		ldr	r0, [r3, #24]
- 635 0208 394A     		ldr	r2, .L49+4
- 636 020a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 637 020c 3949     		ldr	r1, .L49+8
- 638 020e 02EB4204 		add	r4, r2, r2, lsl #1
- 639 0212 01EB8405 		add	r5, r1, r4, lsl #2
- 640 0216 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 641 021a 2043     		orrs	r0, r0, r4
- 642 021c 9861     		str	r0, [r3, #24]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 17
-
-
- 166:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_1[MODE1_1][2]);
- 643              		.loc 1 166 9 view .LVU152
- 644 021e 9869     		ldr	r0, [r3, #24]
- 645 0220 6C68     		ldr	r4, [r5, #4]
- 646 0222 2043     		orrs	r0, r0, r4
- 647 0224 9861     		str	r0, [r3, #24]
- 167:Core/Src/main_bonus.c ****         counter_led = 0;
- 648              		.loc 1 167 9 view .LVU153
- 649 0226 9869     		ldr	r0, [r3, #24]
- 650 0228 AA68     		ldr	r2, [r5, #8]
- 651 022a 0243     		orrs	r2, r2, r0
- 652 022c 9A61     		str	r2, [r3, #24]
- 168:Core/Src/main_bonus.c ****         while (counter_led < frequency / 10) 
- 653              		.loc 1 168 9 view .LVU154
- 168:Core/Src/main_bonus.c ****         while (counter_led < frequency / 10) 
- 654              		.loc 1 168 21 is_stmt 0 view .LVU155
- 655 022e 324B     		ldr	r3, .L49+12
- 656 0230 0022     		movs	r2, #0
- 657 0232 1A60     		str	r2, [r3]
- 169:Core/Src/main_bonus.c ****         {
- 658              		.loc 1 169 9 is_stmt 1 view .LVU156
- 659              	.L35:
- 169:Core/Src/main_bonus.c ****         {
- 660              		.loc 1 169 28 view .LVU157
- 661 0234 304B     		ldr	r3, .L49+12
- 662 0236 1B68     		ldr	r3, [r3]
- 663 0238 304A     		ldr	r2, .L49+16
- 664 023a 9342     		cmp	r3, r2
- 665 023c 1BD8     		bhi	.L36
- 171:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 666              		.loc 1 171 13 view .LVU158
- 171:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 667              		.loc 1 171 24 is_stmt 0 view .LVU159
- 668 023e 0133     		adds	r3, r3, #1
- 669 0240 2D4A     		ldr	r2, .L49+12
- 670 0242 1360     		str	r3, [r2]
- 172:Core/Src/main_bonus.c ****             {
- 671              		.loc 1 172 13 is_stmt 1 view .LVU160
- 172:Core/Src/main_bonus.c ****             {
- 672              		.loc 1 172 17 is_stmt 0 view .LVU161
- 673 0244 FFF7FEFF 		bl	BUTTON_STATE
- 674              	.LVL4:
- 172:Core/Src/main_bonus.c ****             {
- 675              		.loc 1 172 16 discriminator 1 view .LVU162
- 676 0248 0028     		cmp	r0, #0
- 677 024a F3D0     		beq	.L35
- 174:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 678              		.loc 1 174 17 is_stmt 1 view .LVU163
- 679 024c 274B     		ldr	r3, .L49
- 680 024e 9869     		ldr	r0, [r3, #24]
- 681 0250 274A     		ldr	r2, .L49+4
- 682 0252 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 683 0254 2A49     		ldr	r1, .L49+20
- 684 0256 02EB4204 		add	r4, r2, r2, lsl #1
- 685 025a 01EB8405 		add	r5, r1, r4, lsl #2
- 686 025e 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 687 0262 2043     		orrs	r0, r0, r4
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 18
-
-
- 688 0264 9861     		str	r0, [r3, #24]
- 175:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 689              		.loc 1 175 17 view .LVU164
- 690 0266 9869     		ldr	r0, [r3, #24]
- 691 0268 6C68     		ldr	r4, [r5, #4]
- 692 026a 2043     		orrs	r0, r0, r4
- 693 026c 9861     		str	r0, [r3, #24]
- 176:Core/Src/main_bonus.c ****                 break;
- 694              		.loc 1 176 17 view .LVU165
- 695 026e 9869     		ldr	r0, [r3, #24]
- 696 0270 AA68     		ldr	r2, [r5, #8]
- 697 0272 0243     		orrs	r2, r2, r0
- 698 0274 9A61     		str	r2, [r3, #24]
- 177:Core/Src/main_bonus.c ****             }
- 699              		.loc 1 177 17 view .LVU166
- 700              	.L36:
- 181:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 701              		.loc 1 181 9 view .LVU167
- 702 0276 1D4B     		ldr	r3, .L49
- 703 0278 9869     		ldr	r0, [r3, #24]
- 704 027a 1D4A     		ldr	r2, .L49+4
- 705 027c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 706 027e 2049     		ldr	r1, .L49+20
- 707 0280 02EB4204 		add	r4, r2, r2, lsl #1
- 708 0284 01EB8405 		add	r5, r1, r4, lsl #2
- 709 0288 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 710 028c 2043     		orrs	r0, r0, r4
- 711 028e 9861     		str	r0, [r3, #24]
- 182:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 712              		.loc 1 182 9 view .LVU168
- 713 0290 9869     		ldr	r0, [r3, #24]
- 714 0292 6C68     		ldr	r4, [r5, #4]
- 715 0294 2043     		orrs	r0, r0, r4
- 716 0296 9861     		str	r0, [r3, #24]
- 183:Core/Src/main_bonus.c **** 
- 717              		.loc 1 183 9 view .LVU169
- 718 0298 9869     		ldr	r0, [r3, #24]
- 719 029a AA68     		ldr	r2, [r5, #8]
- 720 029c 0243     		orrs	r2, r2, r0
- 721 029e 9A61     		str	r2, [r3, #24]
- 185:Core/Src/main_bonus.c ****         while (counter_led < frequency / 10) 
- 722              		.loc 1 185 9 view .LVU170
- 185:Core/Src/main_bonus.c ****         while (counter_led < frequency / 10) 
- 723              		.loc 1 185 21 is_stmt 0 view .LVU171
- 724 02a0 154B     		ldr	r3, .L49+12
- 725 02a2 0022     		movs	r2, #0
- 726 02a4 1A60     		str	r2, [r3]
- 186:Core/Src/main_bonus.c ****         {
- 727              		.loc 1 186 9 is_stmt 1 view .LVU172
- 728              	.L38:
- 186:Core/Src/main_bonus.c ****         {
- 729              		.loc 1 186 28 view .LVU173
- 730 02a6 144B     		ldr	r3, .L49+12
- 731 02a8 1B68     		ldr	r3, [r3]
- 732 02aa 144A     		ldr	r2, .L49+16
- 733 02ac 9342     		cmp	r3, r2
- 734 02ae 3FF622AF 		bhi	.L26
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 19
-
-
- 188:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 735              		.loc 1 188 13 view .LVU174
- 188:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
- 736              		.loc 1 188 24 is_stmt 0 view .LVU175
- 737 02b2 0133     		adds	r3, r3, #1
- 738 02b4 104A     		ldr	r2, .L49+12
- 739 02b6 1360     		str	r3, [r2]
- 189:Core/Src/main_bonus.c ****             {
- 740              		.loc 1 189 13 is_stmt 1 view .LVU176
- 189:Core/Src/main_bonus.c ****             {
- 741              		.loc 1 189 17 is_stmt 0 view .LVU177
- 742 02b8 FFF7FEFF 		bl	BUTTON_STATE
- 743              	.LVL5:
- 189:Core/Src/main_bonus.c ****             {
- 744              		.loc 1 189 16 discriminator 1 view .LVU178
- 745 02bc 0028     		cmp	r0, #0
- 746 02be F2D0     		beq	.L38
- 191:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][1]);
- 747              		.loc 1 191 17 is_stmt 1 view .LVU179
- 748 02c0 0A4B     		ldr	r3, .L49
- 749 02c2 9869     		ldr	r0, [r3, #24]
- 750 02c4 0A4A     		ldr	r2, .L49+4
- 751 02c6 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 752 02c8 0D49     		ldr	r1, .L49+20
- 753 02ca 02EB4204 		add	r4, r2, r2, lsl #1
- 754 02ce 01EB8405 		add	r5, r1, r4, lsl #2
- 755 02d2 51F82440 		ldr	r4, [r1, r4, lsl #2]
- 756 02d6 2043     		orrs	r0, r0, r4
- 757 02d8 9861     		str	r0, [r3, #24]
- 192:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, MODE_RESET[MODE1_1][2]);
- 758              		.loc 1 192 17 view .LVU180
- 759 02da 9869     		ldr	r0, [r3, #24]
- 760 02dc 6C68     		ldr	r4, [r5, #4]
- 761 02de 2043     		orrs	r0, r0, r4
- 762 02e0 9861     		str	r0, [r3, #24]
- 193:Core/Src/main_bonus.c ****                 break;
- 763              		.loc 1 193 17 view .LVU181
- 764 02e2 9869     		ldr	r0, [r3, #24]
- 765 02e4 AA68     		ldr	r2, [r5, #8]
- 766 02e6 0243     		orrs	r2, r2, r0
- 767 02e8 9A61     		str	r2, [r3, #24]
- 194:Core/Src/main_bonus.c ****             }
- 768              		.loc 1 194 17 view .LVU182
- 769 02ea 04E7     		b	.L26
- 770              	.L50:
- 771              		.align	2
- 772              	.L49:
- 773 02ec 00000240 		.word	1073872896
- 774 02f0 00000000 		.word	MODE1_1
- 775 02f4 00000000 		.word	MODE_1
- 776 02f8 00000000 		.word	counter_led
- 777 02fc AFAD0100 		.word	109999
- 778 0300 00000000 		.word	MODE_RESET
- 779              		.cfi_endproc
- 780              	.LFE133:
- 782              		.section	.text.LED_MODE2,"ax",%progbits
- 783              		.align	1
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 20
-
-
- 784              		.global	LED_MODE2
- 785              		.syntax unified
- 786              		.thumb
- 787              		.thumb_func
- 789              	LED_MODE2:
- 790              	.LFB134:
+ 723 0002 494B     		ldr	r3, .L73
+ 724 0004 93F90030 		ldrsb	r3, [r3]
+ 725              		.loc 1 205 8 view .LVU204
+ 726 0008 012B     		cmp	r3, #1
+ 727 000a 00D0     		beq	.L70
+ 728              	.L60:
+ 206:Core/Src/main_bonus.c ****         counter_led = 0;
+ 207:Core/Src/main_bonus.c ****         counter_led1 = 0;
+ 208:Core/Src/main_bonus.c ****         counter_led2 = 0;
+ 209:Core/Src/main_bonus.c ****         while (counter_led <= frequency) 
+ 210:Core/Src/main_bonus.c ****         {
+ 211:Core/Src/main_bonus.c ****             counter_led++;
+ 212:Core/Src/main_bonus.c ****             counter_led1++;
+ 213:Core/Src/main_bonus.c ****             counter_led2++;
+ 214:Core/Src/main_bonus.c **** 
+ 215:Core/Src/main_bonus.c ****             if (counter_led1 >= frequency1 - 5 && flag1 == 0) {
+ 216:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 217:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 218:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 219:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 - 5 && flag1 == 1) 
+ 220:Core/Src/main_bonus.c ****             {
+ 221:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 222:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 223:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 224:Core/Src/main_bonus.c ****             }
+ 225:Core/Src/main_bonus.c **** 
+ 226:Core/Src/main_bonus.c ****             if (counter_led2 >= frequency2 && flag2 == 0) {
+ 227:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS1);
+ 228:Core/Src/main_bonus.c ****                 counter_led2 = 0;
+ 229:Core/Src/main_bonus.c ****                 flag2 = 1;
+ 230:Core/Src/main_bonus.c ****             } else if (counter_led2 >= frequency2 && flag2 == 1) 
+ 231:Core/Src/main_bonus.c ****             {
+ 232:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 233:Core/Src/main_bonus.c ****                 counter_led2 = 0;
+ 234:Core/Src/main_bonus.c ****                 flag2 = 0;
+ 235:Core/Src/main_bonus.c ****             }
  236:Core/Src/main_bonus.c **** 
- 237:Core/Src/main_bonus.c **** void LED_MODE2(void) 
- 238:Core/Src/main_bonus.c **** {
- 791              		.loc 1 238 1 view -0
- 792              		.cfi_startproc
- 793              		@ args = 0, pretend = 0, frame = 0
- 794              		@ frame_needed = 0, uses_anonymous_args = 0
- 795              		@ link register save eliminated.
- 239:Core/Src/main_bonus.c ****     if (MODE2 == 0) 
- 796              		.loc 1 239 5 view .LVU184
- 797              		.loc 1 239 15 is_stmt 0 view .LVU185
- 798 0000 1E4B     		ldr	r3, .L60
- 799 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 800              		.loc 1 239 8 view .LVU186
- 801 0004 B3B9     		cbnz	r3, .L52
- 238:Core/Src/main_bonus.c ****     if (MODE2 == 0) 
- 802              		.loc 1 238 1 view .LVU187
- 803 0006 10B4     		push	{r4}
- 804              	.LCFI1:
- 805              		.cfi_def_cfa_offset 4
- 806              		.cfi_offset 4, -4
- 240:Core/Src/main_bonus.c ****     {
- 241:Core/Src/main_bonus.c ****         MODE_1[0][0] = GPIO_BSRR_BS0;
- 807              		.loc 1 241 9 is_stmt 1 view .LVU188
- 808              		.loc 1 241 22 is_stmt 0 view .LVU189
- 809 0008 1D4B     		ldr	r3, .L60+4
- 810 000a 0122     		movs	r2, #1
- 811 000c 1A60     		str	r2, [r3]
- 242:Core/Src/main_bonus.c ****         MODE_1[0][1] = GPIO_BSRR_BR1;
- 812              		.loc 1 242 9 is_stmt 1 view .LVU190
- 813              		.loc 1 242 22 is_stmt 0 view .LVU191
- 814 000e 4FF40032 		mov	r2, #131072
- 815 0012 5A60     		str	r2, [r3, #4]
- 243:Core/Src/main_bonus.c ****         MODE_1[0][2] = GPIO_BSRR_BR4;
- 816              		.loc 1 243 9 is_stmt 1 view .LVU192
- 817              		.loc 1 243 22 is_stmt 0 view .LVU193
- 818 0014 4FF48010 		mov	r0, #1048576
- 819 0018 9860     		str	r0, [r3, #8]
- 244:Core/Src/main_bonus.c **** 
- 245:Core/Src/main_bonus.c ****         MODE_1[1][0] = GPIO_BSRR_BR0;
- 820              		.loc 1 245 9 is_stmt 1 view .LVU194
- 821              		.loc 1 245 22 is_stmt 0 view .LVU195
- 822 001a 4FF48031 		mov	r1, #65536
- 823 001e D960     		str	r1, [r3, #12]
- 246:Core/Src/main_bonus.c ****         MODE_1[1][1] = GPIO_BSRR_BS1;
- 824              		.loc 1 246 9 is_stmt 1 view .LVU196
- 825              		.loc 1 246 22 is_stmt 0 view .LVU197
- 826 0020 0224     		movs	r4, #2
- 827 0022 1C61     		str	r4, [r3, #16]
- 247:Core/Src/main_bonus.c ****         MODE_1[1][2] = GPIO_BSRR_BR4;
- 828              		.loc 1 247 9 is_stmt 1 view .LVU198
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 21
+ 237:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
+ 238:Core/Src/main_bonus.c ****             {
+ 239:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 240:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 241:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 242:Core/Src/main_bonus.c ****                 break;
+ 243:Core/Src/main_bonus.c ****             }
+ 244:Core/Src/main_bonus.c ****         }
+ 245:Core/Src/main_bonus.c ****         
+ 246:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 247:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 248:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 249:Core/Src/main_bonus.c ****         counter_led = 0;
+ 250:Core/Src/main_bonus.c ****         counter_led1 = 0;
+ 251:Core/Src/main_bonus.c ****         counter_led2 = 0;
+ 252:Core/Src/main_bonus.c ****         flag1 = 0;
+ 253:Core/Src/main_bonus.c ****         flag2 = 0;  
+ 254:Core/Src/main_bonus.c ****     }
+ 255:Core/Src/main_bonus.c **** }
+ 729              		.loc 1 255 1 view .LVU205
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 19
 
 
- 829              		.loc 1 247 22 is_stmt 0 view .LVU199
- 830 0024 5861     		str	r0, [r3, #20]
- 248:Core/Src/main_bonus.c **** 
- 249:Core/Src/main_bonus.c ****         MODE_1[2][0] = GPIO_BSRR_BR0;
- 831              		.loc 1 249 9 is_stmt 1 view .LVU200
- 832              		.loc 1 249 22 is_stmt 0 view .LVU201
- 833 0026 9961     		str	r1, [r3, #24]
- 250:Core/Src/main_bonus.c ****         MODE_1[2][1] = GPIO_BSRR_BR1;
- 834              		.loc 1 250 9 is_stmt 1 view .LVU202
- 835              		.loc 1 250 22 is_stmt 0 view .LVU203
- 836 0028 DA61     		str	r2, [r3, #28]
- 251:Core/Src/main_bonus.c ****         MODE_1[2][2] = GPIO_BSRR_BS4;
- 837              		.loc 1 251 9 is_stmt 1 view .LVU204
- 838              		.loc 1 251 22 is_stmt 0 view .LVU205
- 839 002a 1022     		movs	r2, #16
- 840 002c 1A62     		str	r2, [r3, #32]
- 252:Core/Src/main_bonus.c ****     }
- 253:Core/Src/main_bonus.c ****     else if (MODE2 == 1) 
- 254:Core/Src/main_bonus.c ****     {
- 255:Core/Src/main_bonus.c ****         MODE_1[0][0] = GPIO_BSRR_BS0;
- 256:Core/Src/main_bonus.c ****         MODE_1[0][1] = GPIO_BSRR_BS1;
- 257:Core/Src/main_bonus.c ****         MODE_1[0][2] = GPIO_BSRR_BR4;
- 258:Core/Src/main_bonus.c **** 
- 259:Core/Src/main_bonus.c ****         MODE_1[1][0] = GPIO_BSRR_BR0;
- 260:Core/Src/main_bonus.c ****         MODE_1[1][1] = GPIO_BSRR_BS1;
- 261:Core/Src/main_bonus.c ****         MODE_1[1][2] = GPIO_BSRR_BS4;
- 262:Core/Src/main_bonus.c **** 
- 263:Core/Src/main_bonus.c ****         MODE_1[2][0] = GPIO_BSRR_BS0;
- 264:Core/Src/main_bonus.c ****         MODE_1[2][1] = GPIO_BSRR_BR1;
- 265:Core/Src/main_bonus.c ****         MODE_1[2][2] = GPIO_BSRR_BS4;
- 266:Core/Src/main_bonus.c ****     }
- 267:Core/Src/main_bonus.c ****     else 
- 268:Core/Src/main_bonus.c ****     {
- 269:Core/Src/main_bonus.c ****         MODE_1[0][0] = GPIO_BSRR_BS0;
- 270:Core/Src/main_bonus.c ****         MODE_1[0][1] = GPIO_BSRR_BS1;
- 271:Core/Src/main_bonus.c ****         MODE_1[0][2] = GPIO_BSRR_BS4;
- 272:Core/Src/main_bonus.c **** 
- 273:Core/Src/main_bonus.c ****         MODE_1[1][0] = GPIO_BSRR_BS0;
- 274:Core/Src/main_bonus.c ****         MODE_1[1][1] = GPIO_BSRR_BS1;
- 275:Core/Src/main_bonus.c ****         MODE_1[1][2] = GPIO_BSRR_BS4;
- 276:Core/Src/main_bonus.c **** 
- 277:Core/Src/main_bonus.c ****         MODE_1[2][0] = GPIO_BSRR_BS0;
- 278:Core/Src/main_bonus.c ****         MODE_1[2][1] = GPIO_BSRR_BS1;
- 279:Core/Src/main_bonus.c ****         MODE_1[2][2] = GPIO_BSRR_BS4;
- 280:Core/Src/main_bonus.c ****     }
- 281:Core/Src/main_bonus.c **** }
- 841              		.loc 1 281 1 view .LVU206
- 842 002e 5DF8044B 		ldr	r4, [sp], #4
- 843              	.LCFI2:
- 844              		.cfi_restore 4
- 845              		.cfi_def_cfa_offset 0
- 846 0032 7047     		bx	lr
- 847              	.L52:
- 253:Core/Src/main_bonus.c ****     {
- 848              		.loc 1 253 10 is_stmt 1 view .LVU207
- 253:Core/Src/main_bonus.c ****     {
- 849              		.loc 1 253 13 is_stmt 0 view .LVU208
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 22
+ 730 000c 08BD     		pop	{r3, pc}
+ 731              	.L70:
+ 206:Core/Src/main_bonus.c ****         counter_led = 0;
+ 732              		.loc 1 206 9 is_stmt 1 view .LVU206
+ 206:Core/Src/main_bonus.c ****         counter_led = 0;
+ 733              		.loc 1 206 21 is_stmt 0 view .LVU207
+ 734 000e 0023     		movs	r3, #0
+ 735 0010 464A     		ldr	r2, .L73+4
+ 736 0012 1360     		str	r3, [r2]
+ 207:Core/Src/main_bonus.c ****         counter_led2 = 0;
+ 737              		.loc 1 207 9 is_stmt 1 view .LVU208
+ 207:Core/Src/main_bonus.c ****         counter_led2 = 0;
+ 738              		.loc 1 207 22 is_stmt 0 view .LVU209
+ 739 0014 464A     		ldr	r2, .L73+8
+ 740 0016 1360     		str	r3, [r2]
+ 208:Core/Src/main_bonus.c ****         while (counter_led <= frequency) 
+ 741              		.loc 1 208 9 is_stmt 1 view .LVU210
+ 208:Core/Src/main_bonus.c ****         while (counter_led <= frequency) 
+ 742              		.loc 1 208 22 is_stmt 0 view .LVU211
+ 743 0018 464A     		ldr	r2, .L73+12
+ 744 001a 1360     		str	r3, [r2]
+ 209:Core/Src/main_bonus.c ****         {
+ 745              		.loc 1 209 9 is_stmt 1 view .LVU212
+ 209:Core/Src/main_bonus.c ****         {
+ 746              		.loc 1 209 15 is_stmt 0 view .LVU213
+ 747 001c 1CE0     		b	.L62
+ 748              	.L63:
+ 219:Core/Src/main_bonus.c ****             {
+ 749              		.loc 1 219 20 is_stmt 1 view .LVU214
+ 219:Core/Src/main_bonus.c ****             {
+ 750              		.loc 1 219 23 is_stmt 0 view .LVU215
+ 751 001e 8A42     		cmp	r2, r1
+ 752 0020 03D3     		bcc	.L64
+ 219:Core/Src/main_bonus.c ****             {
+ 753              		.loc 1 219 64 discriminator 1 view .LVU216
+ 754 0022 454A     		ldr	r2, .L73+16
+ 755 0024 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 219:Core/Src/main_bonus.c ****             {
+ 756              		.loc 1 219 55 discriminator 1 view .LVU217
+ 757 0026 012A     		cmp	r2, #1
+ 758 0028 3BD0     		beq	.L71
+ 759              	.L64:
+ 226:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS1);
+ 760              		.loc 1 226 13 is_stmt 1 view .LVU218
+ 226:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS1);
+ 761              		.loc 1 226 30 is_stmt 0 view .LVU219
+ 762 002a 444A     		ldr	r2, .L73+20
+ 763 002c 1268     		ldr	r2, [r2]
+ 226:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS1);
+ 764              		.loc 1 226 16 view .LVU220
+ 765 002e 9342     		cmp	r3, r2
+ 766 0030 42D3     		bcc	.L65
+ 226:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS1);
+ 767              		.loc 1 226 53 discriminator 1 view .LVU221
+ 768 0032 4349     		ldr	r1, .L73+24
+ 769 0034 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 226:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS1);
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 20
 
 
- 850 0034 012B     		cmp	r3, #1
- 851 0036 0DD0     		beq	.L59
- 269:Core/Src/main_bonus.c ****         MODE_1[0][1] = GPIO_BSRR_BS1;
- 852              		.loc 1 269 9 is_stmt 1 view .LVU209
- 269:Core/Src/main_bonus.c ****         MODE_1[0][1] = GPIO_BSRR_BS1;
- 853              		.loc 1 269 22 is_stmt 0 view .LVU210
- 854 0038 114B     		ldr	r3, .L60+4
- 855 003a 0120     		movs	r0, #1
- 856 003c 1860     		str	r0, [r3]
- 270:Core/Src/main_bonus.c ****         MODE_1[0][2] = GPIO_BSRR_BS4;
- 857              		.loc 1 270 9 is_stmt 1 view .LVU211
- 270:Core/Src/main_bonus.c ****         MODE_1[0][2] = GPIO_BSRR_BS4;
- 858              		.loc 1 270 22 is_stmt 0 view .LVU212
- 859 003e 0221     		movs	r1, #2
- 860 0040 5960     		str	r1, [r3, #4]
- 271:Core/Src/main_bonus.c **** 
- 861              		.loc 1 271 9 is_stmt 1 view .LVU213
- 271:Core/Src/main_bonus.c **** 
- 862              		.loc 1 271 22 is_stmt 0 view .LVU214
- 863 0042 1022     		movs	r2, #16
- 864 0044 9A60     		str	r2, [r3, #8]
- 273:Core/Src/main_bonus.c ****         MODE_1[1][1] = GPIO_BSRR_BS1;
- 865              		.loc 1 273 9 is_stmt 1 view .LVU215
- 273:Core/Src/main_bonus.c ****         MODE_1[1][1] = GPIO_BSRR_BS1;
- 866              		.loc 1 273 22 is_stmt 0 view .LVU216
- 867 0046 D860     		str	r0, [r3, #12]
- 274:Core/Src/main_bonus.c ****         MODE_1[1][2] = GPIO_BSRR_BS4;
- 868              		.loc 1 274 9 is_stmt 1 view .LVU217
- 274:Core/Src/main_bonus.c ****         MODE_1[1][2] = GPIO_BSRR_BS4;
- 869              		.loc 1 274 22 is_stmt 0 view .LVU218
- 870 0048 1961     		str	r1, [r3, #16]
- 275:Core/Src/main_bonus.c **** 
- 871              		.loc 1 275 9 is_stmt 1 view .LVU219
- 275:Core/Src/main_bonus.c **** 
- 872              		.loc 1 275 22 is_stmt 0 view .LVU220
- 873 004a 5A61     		str	r2, [r3, #20]
- 277:Core/Src/main_bonus.c ****         MODE_1[2][1] = GPIO_BSRR_BS1;
- 874              		.loc 1 277 9 is_stmt 1 view .LVU221
- 277:Core/Src/main_bonus.c ****         MODE_1[2][1] = GPIO_BSRR_BS1;
- 875              		.loc 1 277 22 is_stmt 0 view .LVU222
- 876 004c 9861     		str	r0, [r3, #24]
- 278:Core/Src/main_bonus.c ****         MODE_1[2][2] = GPIO_BSRR_BS4;
- 877              		.loc 1 278 9 is_stmt 1 view .LVU223
- 278:Core/Src/main_bonus.c ****         MODE_1[2][2] = GPIO_BSRR_BS4;
- 878              		.loc 1 278 22 is_stmt 0 view .LVU224
- 879 004e D961     		str	r1, [r3, #28]
- 279:Core/Src/main_bonus.c ****     }
- 880              		.loc 1 279 9 is_stmt 1 view .LVU225
- 279:Core/Src/main_bonus.c ****     }
- 881              		.loc 1 279 22 is_stmt 0 view .LVU226
- 882 0050 1A62     		str	r2, [r3, #32]
- 883 0052 7047     		bx	lr
- 884              	.L59:
- 255:Core/Src/main_bonus.c ****         MODE_1[0][1] = GPIO_BSRR_BS1;
- 885              		.loc 1 255 9 is_stmt 1 view .LVU227
- 255:Core/Src/main_bonus.c ****         MODE_1[0][1] = GPIO_BSRR_BS1;
- 886              		.loc 1 255 22 is_stmt 0 view .LVU228
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 23
+ 770              		.loc 1 226 44 discriminator 1 view .LVU222
+ 771 0036 0029     		cmp	r1, #0
+ 772 0038 3ED1     		bne	.L65
+ 227:Core/Src/main_bonus.c ****                 counter_led2 = 0;
+ 773              		.loc 1 227 17 is_stmt 1 view .LVU223
+ 774 003a 424A     		ldr	r2, .L73+28
+ 775 003c 9369     		ldr	r3, [r2, #24]
+ 776 003e 43F00203 		orr	r3, r3, #2
+ 777 0042 9361     		str	r3, [r2, #24]
+ 228:Core/Src/main_bonus.c ****                 flag2 = 1;
+ 778              		.loc 1 228 17 view .LVU224
+ 228:Core/Src/main_bonus.c ****                 flag2 = 1;
+ 779              		.loc 1 228 30 is_stmt 0 view .LVU225
+ 780 0044 3B4B     		ldr	r3, .L73+12
+ 781 0046 0022     		movs	r2, #0
+ 782 0048 1A60     		str	r2, [r3]
+ 229:Core/Src/main_bonus.c ****             } else if (counter_led2 >= frequency2 && flag2 == 1) 
+ 783              		.loc 1 229 17 is_stmt 1 view .LVU226
+ 229:Core/Src/main_bonus.c ****             } else if (counter_led2 >= frequency2 && flag2 == 1) 
+ 784              		.loc 1 229 23 is_stmt 0 view .LVU227
+ 785 004a 3D4B     		ldr	r3, .L73+24
+ 786 004c 0122     		movs	r2, #1
+ 787 004e 1A70     		strb	r2, [r3]
+ 788              	.L66:
+ 237:Core/Src/main_bonus.c ****             {
+ 789              		.loc 1 237 13 is_stmt 1 view .LVU228
+ 237:Core/Src/main_bonus.c ****             {
+ 790              		.loc 1 237 17 is_stmt 0 view .LVU229
+ 791 0050 FFF7FEFF 		bl	BUTTON_STATE
+ 792              	.LVL1:
+ 237:Core/Src/main_bonus.c ****             {
+ 793              		.loc 1 237 16 discriminator 1 view .LVU230
+ 794 0054 0028     		cmp	r0, #0
+ 795 0056 40D1     		bne	.L72
+ 796              	.L62:
+ 209:Core/Src/main_bonus.c ****         {
+ 797              		.loc 1 209 28 is_stmt 1 view .LVU231
+ 798 0058 344B     		ldr	r3, .L73+4
+ 799 005a 1B68     		ldr	r3, [r3]
+ 800 005c 3A4A     		ldr	r2, .L73+32
+ 801 005e 9342     		cmp	r3, r2
+ 802 0060 48D8     		bhi	.L67
+ 211:Core/Src/main_bonus.c ****             counter_led1++;
+ 803              		.loc 1 211 13 view .LVU232
+ 211:Core/Src/main_bonus.c ****             counter_led1++;
+ 804              		.loc 1 211 24 is_stmt 0 view .LVU233
+ 805 0062 0133     		adds	r3, r3, #1
+ 806 0064 314A     		ldr	r2, .L73+4
+ 807 0066 1360     		str	r3, [r2]
+ 212:Core/Src/main_bonus.c ****             counter_led2++;
+ 808              		.loc 1 212 13 is_stmt 1 view .LVU234
+ 212:Core/Src/main_bonus.c ****             counter_led2++;
+ 809              		.loc 1 212 25 is_stmt 0 view .LVU235
+ 810 0068 314B     		ldr	r3, .L73+8
+ 811 006a 1A68     		ldr	r2, [r3]
+ 812 006c 0132     		adds	r2, r2, #1
+ 813 006e 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 21
 
 
- 887 0054 0A4B     		ldr	r3, .L60+4
- 888 0056 0121     		movs	r1, #1
- 889 0058 1960     		str	r1, [r3]
- 256:Core/Src/main_bonus.c ****         MODE_1[0][2] = GPIO_BSRR_BR4;
- 890              		.loc 1 256 9 is_stmt 1 view .LVU229
- 256:Core/Src/main_bonus.c ****         MODE_1[0][2] = GPIO_BSRR_BR4;
- 891              		.loc 1 256 22 is_stmt 0 view .LVU230
- 892 005a 0222     		movs	r2, #2
- 893 005c 5A60     		str	r2, [r3, #4]
- 257:Core/Src/main_bonus.c **** 
- 894              		.loc 1 257 9 is_stmt 1 view .LVU231
- 257:Core/Src/main_bonus.c **** 
- 895              		.loc 1 257 22 is_stmt 0 view .LVU232
- 896 005e 4FF48010 		mov	r0, #1048576
- 897 0062 9860     		str	r0, [r3, #8]
- 259:Core/Src/main_bonus.c ****         MODE_1[1][1] = GPIO_BSRR_BS1;
- 898              		.loc 1 259 9 is_stmt 1 view .LVU233
- 259:Core/Src/main_bonus.c ****         MODE_1[1][1] = GPIO_BSRR_BS1;
- 899              		.loc 1 259 22 is_stmt 0 view .LVU234
- 900 0064 4FF48030 		mov	r0, #65536
- 901 0068 D860     		str	r0, [r3, #12]
- 260:Core/Src/main_bonus.c ****         MODE_1[1][2] = GPIO_BSRR_BS4;
- 902              		.loc 1 260 9 is_stmt 1 view .LVU235
- 260:Core/Src/main_bonus.c ****         MODE_1[1][2] = GPIO_BSRR_BS4;
- 903              		.loc 1 260 22 is_stmt 0 view .LVU236
- 904 006a 1A61     		str	r2, [r3, #16]
- 261:Core/Src/main_bonus.c **** 
- 905              		.loc 1 261 9 is_stmt 1 view .LVU237
- 261:Core/Src/main_bonus.c **** 
- 906              		.loc 1 261 22 is_stmt 0 view .LVU238
- 907 006c 1022     		movs	r2, #16
- 908 006e 5A61     		str	r2, [r3, #20]
- 263:Core/Src/main_bonus.c ****         MODE_1[2][1] = GPIO_BSRR_BR1;
- 909              		.loc 1 263 9 is_stmt 1 view .LVU239
- 263:Core/Src/main_bonus.c ****         MODE_1[2][1] = GPIO_BSRR_BR1;
- 910              		.loc 1 263 22 is_stmt 0 view .LVU240
- 911 0070 9961     		str	r1, [r3, #24]
- 264:Core/Src/main_bonus.c ****         MODE_1[2][2] = GPIO_BSRR_BS4;
- 912              		.loc 1 264 9 is_stmt 1 view .LVU241
- 264:Core/Src/main_bonus.c ****         MODE_1[2][2] = GPIO_BSRR_BS4;
- 913              		.loc 1 264 22 is_stmt 0 view .LVU242
- 914 0072 4FF40031 		mov	r1, #131072
- 915 0076 D961     		str	r1, [r3, #28]
- 265:Core/Src/main_bonus.c ****     }
- 916              		.loc 1 265 9 is_stmt 1 view .LVU243
- 265:Core/Src/main_bonus.c ****     }
- 917              		.loc 1 265 22 is_stmt 0 view .LVU244
- 918 0078 1A62     		str	r2, [r3, #32]
- 919 007a 7047     		bx	lr
- 920              	.L61:
- 921              		.align	2
- 922              	.L60:
- 923 007c 00000000 		.word	MODE2
- 924 0080 00000000 		.word	MODE_1
- 925              		.cfi_endproc
- 926              	.LFE134:
- 928              		.section	.text.main,"ax",%progbits
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 24
+ 213:Core/Src/main_bonus.c **** 
+ 814              		.loc 1 213 13 is_stmt 1 view .LVU236
+ 213:Core/Src/main_bonus.c **** 
+ 815              		.loc 1 213 25 is_stmt 0 view .LVU237
+ 816 0070 3049     		ldr	r1, .L73+12
+ 817 0072 0B68     		ldr	r3, [r1]
+ 818 0074 0133     		adds	r3, r3, #1
+ 819 0076 0B60     		str	r3, [r1]
+ 215:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 820              		.loc 1 215 13 is_stmt 1 view .LVU238
+ 215:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 821              		.loc 1 215 44 is_stmt 0 view .LVU239
+ 822 0078 3449     		ldr	r1, .L73+36
+ 823 007a 0968     		ldr	r1, [r1]
+ 824 007c 0539     		subs	r1, r1, #5
+ 215:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 825              		.loc 1 215 16 view .LVU240
+ 826 007e 8A42     		cmp	r2, r1
+ 827 0080 CDD3     		bcc	.L63
+ 215:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 828              		.loc 1 215 57 discriminator 1 view .LVU241
+ 829 0082 2D48     		ldr	r0, .L73+16
+ 830 0084 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 215:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 831              		.loc 1 215 48 discriminator 1 view .LVU242
+ 832 0086 0028     		cmp	r0, #0
+ 833 0088 C9D1     		bne	.L63
+ 216:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 834              		.loc 1 216 17 is_stmt 1 view .LVU243
+ 835 008a 2E49     		ldr	r1, .L73+28
+ 836 008c 8A69     		ldr	r2, [r1, #24]
+ 837 008e 42F00102 		orr	r2, r2, #1
+ 838 0092 8A61     		str	r2, [r1, #24]
+ 217:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 839              		.loc 1 217 17 view .LVU244
+ 217:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 840              		.loc 1 217 30 is_stmt 0 view .LVU245
+ 841 0094 264A     		ldr	r2, .L73+8
+ 842 0096 0021     		movs	r1, #0
+ 843 0098 1160     		str	r1, [r2]
+ 218:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 - 5 && flag1 == 1) 
+ 844              		.loc 1 218 17 is_stmt 1 view .LVU246
+ 218:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 - 5 && flag1 == 1) 
+ 845              		.loc 1 218 23 is_stmt 0 view .LVU247
+ 846 009a 274A     		ldr	r2, .L73+16
+ 847 009c 0121     		movs	r1, #1
+ 848 009e 1170     		strb	r1, [r2]
+ 849 00a0 C3E7     		b	.L64
+ 850              	.L71:
+ 221:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 851              		.loc 1 221 17 is_stmt 1 view .LVU248
+ 852 00a2 2849     		ldr	r1, .L73+28
+ 853 00a4 8A69     		ldr	r2, [r1, #24]
+ 854 00a6 42F48032 		orr	r2, r2, #65536
+ 855 00aa 8A61     		str	r2, [r1, #24]
+ 222:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 856              		.loc 1 222 17 view .LVU249
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 22
 
 
- 929              		.align	1
- 930              		.global	main
- 931              		.syntax unified
- 932              		.thumb
- 933              		.thumb_func
- 935              	main:
- 936              	.LFB135:
- 282:Core/Src/main_bonus.c **** 
- 283:Core/Src/main_bonus.c **** int main(void) 
- 284:Core/Src/main_bonus.c **** {
- 937              		.loc 1 284 1 is_stmt 1 view -0
- 938              		.cfi_startproc
- 939              		@ Volatile: function does not return.
- 940              		@ args = 0, pretend = 0, frame = 0
- 941              		@ frame_needed = 0, uses_anonymous_args = 0
- 942 0000 08B5     		push	{r3, lr}
- 943              	.LCFI3:
- 944              		.cfi_def_cfa_offset 8
- 945              		.cfi_offset 3, -8
- 946              		.cfi_offset 14, -4
- 285:Core/Src/main_bonus.c ****     GPIO_Init(); // подключение портов GPIOA|GPIOB|GPIOC
- 947              		.loc 1 285 5 view .LVU246
- 948 0002 FFF7FEFF 		bl	GPIO_Init
- 949              	.LVL6:
- 950 0006 0AE0     		b	.L65
- 951              	.L67:
- 286:Core/Src/main_bonus.c **** 
- 287:Core/Src/main_bonus.c ****     while(1) {
- 288:Core/Src/main_bonus.c ****         // чтение состояния кнопки для управления светоди�
- 289:Core/Src/main_bonus.c ****         BUTTON_1_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_10);
+ 222:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 857              		.loc 1 222 30 is_stmt 0 view .LVU250
+ 858 00ac 0022     		movs	r2, #0
+ 859 00ae 2049     		ldr	r1, .L73+8
+ 860 00b0 0A60     		str	r2, [r1]
+ 223:Core/Src/main_bonus.c ****             }
+ 861              		.loc 1 223 17 is_stmt 1 view .LVU251
+ 223:Core/Src/main_bonus.c ****             }
+ 862              		.loc 1 223 23 is_stmt 0 view .LVU252
+ 863 00b2 2149     		ldr	r1, .L73+16
+ 864 00b4 0A70     		strb	r2, [r1]
+ 865 00b6 B8E7     		b	.L64
+ 866              	.L65:
+ 230:Core/Src/main_bonus.c ****             {
+ 867              		.loc 1 230 20 is_stmt 1 view .LVU253
+ 230:Core/Src/main_bonus.c ****             {
+ 868              		.loc 1 230 23 is_stmt 0 view .LVU254
+ 869 00b8 9342     		cmp	r3, r2
+ 870 00ba C9D3     		bcc	.L66
+ 230:Core/Src/main_bonus.c ****             {
+ 871              		.loc 1 230 60 discriminator 1 view .LVU255
+ 872 00bc 204B     		ldr	r3, .L73+24
+ 873 00be 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 230:Core/Src/main_bonus.c ****             {
+ 874              		.loc 1 230 51 discriminator 1 view .LVU256
+ 875 00c0 012B     		cmp	r3, #1
+ 876 00c2 C5D1     		bne	.L66
+ 232:Core/Src/main_bonus.c ****                 counter_led2 = 0;
+ 877              		.loc 1 232 17 is_stmt 1 view .LVU257
+ 878 00c4 1F4A     		ldr	r2, .L73+28
+ 879 00c6 9369     		ldr	r3, [r2, #24]
+ 880 00c8 43F40033 		orr	r3, r3, #131072
+ 881 00cc 9361     		str	r3, [r2, #24]
+ 233:Core/Src/main_bonus.c ****                 flag2 = 0;
+ 882              		.loc 1 233 17 view .LVU258
+ 233:Core/Src/main_bonus.c ****                 flag2 = 0;
+ 883              		.loc 1 233 30 is_stmt 0 view .LVU259
+ 884 00ce 0023     		movs	r3, #0
+ 885 00d0 184A     		ldr	r2, .L73+12
+ 886 00d2 1360     		str	r3, [r2]
+ 234:Core/Src/main_bonus.c ****             }
+ 887              		.loc 1 234 17 is_stmt 1 view .LVU260
+ 234:Core/Src/main_bonus.c ****             }
+ 888              		.loc 1 234 23 is_stmt 0 view .LVU261
+ 889 00d4 1A4A     		ldr	r2, .L73+24
+ 890 00d6 1370     		strb	r3, [r2]
+ 891 00d8 BAE7     		b	.L66
+ 892              	.L72:
+ 239:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 893              		.loc 1 239 17 is_stmt 1 view .LVU262
+ 894 00da 1A4B     		ldr	r3, .L73+28
+ 895 00dc 9A69     		ldr	r2, [r3, #24]
+ 896 00de 42F48032 		orr	r2, r2, #65536
+ 897 00e2 9A61     		str	r2, [r3, #24]
+ 240:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 898              		.loc 1 240 17 view .LVU263
+ 899 00e4 9A69     		ldr	r2, [r3, #24]
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 23
+
+
+ 900 00e6 42F40032 		orr	r2, r2, #131072
+ 901 00ea 9A61     		str	r2, [r3, #24]
+ 241:Core/Src/main_bonus.c ****                 break;
+ 902              		.loc 1 241 17 view .LVU264
+ 903 00ec 9A69     		ldr	r2, [r3, #24]
+ 904 00ee 42F48012 		orr	r2, r2, #1048576
+ 905 00f2 9A61     		str	r2, [r3, #24]
+ 242:Core/Src/main_bonus.c ****             }
+ 906              		.loc 1 242 17 view .LVU265
+ 907              	.L67:
+ 246:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 908              		.loc 1 246 9 view .LVU266
+ 909 00f4 134B     		ldr	r3, .L73+28
+ 910 00f6 9A69     		ldr	r2, [r3, #24]
+ 911 00f8 42F48032 		orr	r2, r2, #65536
+ 912 00fc 9A61     		str	r2, [r3, #24]
+ 247:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 913              		.loc 1 247 9 view .LVU267
+ 914 00fe 9A69     		ldr	r2, [r3, #24]
+ 915 0100 42F40032 		orr	r2, r2, #131072
+ 916 0104 9A61     		str	r2, [r3, #24]
+ 248:Core/Src/main_bonus.c ****         counter_led = 0;
+ 917              		.loc 1 248 9 view .LVU268
+ 918 0106 9A69     		ldr	r2, [r3, #24]
+ 919 0108 42F48012 		orr	r2, r2, #1048576
+ 920 010c 9A61     		str	r2, [r3, #24]
+ 249:Core/Src/main_bonus.c ****         counter_led1 = 0;
+ 921              		.loc 1 249 9 view .LVU269
+ 249:Core/Src/main_bonus.c ****         counter_led1 = 0;
+ 922              		.loc 1 249 21 is_stmt 0 view .LVU270
+ 923 010e 0023     		movs	r3, #0
+ 924 0110 064A     		ldr	r2, .L73+4
+ 925 0112 1360     		str	r3, [r2]
+ 250:Core/Src/main_bonus.c ****         counter_led2 = 0;
+ 926              		.loc 1 250 9 is_stmt 1 view .LVU271
+ 250:Core/Src/main_bonus.c ****         counter_led2 = 0;
+ 927              		.loc 1 250 22 is_stmt 0 view .LVU272
+ 928 0114 064A     		ldr	r2, .L73+8
+ 929 0116 1360     		str	r3, [r2]
+ 251:Core/Src/main_bonus.c ****         flag1 = 0;
+ 930              		.loc 1 251 9 is_stmt 1 view .LVU273
+ 251:Core/Src/main_bonus.c ****         flag1 = 0;
+ 931              		.loc 1 251 22 is_stmt 0 view .LVU274
+ 932 0118 064A     		ldr	r2, .L73+12
+ 933 011a 1360     		str	r3, [r2]
+ 252:Core/Src/main_bonus.c ****         flag2 = 0;  
+ 934              		.loc 1 252 9 is_stmt 1 view .LVU275
+ 252:Core/Src/main_bonus.c ****         flag2 = 0;  
+ 935              		.loc 1 252 15 is_stmt 0 view .LVU276
+ 936 011c 064A     		ldr	r2, .L73+16
+ 937 011e 1370     		strb	r3, [r2]
+ 253:Core/Src/main_bonus.c ****     }
+ 938              		.loc 1 253 9 is_stmt 1 view .LVU277
+ 253:Core/Src/main_bonus.c ****     }
+ 939              		.loc 1 253 15 is_stmt 0 view .LVU278
+ 940 0120 074A     		ldr	r2, .L73+24
+ 941 0122 1370     		strb	r3, [r2]
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 24
+
+
+ 942              		.loc 1 255 1 view .LVU279
+ 943 0124 72E7     		b	.L60
+ 944              	.L74:
+ 945 0126 00BF     		.align	2
+ 946              	.L73:
+ 947 0128 00000000 		.word	MODE2
+ 948 012c 00000000 		.word	counter_led
+ 949 0130 00000000 		.word	counter_led1
+ 950 0134 00000000 		.word	counter_led2
+ 951 0138 00000000 		.word	flag1
+ 952 013c 00000000 		.word	frequency2
+ 953 0140 00000000 		.word	flag2
+ 954 0144 00000240 		.word	1073872896
+ 955 0148 40420F00 		.word	1000000
+ 956 014c 00000000 		.word	frequency1
+ 957              		.cfi_endproc
+ 958              	.LFE135:
+ 960              		.section	.text.LED3_MODE22,"ax",%progbits
+ 961              		.align	1
+ 962              		.global	LED3_MODE22
+ 963              		.syntax unified
+ 964              		.thumb
+ 965              		.thumb_func
+ 967              	LED3_MODE22:
+ 968              	.LFB136:
+ 256:Core/Src/main_bonus.c **** 
+ 257:Core/Src/main_bonus.c **** void LED3_MODE22(void) {
+ 969              		.loc 1 257 24 is_stmt 1 view -0
+ 970              		.cfi_startproc
+ 971              		@ args = 0, pretend = 0, frame = 0
+ 972              		@ frame_needed = 0, uses_anonymous_args = 0
+ 258:Core/Src/main_bonus.c ****     if (MODE2 == 2) {
+ 973              		.loc 1 258 5 view .LVU281
+ 974              		.loc 1 258 15 is_stmt 0 view .LVU282
+ 975 0000 5E4B     		ldr	r3, .L93
+ 976 0002 93F90030 		ldrsb	r3, [r3]
+ 977              		.loc 1 258 8 view .LVU283
+ 978 0006 022B     		cmp	r3, #2
+ 979 0008 00D0     		beq	.L90
+ 980 000a 7047     		bx	lr
+ 981              	.L90:
+ 257:Core/Src/main_bonus.c ****     if (MODE2 == 2) {
+ 982              		.loc 1 257 24 view .LVU284
+ 983 000c 10B5     		push	{r4, lr}
+ 984              	.LCFI2:
+ 985              		.cfi_def_cfa_offset 8
+ 986              		.cfi_offset 4, -8
+ 987              		.cfi_offset 14, -4
+ 259:Core/Src/main_bonus.c ****         counter_led = 0;
+ 988              		.loc 1 259 9 is_stmt 1 view .LVU285
+ 989              		.loc 1 259 21 is_stmt 0 view .LVU286
+ 990 000e 0023     		movs	r3, #0
+ 991 0010 5B4A     		ldr	r2, .L93+4
+ 992 0012 1360     		str	r3, [r2]
+ 260:Core/Src/main_bonus.c ****         counter_led1 = 0;
+ 993              		.loc 1 260 9 is_stmt 1 view .LVU287
+ 994              		.loc 1 260 22 is_stmt 0 view .LVU288
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 25
+
+
+ 995 0014 5B4A     		ldr	r2, .L93+8
+ 996 0016 1360     		str	r3, [r2]
+ 261:Core/Src/main_bonus.c ****         counter_led2 = 0;
+ 997              		.loc 1 261 9 is_stmt 1 view .LVU289
+ 998              		.loc 1 261 22 is_stmt 0 view .LVU290
+ 999 0018 5B4A     		ldr	r2, .L93+12
+ 1000 001a 1360     		str	r3, [r2]
+ 262:Core/Src/main_bonus.c ****         while (counter_led <= frequency) 
+ 1001              		.loc 1 262 9 is_stmt 1 view .LVU291
+ 1002              		.loc 1 262 15 is_stmt 0 view .LVU292
+ 1003 001c 2FE0     		b	.L77
+ 1004              	.L78:
+ 263:Core/Src/main_bonus.c ****         {
+ 264:Core/Src/main_bonus.c ****             counter_led++;
+ 265:Core/Src/main_bonus.c ****             counter_led1++;
+ 266:Core/Src/main_bonus.c ****             counter_led2++;
+ 267:Core/Src/main_bonus.c ****             counter_led3++;
+ 268:Core/Src/main_bonus.c **** 
+ 269:Core/Src/main_bonus.c ****             if (counter_led1 >= frequency1 && flag1 == 0) {
+ 270:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 271:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 272:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 273:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 && flag1 == 1) 
+ 1005              		.loc 1 273 20 is_stmt 1 view .LVU293
+ 1006              		.loc 1 273 23 is_stmt 0 view .LVU294
+ 1007 001e 8142     		cmp	r1, r0
+ 1008 0020 03D3     		bcc	.L79
+ 1009              		.loc 1 273 60 discriminator 1 view .LVU295
+ 1010 0022 5A49     		ldr	r1, .L93+16
+ 1011 0024 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 1012              		.loc 1 273 51 discriminator 1 view .LVU296
+ 1013 0026 0129     		cmp	r1, #1
+ 1014 0028 51D0     		beq	.L91
+ 1015              	.L79:
+ 274:Core/Src/main_bonus.c ****             {
+ 275:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 276:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 277:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 278:Core/Src/main_bonus.c ****             }
+ 279:Core/Src/main_bonus.c **** 
+ 280:Core/Src/main_bonus.c ****             if (counter_led2 >= frequency2 && flag2 == 0) {
+ 1016              		.loc 1 280 13 is_stmt 1 view .LVU297
+ 1017              		.loc 1 280 30 is_stmt 0 view .LVU298
+ 1018 002a 5949     		ldr	r1, .L93+20
+ 1019 002c 0968     		ldr	r1, [r1]
+ 1020              		.loc 1 280 16 view .LVU299
+ 1021 002e 8A42     		cmp	r2, r1
+ 1022 0030 58D3     		bcc	.L80
+ 1023              		.loc 1 280 53 discriminator 1 view .LVU300
+ 1024 0032 5848     		ldr	r0, .L93+24
+ 1025 0034 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 1026              		.loc 1 280 44 discriminator 1 view .LVU301
+ 1027 0036 0028     		cmp	r0, #0
+ 1028 0038 54D1     		bne	.L80
+ 281:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS1);
+ 1029              		.loc 1 281 17 is_stmt 1 view .LVU302
+ 1030 003a 5749     		ldr	r1, .L93+28
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 26
+
+
+ 1031 003c 8A69     		ldr	r2, [r1, #24]
+ 1032 003e 42F00202 		orr	r2, r2, #2
+ 1033 0042 8A61     		str	r2, [r1, #24]
+ 282:Core/Src/main_bonus.c ****                 counter_led2 = 0;
+ 1034              		.loc 1 282 17 view .LVU303
+ 1035              		.loc 1 282 30 is_stmt 0 view .LVU304
+ 1036 0044 504A     		ldr	r2, .L93+12
+ 1037 0046 0021     		movs	r1, #0
+ 1038 0048 1160     		str	r1, [r2]
+ 283:Core/Src/main_bonus.c ****                 flag2 = 1;
+ 1039              		.loc 1 283 17 is_stmt 1 view .LVU305
+ 1040              		.loc 1 283 23 is_stmt 0 view .LVU306
+ 1041 004a 524A     		ldr	r2, .L93+24
+ 1042 004c 0121     		movs	r1, #1
+ 1043 004e 1170     		strb	r1, [r2]
+ 1044              	.L81:
+ 284:Core/Src/main_bonus.c ****             } else if (counter_led2 >= frequency2 && flag2 == 1) 
+ 285:Core/Src/main_bonus.c ****             {
+ 286:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 287:Core/Src/main_bonus.c ****                 counter_led2 = 0;
+ 288:Core/Src/main_bonus.c ****                 flag2 = 0;
+ 289:Core/Src/main_bonus.c ****             }
  290:Core/Src/main_bonus.c **** 
- 291:Core/Src/main_bonus.c ****         if (BUTTON_1_STATE > 0) {
- 292:Core/Src/main_bonus.c ****             BUTTON_2_STATE = 0;
- 952              		.loc 1 292 13 view .LVU247
- 953              		.loc 1 292 28 is_stmt 0 view .LVU248
- 954 0008 0C4B     		ldr	r3, .L68
- 955 000a 0022     		movs	r2, #0
- 956 000c 1A60     		str	r2, [r3]
- 957              	.L64:
- 293:Core/Src/main_bonus.c ****         }
- 294:Core/Src/main_bonus.c ****         else 
- 295:Core/Src/main_bonus.c ****         {
- 296:Core/Src/main_bonus.c ****             BUTTON_2_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_5);
- 297:Core/Src/main_bonus.c ****         }
- 298:Core/Src/main_bonus.c ****         MODE_SELECTION_BUT2();
- 958              		.loc 1 298 9 is_stmt 1 view .LVU249
- 959 000e FFF7FEFF 		bl	MODE_SELECTION_BUT2
- 960              	.LVL7:
- 299:Core/Src/main_bonus.c ****        
- 300:Core/Src/main_bonus.c ****         MODE_SELECTION_BUT1();
- 961              		.loc 1 300 9 view .LVU250
- 962 0012 FFF7FEFF 		bl	MODE_SELECTION_BUT1
- 963              	.LVL8:
+ 291:Core/Src/main_bonus.c ****             if (counter_led3 >= frequency3 && flag3 == 0) {
+ 1045              		.loc 1 291 13 is_stmt 1 view .LVU307
+ 1046              		.loc 1 291 30 is_stmt 0 view .LVU308
+ 1047 0050 524A     		ldr	r2, .L93+32
+ 1048 0052 1268     		ldr	r2, [r2]
+ 1049              		.loc 1 291 16 view .LVU309
+ 1050 0054 9342     		cmp	r3, r2
+ 1051 0056 56D3     		bcc	.L82
+ 1052              		.loc 1 291 53 discriminator 1 view .LVU310
+ 1053 0058 5149     		ldr	r1, .L93+36
+ 1054 005a 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 1055              		.loc 1 291 44 discriminator 1 view .LVU311
+ 1056 005c 0029     		cmp	r1, #0
+ 1057 005e 52D1     		bne	.L82
+ 292:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS4);
+ 1058              		.loc 1 292 17 is_stmt 1 view .LVU312
+ 1059 0060 4D4A     		ldr	r2, .L93+28
+ 1060 0062 9369     		ldr	r3, [r2, #24]
+ 1061 0064 43F01003 		orr	r3, r3, #16
+ 1062 0068 9361     		str	r3, [r2, #24]
+ 293:Core/Src/main_bonus.c ****                 counter_led3 = 0;
+ 1063              		.loc 1 293 17 view .LVU313
+ 1064              		.loc 1 293 30 is_stmt 0 view .LVU314
+ 1065 006a 4E4B     		ldr	r3, .L93+40
+ 1066 006c 0022     		movs	r2, #0
+ 1067 006e 1A60     		str	r2, [r3]
+ 294:Core/Src/main_bonus.c ****                 flag3 = 1;
+ 1068              		.loc 1 294 17 is_stmt 1 view .LVU315
+ 1069              		.loc 1 294 23 is_stmt 0 view .LVU316
+ 1070 0070 4B4B     		ldr	r3, .L93+36
+ 1071 0072 0122     		movs	r2, #1
+ 1072 0074 1A70     		strb	r2, [r3]
+ 1073              	.L83:
+ 295:Core/Src/main_bonus.c ****             } else if (counter_led3 >= frequency3 && flag3 == 1) 
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 27
+
+
+ 296:Core/Src/main_bonus.c ****             {
+ 297:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 298:Core/Src/main_bonus.c ****                 counter_led3 = 0;
+ 299:Core/Src/main_bonus.c ****                 flag3 = 0;
+ 300:Core/Src/main_bonus.c ****             }
  301:Core/Src/main_bonus.c **** 
- 302:Core/Src/main_bonus.c ****         LED_MODE2();
- 964              		.loc 1 302 9 view .LVU251
- 965 0016 FFF7FEFF 		bl	LED_MODE2
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 25
+ 302:Core/Src/main_bonus.c ****             if (BUTTON_STATE()) 
+ 1074              		.loc 1 302 13 is_stmt 1 view .LVU317
+ 1075              		.loc 1 302 17 is_stmt 0 view .LVU318
+ 1076 0076 FFF7FEFF 		bl	BUTTON_STATE
+ 1077              	.LVL2:
+ 1078              		.loc 1 302 16 discriminator 1 view .LVU319
+ 1079 007a 0028     		cmp	r0, #0
+ 1080 007c 54D1     		bne	.L92
+ 1081              	.L77:
+ 262:Core/Src/main_bonus.c ****         {
+ 1082              		.loc 1 262 28 is_stmt 1 view .LVU320
+ 1083 007e 404B     		ldr	r3, .L93+4
+ 1084 0080 1B68     		ldr	r3, [r3]
+ 1085 0082 494A     		ldr	r2, .L93+44
+ 1086 0084 9342     		cmp	r3, r2
+ 1087 0086 5CD8     		bhi	.L84
+ 264:Core/Src/main_bonus.c ****             counter_led1++;
+ 1088              		.loc 1 264 13 view .LVU321
+ 264:Core/Src/main_bonus.c ****             counter_led1++;
+ 1089              		.loc 1 264 24 is_stmt 0 view .LVU322
+ 1090 0088 0133     		adds	r3, r3, #1
+ 1091 008a 3D4A     		ldr	r2, .L93+4
+ 1092 008c 1360     		str	r3, [r2]
+ 265:Core/Src/main_bonus.c ****             counter_led2++;
+ 1093              		.loc 1 265 13 is_stmt 1 view .LVU323
+ 265:Core/Src/main_bonus.c ****             counter_led2++;
+ 1094              		.loc 1 265 25 is_stmt 0 view .LVU324
+ 1095 008e 3D4B     		ldr	r3, .L93+8
+ 1096 0090 1968     		ldr	r1, [r3]
+ 1097 0092 0131     		adds	r1, r1, #1
+ 1098 0094 1960     		str	r1, [r3]
+ 266:Core/Src/main_bonus.c ****             counter_led3++;
+ 1099              		.loc 1 266 13 is_stmt 1 view .LVU325
+ 266:Core/Src/main_bonus.c ****             counter_led3++;
+ 1100              		.loc 1 266 25 is_stmt 0 view .LVU326
+ 1101 0096 3C4B     		ldr	r3, .L93+12
+ 1102 0098 1A68     		ldr	r2, [r3]
+ 1103 009a 0132     		adds	r2, r2, #1
+ 1104 009c 1A60     		str	r2, [r3]
+ 267:Core/Src/main_bonus.c **** 
+ 1105              		.loc 1 267 13 is_stmt 1 view .LVU327
+ 267:Core/Src/main_bonus.c **** 
+ 1106              		.loc 1 267 25 is_stmt 0 view .LVU328
+ 1107 009e 4148     		ldr	r0, .L93+40
+ 1108 00a0 0368     		ldr	r3, [r0]
+ 1109 00a2 0133     		adds	r3, r3, #1
+ 1110 00a4 0360     		str	r3, [r0]
+ 269:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 1111              		.loc 1 269 13 is_stmt 1 view .LVU329
+ 269:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 1112              		.loc 1 269 30 is_stmt 0 view .LVU330
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 28
 
 
- 966              	.LVL9:
- 303:Core/Src/main_bonus.c ****         LED_MODE1();
- 967              		.loc 1 303 9 view .LVU252
- 968 001a FFF7FEFF 		bl	LED_MODE1
- 969              	.LVL10:
- 287:Core/Src/main_bonus.c ****         // чтение состояния кнопки для управления светоди�
- 970              		.loc 1 287 10 view .LVU253
- 971              	.L65:
- 287:Core/Src/main_bonus.c ****         // чтение состояния кнопки для управления светоди�
- 972              		.loc 1 287 5 view .LVU254
- 289:Core/Src/main_bonus.c **** 
- 973              		.loc 1 289 9 view .LVU255
- 289:Core/Src/main_bonus.c **** 
- 974              		.loc 1 289 26 is_stmt 0 view .LVU256
- 975 001e 084B     		ldr	r3, .L68+4
- 976 0020 1B69     		ldr	r3, [r3, #16]
- 977 0022 03F48063 		and	r3, r3, #1024
- 289:Core/Src/main_bonus.c **** 
- 978              		.loc 1 289 24 view .LVU257
- 979 0026 074A     		ldr	r2, .L68+8
- 980 0028 1360     		str	r3, [r2]
- 291:Core/Src/main_bonus.c ****             BUTTON_2_STATE = 0;
- 981              		.loc 1 291 9 is_stmt 1 view .LVU258
- 291:Core/Src/main_bonus.c ****             BUTTON_2_STATE = 0;
- 982              		.loc 1 291 12 is_stmt 0 view .LVU259
- 983 002a 002B     		cmp	r3, #0
- 984 002c ECD1     		bne	.L67
- 296:Core/Src/main_bonus.c ****         }
- 985              		.loc 1 296 13 is_stmt 1 view .LVU260
- 296:Core/Src/main_bonus.c ****         }
- 986              		.loc 1 296 30 is_stmt 0 view .LVU261
- 987 002e 044B     		ldr	r3, .L68+4
- 988 0030 1B69     		ldr	r3, [r3, #16]
- 989 0032 03F02003 		and	r3, r3, #32
- 296:Core/Src/main_bonus.c ****         }
- 990              		.loc 1 296 28 view .LVU262
- 991 0036 014A     		ldr	r2, .L68
- 992 0038 1360     		str	r3, [r2]
- 993 003a E8E7     		b	.L64
- 994              	.L69:
- 995              		.align	2
- 996              	.L68:
- 997 003c 00000000 		.word	BUTTON_2_STATE
- 998 0040 00040240 		.word	1073873920
- 999 0044 00000000 		.word	BUTTON_1_STATE
- 1000              		.cfi_endproc
- 1001              	.LFE135:
- 1003              		.global	MODE_RESET
- 1004              		.section	.rodata.MODE_RESET,"a"
- 1005              		.align	2
- 1008              	MODE_RESET:
- 1009 0000 00000100 		.word	65536
- 1010 0004 00000200 		.word	131072
- 1011 0008 00001000 		.word	1048576
- 1012 000c 00001000 		.word	1048576
- 1013 0010 00000100 		.word	65536
- 1014 0014 00000200 		.word	131072
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 26
+ 1113 00a6 4148     		ldr	r0, .L93+48
+ 1114 00a8 0068     		ldr	r0, [r0]
+ 269:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 1115              		.loc 1 269 16 view .LVU331
+ 1116 00aa 8142     		cmp	r1, r0
+ 1117 00ac B7D3     		bcc	.L78
+ 269:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 1118              		.loc 1 269 53 discriminator 1 view .LVU332
+ 1119 00ae 374C     		ldr	r4, .L93+16
+ 1120 00b0 2478     		ldrb	r4, [r4]	@ zero_extendqisi2
+ 269:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BS0);
+ 1121              		.loc 1 269 44 discriminator 1 view .LVU333
+ 1122 00b2 002C     		cmp	r4, #0
+ 1123 00b4 B3D1     		bne	.L78
+ 270:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 1124              		.loc 1 270 17 is_stmt 1 view .LVU334
+ 1125 00b6 3848     		ldr	r0, .L93+28
+ 1126 00b8 8169     		ldr	r1, [r0, #24]
+ 1127 00ba 41F00101 		orr	r1, r1, #1
+ 1128 00be 8161     		str	r1, [r0, #24]
+ 271:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 1129              		.loc 1 271 17 view .LVU335
+ 271:Core/Src/main_bonus.c ****                 flag1 = 1;
+ 1130              		.loc 1 271 30 is_stmt 0 view .LVU336
+ 1131 00c0 3049     		ldr	r1, .L93+8
+ 1132 00c2 0020     		movs	r0, #0
+ 1133 00c4 0860     		str	r0, [r1]
+ 272:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 && flag1 == 1) 
+ 1134              		.loc 1 272 17 is_stmt 1 view .LVU337
+ 272:Core/Src/main_bonus.c ****             } else if (counter_led1 >= frequency1 && flag1 == 1) 
+ 1135              		.loc 1 272 23 is_stmt 0 view .LVU338
+ 1136 00c6 3149     		ldr	r1, .L93+16
+ 1137 00c8 0120     		movs	r0, #1
+ 1138 00ca 0870     		strb	r0, [r1]
+ 1139 00cc ADE7     		b	.L79
+ 1140              	.L91:
+ 275:Core/Src/main_bonus.c ****                 counter_led1 = 0;
+ 1141              		.loc 1 275 17 is_stmt 1 view .LVU339
+ 1142 00ce 3248     		ldr	r0, .L93+28
+ 1143 00d0 8169     		ldr	r1, [r0, #24]
+ 1144 00d2 41F48031 		orr	r1, r1, #65536
+ 1145 00d6 8161     		str	r1, [r0, #24]
+ 276:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 1146              		.loc 1 276 17 view .LVU340
+ 276:Core/Src/main_bonus.c ****                 flag1 = 0;
+ 1147              		.loc 1 276 30 is_stmt 0 view .LVU341
+ 1148 00d8 0021     		movs	r1, #0
+ 1149 00da 2A48     		ldr	r0, .L93+8
+ 1150 00dc 0160     		str	r1, [r0]
+ 277:Core/Src/main_bonus.c ****             }
+ 1151              		.loc 1 277 17 is_stmt 1 view .LVU342
+ 277:Core/Src/main_bonus.c ****             }
+ 1152              		.loc 1 277 23 is_stmt 0 view .LVU343
+ 1153 00de 2B48     		ldr	r0, .L93+16
+ 1154 00e0 0170     		strb	r1, [r0]
+ 1155 00e2 A2E7     		b	.L79
+ 1156              	.L80:
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 29
 
 
- 1015 0018 00000200 		.word	131072
- 1016 001c 00001000 		.word	1048576
- 1017 0020 00000100 		.word	65536
- 1018              		.global	MODE_1
- 1019              		.section	.data.MODE_1,"aw"
- 1020              		.align	2
- 1023              	MODE_1:
- 1024 0000 01000000 		.word	1
- 1025 0004 00000200 		.word	131072
- 1026 0008 00001000 		.word	1048576
- 1027 000c 00000100 		.word	65536
- 1028 0010 02000000 		.word	2
- 1029 0014 00001000 		.word	1048576
- 1030 0018 00000100 		.word	65536
- 1031 001c 00000200 		.word	131072
- 1032 0020 10000000 		.word	16
- 1033              		.global	frequency
- 1034              		.section	.rodata.frequency,"a"
- 1035              		.align	2
- 1038              	frequency:
- 1039 0000 E0C81000 		.word	1100000
- 1040              		.global	MODE2
- 1041              		.section	.bss.MODE2,"aw",%nobits
- 1044              	MODE2:
- 1045 0000 00       		.space	1
- 1046              		.global	MODE1_1
- 1047              		.section	.bss.MODE1_1,"aw",%nobits
- 1050              	MODE1_1:
- 1051 0000 00       		.space	1
- 1052              		.global	MODE1
- 1053              		.section	.bss.MODE1,"aw",%nobits
- 1056              	MODE1:
- 1057 0000 00       		.space	1
- 1058              		.global	counter_led
- 1059              		.section	.bss.counter_led,"aw",%nobits
- 1060              		.align	2
- 1063              	counter_led:
- 1064 0000 00000000 		.space	4
- 1065              		.global	flag
- 1066              		.section	.bss.flag,"aw",%nobits
- 1069              	flag:
- 1070 0000 00       		.space	1
- 1071              		.global	counter
- 1072              		.section	.bss.counter,"aw",%nobits
- 1073              		.align	2
- 1076              	counter:
- 1077 0000 00000000 		.space	4
- 1078              		.global	BUTTON_2_STATE
- 1079              		.section	.bss.BUTTON_2_STATE,"aw",%nobits
- 1080              		.align	2
- 1083              	BUTTON_2_STATE:
- 1084 0000 00000000 		.space	4
- 1085              		.global	BUTTON_1_STATE
- 1086              		.section	.bss.BUTTON_1_STATE,"aw",%nobits
- 1087              		.align	2
- 1090              	BUTTON_1_STATE:
- 1091 0000 00000000 		.space	4
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 27
+ 284:Core/Src/main_bonus.c ****             {
+ 1157              		.loc 1 284 20 is_stmt 1 view .LVU344
+ 284:Core/Src/main_bonus.c ****             {
+ 1158              		.loc 1 284 23 is_stmt 0 view .LVU345
+ 1159 00e4 8A42     		cmp	r2, r1
+ 1160 00e6 B3D3     		bcc	.L81
+ 284:Core/Src/main_bonus.c ****             {
+ 1161              		.loc 1 284 60 discriminator 1 view .LVU346
+ 1162 00e8 2A4A     		ldr	r2, .L93+24
+ 1163 00ea 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 284:Core/Src/main_bonus.c ****             {
+ 1164              		.loc 1 284 51 discriminator 1 view .LVU347
+ 1165 00ec 012A     		cmp	r2, #1
+ 1166 00ee AFD1     		bne	.L81
+ 286:Core/Src/main_bonus.c ****                 counter_led2 = 0;
+ 1167              		.loc 1 286 17 is_stmt 1 view .LVU348
+ 1168 00f0 2949     		ldr	r1, .L93+28
+ 1169 00f2 8A69     		ldr	r2, [r1, #24]
+ 1170 00f4 42F40032 		orr	r2, r2, #131072
+ 1171 00f8 8A61     		str	r2, [r1, #24]
+ 287:Core/Src/main_bonus.c ****                 flag2 = 0;
+ 1172              		.loc 1 287 17 view .LVU349
+ 287:Core/Src/main_bonus.c ****                 flag2 = 0;
+ 1173              		.loc 1 287 30 is_stmt 0 view .LVU350
+ 1174 00fa 0022     		movs	r2, #0
+ 1175 00fc 2249     		ldr	r1, .L93+12
+ 1176 00fe 0A60     		str	r2, [r1]
+ 288:Core/Src/main_bonus.c ****             }
+ 1177              		.loc 1 288 17 is_stmt 1 view .LVU351
+ 288:Core/Src/main_bonus.c ****             }
+ 1178              		.loc 1 288 23 is_stmt 0 view .LVU352
+ 1179 0100 2449     		ldr	r1, .L93+24
+ 1180 0102 0A70     		strb	r2, [r1]
+ 1181 0104 A4E7     		b	.L81
+ 1182              	.L82:
+ 295:Core/Src/main_bonus.c ****             {
+ 1183              		.loc 1 295 20 is_stmt 1 view .LVU353
+ 295:Core/Src/main_bonus.c ****             {
+ 1184              		.loc 1 295 23 is_stmt 0 view .LVU354
+ 1185 0106 9342     		cmp	r3, r2
+ 1186 0108 B5D3     		bcc	.L83
+ 295:Core/Src/main_bonus.c ****             {
+ 1187              		.loc 1 295 60 discriminator 1 view .LVU355
+ 1188 010a 254B     		ldr	r3, .L93+36
+ 1189 010c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 295:Core/Src/main_bonus.c ****             {
+ 1190              		.loc 1 295 51 discriminator 1 view .LVU356
+ 1191 010e 012B     		cmp	r3, #1
+ 1192 0110 B1D1     		bne	.L83
+ 297:Core/Src/main_bonus.c ****                 counter_led3 = 0;
+ 1193              		.loc 1 297 17 is_stmt 1 view .LVU357
+ 1194 0112 214A     		ldr	r2, .L93+28
+ 1195 0114 9369     		ldr	r3, [r2, #24]
+ 1196 0116 43F48013 		orr	r3, r3, #1048576
+ 1197 011a 9361     		str	r3, [r2, #24]
+ 298:Core/Src/main_bonus.c ****                 flag3 = 0;
+ 1198              		.loc 1 298 17 view .LVU358
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 30
 
 
- 1092              		.global	LED_3_STATE
- 1093              		.section	.bss.LED_3_STATE,"aw",%nobits
- 1096              	LED_3_STATE:
- 1097 0000 00       		.space	1
- 1098              		.global	LED_2_STATE
- 1099              		.section	.bss.LED_2_STATE,"aw",%nobits
- 1102              	LED_2_STATE:
- 1103 0000 00       		.space	1
- 1104              		.global	LED_1_STATE
- 1105              		.section	.bss.LED_1_STATE,"aw",%nobits
- 1108              	LED_1_STATE:
- 1109 0000 00       		.space	1
- 1110              		.text
- 1111              	.Letext0:
- 1112              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
- 1113              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
- 1114              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
- 1115              		.file 5 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s 			page 28
+ 298:Core/Src/main_bonus.c ****                 flag3 = 0;
+ 1199              		.loc 1 298 30 is_stmt 0 view .LVU359
+ 1200 011c 0023     		movs	r3, #0
+ 1201 011e 214A     		ldr	r2, .L93+40
+ 1202 0120 1360     		str	r3, [r2]
+ 299:Core/Src/main_bonus.c ****             }
+ 1203              		.loc 1 299 17 is_stmt 1 view .LVU360
+ 299:Core/Src/main_bonus.c ****             }
+ 1204              		.loc 1 299 23 is_stmt 0 view .LVU361
+ 1205 0122 1F4A     		ldr	r2, .L93+36
+ 1206 0124 1370     		strb	r3, [r2]
+ 1207 0126 A6E7     		b	.L83
+ 1208              	.L92:
+ 303:Core/Src/main_bonus.c ****             {
+ 304:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 1209              		.loc 1 304 17 is_stmt 1 view .LVU362
+ 1210 0128 1B4B     		ldr	r3, .L93+28
+ 1211 012a 9A69     		ldr	r2, [r3, #24]
+ 1212 012c 42F48032 		orr	r2, r2, #65536
+ 1213 0130 9A61     		str	r2, [r3, #24]
+ 305:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 1214              		.loc 1 305 17 view .LVU363
+ 1215 0132 9A69     		ldr	r2, [r3, #24]
+ 1216 0134 42F40032 		orr	r2, r2, #131072
+ 1217 0138 9A61     		str	r2, [r3, #24]
+ 306:Core/Src/main_bonus.c ****                 SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 1218              		.loc 1 306 17 view .LVU364
+ 1219 013a 9A69     		ldr	r2, [r3, #24]
+ 1220 013c 42F48012 		orr	r2, r2, #1048576
+ 1221 0140 9A61     		str	r2, [r3, #24]
+ 307:Core/Src/main_bonus.c ****                 break;
+ 1222              		.loc 1 307 17 view .LVU365
+ 1223              	.L84:
+ 308:Core/Src/main_bonus.c ****             }
+ 309:Core/Src/main_bonus.c ****         }
+ 310:Core/Src/main_bonus.c ****         
+ 311:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR0);
+ 1224              		.loc 1 311 9 view .LVU366
+ 1225 0142 154B     		ldr	r3, .L93+28
+ 1226 0144 9A69     		ldr	r2, [r3, #24]
+ 1227 0146 42F48032 		orr	r2, r2, #65536
+ 1228 014a 9A61     		str	r2, [r3, #24]
+ 312:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR1);
+ 1229              		.loc 1 312 9 view .LVU367
+ 1230 014c 9A69     		ldr	r2, [r3, #24]
+ 1231 014e 42F40032 		orr	r2, r2, #131072
+ 1232 0152 9A61     		str	r2, [r3, #24]
+ 313:Core/Src/main_bonus.c ****         SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR4);
+ 1233              		.loc 1 313 9 view .LVU368
+ 1234 0154 9A69     		ldr	r2, [r3, #24]
+ 1235 0156 42F48012 		orr	r2, r2, #1048576
+ 1236 015a 9A61     		str	r2, [r3, #24]
+ 314:Core/Src/main_bonus.c ****         counter_led = 0;
+ 1237              		.loc 1 314 9 view .LVU369
+ 1238              		.loc 1 314 21 is_stmt 0 view .LVU370
+ 1239 015c 0023     		movs	r3, #0
+ 1240 015e 084A     		ldr	r2, .L93+4
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 31
+
+
+ 1241 0160 1360     		str	r3, [r2]
+ 315:Core/Src/main_bonus.c ****         counter_led1 = 0;
+ 1242              		.loc 1 315 9 is_stmt 1 view .LVU371
+ 1243              		.loc 1 315 22 is_stmt 0 view .LVU372
+ 1244 0162 084A     		ldr	r2, .L93+8
+ 1245 0164 1360     		str	r3, [r2]
+ 316:Core/Src/main_bonus.c ****         counter_led2 = 0;
+ 1246              		.loc 1 316 9 is_stmt 1 view .LVU373
+ 1247              		.loc 1 316 22 is_stmt 0 view .LVU374
+ 1248 0166 084A     		ldr	r2, .L93+12
+ 1249 0168 1360     		str	r3, [r2]
+ 317:Core/Src/main_bonus.c ****         counter_led3 = 0;
+ 1250              		.loc 1 317 9 is_stmt 1 view .LVU375
+ 1251              		.loc 1 317 22 is_stmt 0 view .LVU376
+ 1252 016a 0E4A     		ldr	r2, .L93+40
+ 1253 016c 1360     		str	r3, [r2]
+ 318:Core/Src/main_bonus.c ****         flag1 = 0;
+ 1254              		.loc 1 318 9 is_stmt 1 view .LVU377
+ 1255              		.loc 1 318 15 is_stmt 0 view .LVU378
+ 1256 016e 074A     		ldr	r2, .L93+16
+ 1257 0170 1370     		strb	r3, [r2]
+ 319:Core/Src/main_bonus.c ****         flag2 = 0;  
+ 1258              		.loc 1 319 9 is_stmt 1 view .LVU379
+ 1259              		.loc 1 319 15 is_stmt 0 view .LVU380
+ 1260 0172 084A     		ldr	r2, .L93+24
+ 1261 0174 1370     		strb	r3, [r2]
+ 320:Core/Src/main_bonus.c ****         flag3 = 0;
+ 1262              		.loc 1 320 9 is_stmt 1 view .LVU381
+ 1263              		.loc 1 320 15 is_stmt 0 view .LVU382
+ 1264 0176 0A4A     		ldr	r2, .L93+36
+ 1265 0178 1370     		strb	r3, [r2]
+ 321:Core/Src/main_bonus.c ****     }
+ 322:Core/Src/main_bonus.c **** }
+ 1266              		.loc 1 322 1 view .LVU383
+ 1267 017a 10BD     		pop	{r4, pc}
+ 1268              	.L94:
+ 1269              		.align	2
+ 1270              	.L93:
+ 1271 017c 00000000 		.word	MODE2
+ 1272 0180 00000000 		.word	counter_led
+ 1273 0184 00000000 		.word	counter_led1
+ 1274 0188 00000000 		.word	counter_led2
+ 1275 018c 00000000 		.word	flag1
+ 1276 0190 00000000 		.word	frequency2
+ 1277 0194 00000000 		.word	flag2
+ 1278 0198 00000240 		.word	1073872896
+ 1279 019c 00000000 		.word	frequency3
+ 1280 01a0 00000000 		.word	flag3
+ 1281 01a4 00000000 		.word	counter_led3
+ 1282 01a8 40420F00 		.word	1000000
+ 1283 01ac 00000000 		.word	frequency1
+ 1284              		.cfi_endproc
+ 1285              	.LFE136:
+ 1287              		.section	.text.LED_MODE2,"ax",%progbits
+ 1288              		.align	1
+ 1289              		.global	LED_MODE2
+ 1290              		.syntax unified
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 32
+
+
+ 1291              		.thumb
+ 1292              		.thumb_func
+ 1294              	LED_MODE2:
+ 1295              	.LFB137:
+ 323:Core/Src/main_bonus.c **** 
+ 324:Core/Src/main_bonus.c **** void LED_MODE2(void) 
+ 325:Core/Src/main_bonus.c **** {
+ 1296              		.loc 1 325 1 is_stmt 1 view -0
+ 1297              		.cfi_startproc
+ 1298              		@ args = 0, pretend = 0, frame = 0
+ 1299              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1300 0000 08B5     		push	{r3, lr}
+ 1301              	.LCFI3:
+ 1302              		.cfi_def_cfa_offset 8
+ 1303              		.cfi_offset 3, -8
+ 1304              		.cfi_offset 14, -4
+ 326:Core/Src/main_bonus.c ****     LED1_MODE20();
+ 1305              		.loc 1 326 5 view .LVU385
+ 1306 0002 FFF7FEFF 		bl	LED1_MODE20
+ 1307              	.LVL3:
+ 327:Core/Src/main_bonus.c **** 
+ 328:Core/Src/main_bonus.c ****     LED2_MODE21();
+ 1308              		.loc 1 328 5 view .LVU386
+ 1309 0006 FFF7FEFF 		bl	LED2_MODE21
+ 1310              	.LVL4:
+ 329:Core/Src/main_bonus.c ****     
+ 330:Core/Src/main_bonus.c ****     LED3_MODE22();
+ 1311              		.loc 1 330 5 view .LVU387
+ 1312 000a FFF7FEFF 		bl	LED3_MODE22
+ 1313              	.LVL5:
+ 331:Core/Src/main_bonus.c **** 
+ 332:Core/Src/main_bonus.c **** }
+ 1314              		.loc 1 332 1 is_stmt 0 view .LVU388
+ 1315 000e 08BD     		pop	{r3, pc}
+ 1316              		.cfi_endproc
+ 1317              	.LFE137:
+ 1319              		.section	.text.main,"ax",%progbits
+ 1320              		.align	1
+ 1321              		.global	main
+ 1322              		.syntax unified
+ 1323              		.thumb
+ 1324              		.thumb_func
+ 1326              	main:
+ 1327              	.LFB138:
+ 333:Core/Src/main_bonus.c **** 
+ 334:Core/Src/main_bonus.c **** int main(void) 
+ 335:Core/Src/main_bonus.c **** {
+ 1328              		.loc 1 335 1 is_stmt 1 view -0
+ 1329              		.cfi_startproc
+ 1330              		@ Volatile: function does not return.
+ 1331              		@ args = 0, pretend = 0, frame = 0
+ 1332              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1333 0000 08B5     		push	{r3, lr}
+ 1334              	.LCFI4:
+ 1335              		.cfi_def_cfa_offset 8
+ 1336              		.cfi_offset 3, -8
+ 1337              		.cfi_offset 14, -4
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 33
+
+
+ 336:Core/Src/main_bonus.c ****     GPIO_Init(); // подключение портов GPIOA|GPIOB|GPIOC
+ 1338              		.loc 1 336 5 view .LVU390
+ 1339 0002 FFF7FEFF 		bl	GPIO_Init
+ 1340              	.LVL6:
+ 1341 0006 0AE0     		b	.L100
+ 1342              	.L102:
+ 337:Core/Src/main_bonus.c **** 
+ 338:Core/Src/main_bonus.c ****     while(1) {
+ 339:Core/Src/main_bonus.c ****         // чтение состояния кнопки для управления светоди�
+ 340:Core/Src/main_bonus.c ****         BUTTON_1_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_10);
+ 341:Core/Src/main_bonus.c **** 
+ 342:Core/Src/main_bonus.c ****         if (BUTTON_1_STATE > 0) {
+ 343:Core/Src/main_bonus.c ****             BUTTON_2_STATE = 0;
+ 1343              		.loc 1 343 13 view .LVU391
+ 1344              		.loc 1 343 28 is_stmt 0 view .LVU392
+ 1345 0008 0C4B     		ldr	r3, .L103
+ 1346 000a 0022     		movs	r2, #0
+ 1347 000c 1A60     		str	r2, [r3]
+ 1348              	.L99:
+ 344:Core/Src/main_bonus.c ****         }
+ 345:Core/Src/main_bonus.c ****         else 
+ 346:Core/Src/main_bonus.c ****         {
+ 347:Core/Src/main_bonus.c ****             BUTTON_2_STATE = READ_BIT(GPIOB->IDR, GPIO_IDR_IDR_5);
+ 348:Core/Src/main_bonus.c ****         }
+ 349:Core/Src/main_bonus.c ****         MODE_SELECTION_BUT2();
+ 1349              		.loc 1 349 9 is_stmt 1 view .LVU393
+ 1350 000e FFF7FEFF 		bl	MODE_SELECTION_BUT2
+ 1351              	.LVL7:
+ 350:Core/Src/main_bonus.c ****        
+ 351:Core/Src/main_bonus.c ****         MODE_SELECTION_BUT1();
+ 1352              		.loc 1 351 9 view .LVU394
+ 1353 0012 FFF7FEFF 		bl	MODE_SELECTION_BUT1
+ 1354              	.LVL8:
+ 352:Core/Src/main_bonus.c **** 
+ 353:Core/Src/main_bonus.c ****         LED_FREQUENCY();
+ 1355              		.loc 1 353 9 view .LVU395
+ 1356 0016 FFF7FEFF 		bl	LED_FREQUENCY
+ 1357              	.LVL9:
+ 354:Core/Src/main_bonus.c **** 
+ 355:Core/Src/main_bonus.c ****         LED_MODE2();
+ 1358              		.loc 1 355 9 view .LVU396
+ 1359 001a FFF7FEFF 		bl	LED_MODE2
+ 1360              	.LVL10:
+ 338:Core/Src/main_bonus.c ****         // чтение состояния кнопки для управления светоди�
+ 1361              		.loc 1 338 10 view .LVU397
+ 1362              	.L100:
+ 338:Core/Src/main_bonus.c ****         // чтение состояния кнопки для управления светоди�
+ 1363              		.loc 1 338 5 view .LVU398
+ 340:Core/Src/main_bonus.c **** 
+ 1364              		.loc 1 340 9 view .LVU399
+ 340:Core/Src/main_bonus.c **** 
+ 1365              		.loc 1 340 26 is_stmt 0 view .LVU400
+ 1366 001e 084B     		ldr	r3, .L103+4
+ 1367 0020 1B69     		ldr	r3, [r3, #16]
+ 1368 0022 03F48063 		and	r3, r3, #1024
+ 340:Core/Src/main_bonus.c **** 
+ 1369              		.loc 1 340 24 view .LVU401
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 34
+
+
+ 1370 0026 074A     		ldr	r2, .L103+8
+ 1371 0028 1360     		str	r3, [r2]
+ 342:Core/Src/main_bonus.c ****             BUTTON_2_STATE = 0;
+ 1372              		.loc 1 342 9 is_stmt 1 view .LVU402
+ 342:Core/Src/main_bonus.c ****             BUTTON_2_STATE = 0;
+ 1373              		.loc 1 342 12 is_stmt 0 view .LVU403
+ 1374 002a 002B     		cmp	r3, #0
+ 1375 002c ECD1     		bne	.L102
+ 347:Core/Src/main_bonus.c ****         }
+ 1376              		.loc 1 347 13 is_stmt 1 view .LVU404
+ 347:Core/Src/main_bonus.c ****         }
+ 1377              		.loc 1 347 30 is_stmt 0 view .LVU405
+ 1378 002e 044B     		ldr	r3, .L103+4
+ 1379 0030 1B69     		ldr	r3, [r3, #16]
+ 1380 0032 03F02003 		and	r3, r3, #32
+ 347:Core/Src/main_bonus.c ****         }
+ 1381              		.loc 1 347 28 view .LVU406
+ 1382 0036 014A     		ldr	r2, .L103
+ 1383 0038 1360     		str	r3, [r2]
+ 1384 003a E8E7     		b	.L99
+ 1385              	.L104:
+ 1386              		.align	2
+ 1387              	.L103:
+ 1388 003c 00000000 		.word	BUTTON_2_STATE
+ 1389 0040 00040240 		.word	1073873920
+ 1390 0044 00000000 		.word	BUTTON_1_STATE
+ 1391              		.cfi_endproc
+ 1392              	.LFE138:
+ 1394              		.global	frequency3
+ 1395              		.section	.bss.frequency3,"aw",%nobits
+ 1396              		.align	2
+ 1399              	frequency3:
+ 1400 0000 00000000 		.space	4
+ 1401              		.global	frequency2
+ 1402              		.section	.bss.frequency2,"aw",%nobits
+ 1403              		.align	2
+ 1406              	frequency2:
+ 1407 0000 00000000 		.space	4
+ 1408              		.global	frequency1
+ 1409              		.section	.bss.frequency1,"aw",%nobits
+ 1410              		.align	2
+ 1413              	frequency1:
+ 1414 0000 00000000 		.space	4
+ 1415              		.global	frequency
+ 1416              		.section	.rodata.frequency,"a"
+ 1417              		.align	2
+ 1420              	frequency:
+ 1421 0000 40420F00 		.word	1000000
+ 1422              		.global	MODE2
+ 1423              		.section	.data.MODE2,"aw"
+ 1426              	MODE2:
+ 1427 0000 FF       		.byte	-1
+ 1428              		.global	MODE1_1
+ 1429              		.section	.bss.MODE1_1,"aw",%nobits
+ 1432              	MODE1_1:
+ 1433 0000 00       		.space	1
+ 1434              		.global	MODE13
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 35
+
+
+ 1435              		.section	.bss.MODE13,"aw",%nobits
+ 1438              	MODE13:
+ 1439 0000 00       		.space	1
+ 1440              		.global	MODE12
+ 1441              		.section	.bss.MODE12,"aw",%nobits
+ 1444              	MODE12:
+ 1445 0000 00       		.space	1
+ 1446              		.global	MODE11
+ 1447              		.section	.bss.MODE11,"aw",%nobits
+ 1450              	MODE11:
+ 1451 0000 00       		.space	1
+ 1452              		.global	counter_led3
+ 1453              		.section	.bss.counter_led3,"aw",%nobits
+ 1454              		.align	2
+ 1457              	counter_led3:
+ 1458 0000 00000000 		.space	4
+ 1459              		.global	counter_led2
+ 1460              		.section	.bss.counter_led2,"aw",%nobits
+ 1461              		.align	2
+ 1464              	counter_led2:
+ 1465 0000 00000000 		.space	4
+ 1466              		.global	counter_led1
+ 1467              		.section	.bss.counter_led1,"aw",%nobits
+ 1468              		.align	2
+ 1471              	counter_led1:
+ 1472 0000 00000000 		.space	4
+ 1473              		.global	counter_led
+ 1474              		.section	.bss.counter_led,"aw",%nobits
+ 1475              		.align	2
+ 1478              	counter_led:
+ 1479 0000 00000000 		.space	4
+ 1480              		.global	flag3
+ 1481              		.section	.bss.flag3,"aw",%nobits
+ 1484              	flag3:
+ 1485 0000 00       		.space	1
+ 1486              		.global	flag2
+ 1487              		.section	.bss.flag2,"aw",%nobits
+ 1490              	flag2:
+ 1491 0000 00       		.space	1
+ 1492              		.global	flag1
+ 1493              		.section	.bss.flag1,"aw",%nobits
+ 1496              	flag1:
+ 1497 0000 00       		.space	1
+ 1498              		.global	flag
+ 1499              		.section	.bss.flag,"aw",%nobits
+ 1502              	flag:
+ 1503 0000 00       		.space	1
+ 1504              		.global	counter
+ 1505              		.section	.bss.counter,"aw",%nobits
+ 1506              		.align	2
+ 1509              	counter:
+ 1510 0000 00000000 		.space	4
+ 1511              		.global	BUTTON_2_STATE
+ 1512              		.section	.bss.BUTTON_2_STATE,"aw",%nobits
+ 1513              		.align	2
+ 1516              	BUTTON_2_STATE:
+ 1517 0000 00000000 		.space	4
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 36
+
+
+ 1518              		.global	BUTTON_1_STATE
+ 1519              		.section	.bss.BUTTON_1_STATE,"aw",%nobits
+ 1520              		.align	2
+ 1523              	BUTTON_1_STATE:
+ 1524 0000 00000000 		.space	4
+ 1525              		.global	LED_3_STATE
+ 1526              		.section	.bss.LED_3_STATE,"aw",%nobits
+ 1529              	LED_3_STATE:
+ 1530 0000 00       		.space	1
+ 1531              		.global	LED_2_STATE
+ 1532              		.section	.bss.LED_2_STATE,"aw",%nobits
+ 1535              	LED_2_STATE:
+ 1536 0000 00       		.space	1
+ 1537              		.global	LED_1_STATE
+ 1538              		.section	.bss.LED_1_STATE,"aw",%nobits
+ 1541              	LED_1_STATE:
+ 1542 0000 00       		.space	1
+ 1543              		.text
+ 1544              	.Letext0:
+ 1545              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
+ 1546              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
+ 1547              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
+ 1548              		.file 5 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/Core/Inc/init.h"
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 37
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main_bonus.c
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:21     .text.MODE_SELECTION_BUT1:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:27     .text.MODE_SELECTION_BUT1:00000000 MODE_SELECTION_BUT1
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:128    .text.MODE_SELECTION_BUT1:0000006c $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1076   .bss.counter:00000000 counter
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1090   .bss.BUTTON_1_STATE:00000000 BUTTON_1_STATE
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1056   .bss.MODE1:00000000 MODE1
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1050   .bss.MODE1_1:00000000 MODE1_1
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:139    .text.MODE_SELECTION_BUT2:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:145    .text.MODE_SELECTION_BUT2:00000000 MODE_SELECTION_BUT2
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:226    .text.MODE_SELECTION_BUT2:00000050 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1083   .bss.BUTTON_2_STATE:00000000 BUTTON_2_STATE
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1069   .bss.flag:00000000 flag
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1044   .bss.MODE2:00000000 MODE2
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:235    .text.BUTTON_STATE:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:241    .text.BUTTON_STATE:00000000 BUTTON_STATE
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:301    .text.BUTTON_STATE:0000003c $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:309    .text.LED_MODE1:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:315    .text.LED_MODE1:00000000 LED_MODE1
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:623    .text.LED_MODE1:000001e4 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1023   .data.MODE_1:00000000 MODE_1
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1063   .bss.counter_led:00000000 counter_led
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1008   .rodata.MODE_RESET:00000000 MODE_RESET
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:633    .text.LED_MODE1:00000204 $t
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:773    .text.LED_MODE1:000002ec $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:783    .text.LED_MODE2:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:789    .text.LED_MODE2:00000000 LED_MODE2
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:923    .text.LED_MODE2:0000007c $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:929    .text.main:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:935    .text.main:00000000 main
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:997    .text.main:0000003c $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1005   .rodata.MODE_RESET:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1020   .data.MODE_1:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1038   .rodata.frequency:00000000 frequency
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1035   .rodata.frequency:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1045   .bss.MODE2:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1051   .bss.MODE1_1:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1057   .bss.MODE1:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1060   .bss.counter_led:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1070   .bss.flag:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1073   .bss.counter:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1080   .bss.BUTTON_2_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1087   .bss.BUTTON_1_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1096   .bss.LED_3_STATE:00000000 LED_3_STATE
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1097   .bss.LED_3_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1102   .bss.LED_2_STATE:00000000 LED_2_STATE
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1103   .bss.LED_2_STATE:00000000 $d
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1108   .bss.LED_1_STATE:00000000 LED_1_STATE
-C:\Users\nicki\AppData\Local\Temp\ccAbibfQ.s:1109   .bss.LED_1_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:21     .text.MODE_SELECTION_BUT1:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:27     .text.MODE_SELECTION_BUT1:00000000 MODE_SELECTION_BUT1
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:180    .text.MODE_SELECTION_BUT1:000000a8 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1509   .bss.counter:00000000 counter
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1523   .bss.BUTTON_1_STATE:00000000 BUTTON_1_STATE
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1432   .bss.MODE1_1:00000000 MODE1_1
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1450   .bss.MODE11:00000000 MODE11
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1444   .bss.MODE12:00000000 MODE12
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1438   .bss.MODE13:00000000 MODE13
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:193    .text.MODE_SELECTION_BUT2:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:199    .text.MODE_SELECTION_BUT2:00000000 MODE_SELECTION_BUT2
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:280    .text.MODE_SELECTION_BUT2:00000050 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1516   .bss.BUTTON_2_STATE:00000000 BUTTON_2_STATE
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1502   .bss.flag:00000000 flag
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1426   .data.MODE2:00000000 MODE2
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:289    .text.BUTTON_STATE:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:295    .text.BUTTON_STATE:00000000 BUTTON_STATE
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:369    .text.BUTTON_STATE:00000048 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:379    .text.LED_FREQUENCY:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:385    .text.LED_FREQUENCY:00000000 LED_FREQUENCY
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:502    .text.LED_FREQUENCY:0000007c $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1413   .bss.frequency1:00000000 frequency1
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1406   .bss.frequency2:00000000 frequency2
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1399   .bss.frequency3:00000000 frequency3
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:514    .text.LED1_MODE20:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:520    .text.LED1_MODE20:00000000 LED1_MODE20
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:693    .text.LED1_MODE20:000000e0 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1478   .bss.counter_led:00000000 counter_led
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1471   .bss.counter_led1:00000000 counter_led1
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1496   .bss.flag1:00000000 flag1
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:704    .text.LED2_MODE21:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:710    .text.LED2_MODE21:00000000 LED2_MODE21
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:947    .text.LED2_MODE21:00000128 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1464   .bss.counter_led2:00000000 counter_led2
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1490   .bss.flag2:00000000 flag2
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:961    .text.LED3_MODE22:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:967    .text.LED3_MODE22:00000000 LED3_MODE22
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1271   .text.LED3_MODE22:0000017c $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1484   .bss.flag3:00000000 flag3
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1457   .bss.counter_led3:00000000 counter_led3
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1288   .text.LED_MODE2:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1294   .text.LED_MODE2:00000000 LED_MODE2
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1320   .text.main:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1326   .text.main:00000000 main
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1388   .text.main:0000003c $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1396   .bss.frequency3:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1403   .bss.frequency2:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1410   .bss.frequency1:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1420   .rodata.frequency:00000000 frequency
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1417   .rodata.frequency:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1433   .bss.MODE1_1:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1439   .bss.MODE13:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1445   .bss.MODE12:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1451   .bss.MODE11:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1454   .bss.counter_led3:00000000 $d
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s 			page 38
+
+
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1461   .bss.counter_led2:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1468   .bss.counter_led1:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1475   .bss.counter_led:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1485   .bss.flag3:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1491   .bss.flag2:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1497   .bss.flag1:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1503   .bss.flag:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1506   .bss.counter:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1513   .bss.BUTTON_2_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1520   .bss.BUTTON_1_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1529   .bss.LED_3_STATE:00000000 LED_3_STATE
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1530   .bss.LED_3_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1535   .bss.LED_2_STATE:00000000 LED_2_STATE
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1536   .bss.LED_2_STATE:00000000 $d
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1541   .bss.LED_1_STATE:00000000 LED_1_STATE
+C:\Users\nicki\AppData\Local\Temp\cc6WuQOr.s:1542   .bss.LED_1_STATE:00000000 $d
 
 UNDEFINED SYMBOLS
 GPIO_Init

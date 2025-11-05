@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 1
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 1
   16:Core/Src/init.c ****     // Output Push-Pull (PP) 0 – Стандартный двухтактный выход.
   17:Core/Src/init.c ****     // Output Open-Drain (OD) 1 – Выход с открытым стоком.
   18:Core/Src/init.c **** 
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 2
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s 			page 2
 
 
   19:Core/Src/init.c ****     *(uint32_t *)(0x40020000UL + 0x08UL) |= (1 << 2); // скорость одного бита PA1
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 1
   39:Core/Src/init.c ****     GPIOA_OSPEEDR |= GPIOA_OSPEED_PIN0_MID; // Настройка скорости работы 0-�
   77              		.loc 1 39 5 view .LVU12
   78 000a 9A68     		ldr	r2, [r3, #8]
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 3
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s 			page 3
 
 
   79              		.loc 1 39 19 is_stmt 0 view .LVU13
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 1
  119              		.loc 1 55 5 view .LVU20
  120 001a DA68     		ldr	r2, [r3, #12]
  121 001c 42F44072 		orr	r2, r2, #768
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 4
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s 			page 4
 
 
  122 0020 DA60     		str	r2, [r3, #12]
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 1
  162 0014 FFF7FEFF 		bl	PA4_CMSIS
  163              	.LVL2:
   72:Core/Src/init.c **** }...
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 5
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s 			page 5
 
 
  164              		.loc 1 72 1 is_stmt 0 view .LVU27
@@ -254,22 +254,22 @@ ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 1
  175              		.file 2 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/machine/_default_types.
  176              		.file 3 "D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/arm-none-eabi/include/sys/_stdint.h"
  177              		.file 4 "C:/LB1_MC/Laboratory_Practice/Laboratory_Practice/CMSIS/Devices/STM32F4xx/Inc/STM32F446xx
-ARM GAS  C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s 			page 6
+ARM GAS  C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:21     .text.PA1_MEMORY:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:27     .text.PA1_MEMORY:00000000 PA1_MEMORY
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:52     .text.PA1_MEMORY:00000014 $d
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:57     .text.PA0_MACRO:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:63     .text.PA0_MACRO:00000000 PA0_MACRO
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:88     .text.PA0_MACRO:00000014 $d
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:93     .text.PA4_CMSIS:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:99     .text.PA4_CMSIS:00000000 PA4_CMSIS
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:128    .text.PA4_CMSIS:00000024 $d
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:133    .text.GPIO_Init:00000000 $t
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:139    .text.GPIO_Init:00000000 GPIO_Init
-C:\Users\nicki\AppData\Local\Temp\ccxXhTGI.s:169    .text.GPIO_Init:0000001c $d
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:21     .text.PA1_MEMORY:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:27     .text.PA1_MEMORY:00000000 PA1_MEMORY
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:52     .text.PA1_MEMORY:00000014 $d
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:57     .text.PA0_MACRO:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:63     .text.PA0_MACRO:00000000 PA0_MACRO
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:88     .text.PA0_MACRO:00000014 $d
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:93     .text.PA4_CMSIS:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:99     .text.PA4_CMSIS:00000000 PA4_CMSIS
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:128    .text.PA4_CMSIS:00000024 $d
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:133    .text.GPIO_Init:00000000 $t
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:139    .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\nicki\AppData\Local\Temp\cccHcw5S.s:169    .text.GPIO_Init:0000001c $d
 
 NO UNDEFINED SYMBOLS

@@ -459,7 +459,7 @@ LOAD D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13
                 0x08000000                g_pfnVectors
                 0x080001c4                        . = ALIGN (0x4)
 
-.text           0x080001c4      0x688
+.text           0x080001c4      0x800
                 0x080001c4                        . = ALIGN (0x4)
  *(.text)
  *(.text*)
@@ -471,255 +471,286 @@ LOAD D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13
                 0x08000204       0x14 build_F446RE/system_stm32f4xx.o
                 0x08000204                SystemInit
  .text.MODE_SELECTION_BUT1
-                0x08000218       0x88 build_F446RE/main_bonus.o
+                0x08000218       0xcc build_F446RE/main_bonus.o
                 0x08000218                MODE_SELECTION_BUT1
  .text.MODE_SELECTION_BUT2
-                0x080002a0       0x64 build_F446RE/main_bonus.o
-                0x080002a0                MODE_SELECTION_BUT2
+                0x080002e4       0x64 build_F446RE/main_bonus.o
+                0x080002e4                MODE_SELECTION_BUT2
  .text.BUTTON_STATE
-                0x08000304       0x4c build_F446RE/main_bonus.o
-                0x08000304                BUTTON_STATE
- .text.LED_MODE1
-                0x08000350      0x304 build_F446RE/main_bonus.o
-                0x08000350                LED_MODE1
+                0x08000348       0x60 build_F446RE/main_bonus.o
+                0x08000348                BUTTON_STATE
+ .text.LED_FREQUENCY
+                0x080003a8       0x9c build_F446RE/main_bonus.o
+                0x080003a8                LED_FREQUENCY
+ .text.LED1_MODE20
+                0x08000444       0xfc build_F446RE/main_bonus.o
+                0x08000444                LED1_MODE20
+ .text.LED2_MODE21
+                0x08000540      0x150 build_F446RE/main_bonus.o
+                0x08000540                LED2_MODE21
+ .text.LED3_MODE22
+                0x08000690      0x1b0 build_F446RE/main_bonus.o
+                0x08000690                LED3_MODE22
  .text.LED_MODE2
-                0x08000654       0x84 build_F446RE/main_bonus.o
-                0x08000654                LED_MODE2
- .text.main     0x080006d8       0x48 build_F446RE/main_bonus.o
-                0x080006d8                main
+                0x08000840       0x10 build_F446RE/main_bonus.o
+                0x08000840                LED_MODE2
+ .text.main     0x08000850       0x48 build_F446RE/main_bonus.o
+                0x08000850                main
  .text.GPIO_Init
-                0x08000720       0x78 build_F446RE/init_bonus.o
-                0x08000720                GPIO_Init
+                0x08000898       0x78 build_F446RE/init_bonus.o
+                0x08000898                GPIO_Init
  .text.Reset_Handler
-                0x08000798       0x50 build_F446RE/startup_stm32f446xx.o
-                0x08000798                Reset_Handler
+                0x08000910       0x50 build_F446RE/startup_stm32f446xx.o
+                0x08000910                Reset_Handler
  .text.Default_Handler
-                0x080007e8        0x2 build_F446RE/startup_stm32f446xx.o
-                0x080007e8                RTC_Alarm_IRQHandler
-                0x080007e8                EXTI2_IRQHandler
-                0x080007e8                TIM8_CC_IRQHandler
-                0x080007e8                DebugMon_Handler
-                0x080007e8                FMPI2C1_EV_IRQHandler
-                0x080007e8                SPI4_IRQHandler
-                0x080007e8                TIM1_CC_IRQHandler
-                0x080007e8                DMA2_Stream5_IRQHandler
-                0x080007e8                HardFault_Handler
-                0x080007e8                DMA1_Stream5_IRQHandler
-                0x080007e8                SysTick_Handler
-                0x080007e8                PVD_IRQHandler
-                0x080007e8                SDIO_IRQHandler
-                0x080007e8                TAMP_STAMP_IRQHandler
-                0x080007e8                PendSV_Handler
-                0x080007e8                NMI_Handler
-                0x080007e8                CAN2_RX1_IRQHandler
-                0x080007e8                EXTI3_IRQHandler
-                0x080007e8                TIM8_TRG_COM_TIM14_IRQHandler
-                0x080007e8                TIM1_UP_TIM10_IRQHandler
-                0x080007e8                TIM8_UP_TIM13_IRQHandler
-                0x080007e8                I2C3_ER_IRQHandler
-                0x080007e8                EXTI0_IRQHandler
-                0x080007e8                I2C2_EV_IRQHandler
-                0x080007e8                DMA1_Stream2_IRQHandler
-                0x080007e8                CAN1_RX0_IRQHandler
-                0x080007e8                FPU_IRQHandler
-                0x080007e8                OTG_HS_WKUP_IRQHandler
-                0x080007e8                UsageFault_Handler
-                0x080007e8                CAN2_SCE_IRQHandler
-                0x080007e8                DMA2_Stream2_IRQHandler
-                0x080007e8                SPI1_IRQHandler
-                0x080007e8                TIM6_DAC_IRQHandler
-                0x080007e8                TIM1_BRK_TIM9_IRQHandler
-                0x080007e8                DCMI_IRQHandler
-                0x080007e8                CAN2_RX0_IRQHandler
-                0x080007e8                DMA2_Stream3_IRQHandler
-                0x080007e8                SAI2_IRQHandler
-                0x080007e8                USART6_IRQHandler
-                0x080007e8                USART3_IRQHandler
-                0x080007e8                CAN1_RX1_IRQHandler
-                0x080007e8                UART5_IRQHandler
-                0x080007e8                DMA2_Stream0_IRQHandler
-                0x080007e8                TIM4_IRQHandler
-                0x080007e8                QUADSPI_IRQHandler
-                0x080007e8                I2C1_EV_IRQHandler
-                0x080007e8                DMA1_Stream6_IRQHandler
-                0x080007e8                DMA1_Stream1_IRQHandler
-                0x080007e8                UART4_IRQHandler
-                0x080007e8                TIM3_IRQHandler
-                0x080007e8                RCC_IRQHandler
-                0x080007e8                TIM8_BRK_TIM12_IRQHandler
-                0x080007e8                Default_Handler
-                0x080007e8                CEC_IRQHandler
-                0x080007e8                EXTI15_10_IRQHandler
-                0x080007e8                ADC_IRQHandler
-                0x080007e8                DMA1_Stream7_IRQHandler
-                0x080007e8                TIM7_IRQHandler
-                0x080007e8                CAN2_TX_IRQHandler
-                0x080007e8                TIM5_IRQHandler
-                0x080007e8                DMA2_Stream7_IRQHandler
-                0x080007e8                I2C3_EV_IRQHandler
-                0x080007e8                EXTI9_5_IRQHandler
-                0x080007e8                RTC_WKUP_IRQHandler
-                0x080007e8                SPDIF_RX_IRQHandler
-                0x080007e8                SPI2_IRQHandler
-                0x080007e8                OTG_HS_EP1_IN_IRQHandler
-                0x080007e8                MemManage_Handler
-                0x080007e8                DMA1_Stream0_IRQHandler
-                0x080007e8                CAN1_TX_IRQHandler
-                0x080007e8                SVC_Handler
-                0x080007e8                FMPI2C1_ER_IRQHandler
-                0x080007e8                EXTI4_IRQHandler
-                0x080007e8                OTG_HS_EP1_OUT_IRQHandler
-                0x080007e8                WWDG_IRQHandler
-                0x080007e8                TIM2_IRQHandler
-                0x080007e8                OTG_FS_WKUP_IRQHandler
-                0x080007e8                TIM1_TRG_COM_TIM11_IRQHandler
-                0x080007e8                OTG_HS_IRQHandler
-                0x080007e8                EXTI1_IRQHandler
-                0x080007e8                USART2_IRQHandler
-                0x080007e8                I2C2_ER_IRQHandler
-                0x080007e8                DMA2_Stream1_IRQHandler
-                0x080007e8                CAN1_SCE_IRQHandler
-                0x080007e8                FLASH_IRQHandler
-                0x080007e8                DMA2_Stream4_IRQHandler
-                0x080007e8                BusFault_Handler
-                0x080007e8                USART1_IRQHandler
-                0x080007e8                OTG_FS_IRQHandler
-                0x080007e8                SPI3_IRQHandler
-                0x080007e8                DMA1_Stream4_IRQHandler
-                0x080007e8                I2C1_ER_IRQHandler
-                0x080007e8                FMC_IRQHandler
-                0x080007e8                DMA2_Stream6_IRQHandler
-                0x080007e8                SAI1_IRQHandler
-                0x080007e8                DMA1_Stream3_IRQHandler
- *fill*         0x080007ea        0x2 
+                0x08000960        0x2 build_F446RE/startup_stm32f446xx.o
+                0x08000960                RTC_Alarm_IRQHandler
+                0x08000960                EXTI2_IRQHandler
+                0x08000960                TIM8_CC_IRQHandler
+                0x08000960                DebugMon_Handler
+                0x08000960                FMPI2C1_EV_IRQHandler
+                0x08000960                SPI4_IRQHandler
+                0x08000960                TIM1_CC_IRQHandler
+                0x08000960                DMA2_Stream5_IRQHandler
+                0x08000960                HardFault_Handler
+                0x08000960                DMA1_Stream5_IRQHandler
+                0x08000960                SysTick_Handler
+                0x08000960                PVD_IRQHandler
+                0x08000960                SDIO_IRQHandler
+                0x08000960                TAMP_STAMP_IRQHandler
+                0x08000960                PendSV_Handler
+                0x08000960                NMI_Handler
+                0x08000960                CAN2_RX1_IRQHandler
+                0x08000960                EXTI3_IRQHandler
+                0x08000960                TIM8_TRG_COM_TIM14_IRQHandler
+                0x08000960                TIM1_UP_TIM10_IRQHandler
+                0x08000960                TIM8_UP_TIM13_IRQHandler
+                0x08000960                I2C3_ER_IRQHandler
+                0x08000960                EXTI0_IRQHandler
+                0x08000960                I2C2_EV_IRQHandler
+                0x08000960                DMA1_Stream2_IRQHandler
+                0x08000960                CAN1_RX0_IRQHandler
+                0x08000960                FPU_IRQHandler
+                0x08000960                OTG_HS_WKUP_IRQHandler
+                0x08000960                UsageFault_Handler
+                0x08000960                CAN2_SCE_IRQHandler
+                0x08000960                DMA2_Stream2_IRQHandler
+                0x08000960                SPI1_IRQHandler
+                0x08000960                TIM6_DAC_IRQHandler
+                0x08000960                TIM1_BRK_TIM9_IRQHandler
+                0x08000960                DCMI_IRQHandler
+                0x08000960                CAN2_RX0_IRQHandler
+                0x08000960                DMA2_Stream3_IRQHandler
+                0x08000960                SAI2_IRQHandler
+                0x08000960                USART6_IRQHandler
+                0x08000960                USART3_IRQHandler
+                0x08000960                CAN1_RX1_IRQHandler
+                0x08000960                UART5_IRQHandler
+                0x08000960                DMA2_Stream0_IRQHandler
+                0x08000960                TIM4_IRQHandler
+                0x08000960                QUADSPI_IRQHandler
+                0x08000960                I2C1_EV_IRQHandler
+                0x08000960                DMA1_Stream6_IRQHandler
+                0x08000960                DMA1_Stream1_IRQHandler
+                0x08000960                UART4_IRQHandler
+                0x08000960                TIM3_IRQHandler
+                0x08000960                RCC_IRQHandler
+                0x08000960                TIM8_BRK_TIM12_IRQHandler
+                0x08000960                Default_Handler
+                0x08000960                CEC_IRQHandler
+                0x08000960                EXTI15_10_IRQHandler
+                0x08000960                ADC_IRQHandler
+                0x08000960                DMA1_Stream7_IRQHandler
+                0x08000960                TIM7_IRQHandler
+                0x08000960                CAN2_TX_IRQHandler
+                0x08000960                TIM5_IRQHandler
+                0x08000960                DMA2_Stream7_IRQHandler
+                0x08000960                I2C3_EV_IRQHandler
+                0x08000960                EXTI9_5_IRQHandler
+                0x08000960                RTC_WKUP_IRQHandler
+                0x08000960                SPDIF_RX_IRQHandler
+                0x08000960                SPI2_IRQHandler
+                0x08000960                OTG_HS_EP1_IN_IRQHandler
+                0x08000960                MemManage_Handler
+                0x08000960                DMA1_Stream0_IRQHandler
+                0x08000960                CAN1_TX_IRQHandler
+                0x08000960                SVC_Handler
+                0x08000960                FMPI2C1_ER_IRQHandler
+                0x08000960                EXTI4_IRQHandler
+                0x08000960                OTG_HS_EP1_OUT_IRQHandler
+                0x08000960                WWDG_IRQHandler
+                0x08000960                TIM2_IRQHandler
+                0x08000960                OTG_FS_WKUP_IRQHandler
+                0x08000960                TIM1_TRG_COM_TIM11_IRQHandler
+                0x08000960                OTG_HS_IRQHandler
+                0x08000960                EXTI1_IRQHandler
+                0x08000960                USART2_IRQHandler
+                0x08000960                I2C2_ER_IRQHandler
+                0x08000960                DMA2_Stream1_IRQHandler
+                0x08000960                CAN1_SCE_IRQHandler
+                0x08000960                FLASH_IRQHandler
+                0x08000960                DMA2_Stream4_IRQHandler
+                0x08000960                BusFault_Handler
+                0x08000960                USART1_IRQHandler
+                0x08000960                OTG_FS_IRQHandler
+                0x08000960                SPI3_IRQHandler
+                0x08000960                DMA1_Stream4_IRQHandler
+                0x08000960                I2C1_ER_IRQHandler
+                0x08000960                FMC_IRQHandler
+                0x08000960                DMA2_Stream6_IRQHandler
+                0x08000960                SAI1_IRQHandler
+                0x08000960                DMA1_Stream3_IRQHandler
+ *fill*         0x08000962        0x2 
  .text.__libc_init_array
-                0x080007ec       0x48 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
-                0x080007ec                __libc_init_array
+                0x08000964       0x48 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
+                0x08000964                __libc_init_array
  *(.glue_7)
- .glue_7        0x08000834        0x0 linker stubs
+ .glue_7        0x080009ac        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x08000834        0x0 linker stubs
+ .glue_7t       0x080009ac        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x08000834        0x0 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .eh_frame      0x080009ac        0x0 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.init)
- .init          0x08000834        0x4 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crti.o
-                0x08000834                _init
- .init          0x08000838        0x8 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
+ .init          0x080009ac        0x4 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crti.o
+                0x080009ac                _init
+ .init          0x080009b0        0x8 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
  *(.fini)
- .fini          0x08000840        0x4 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crti.o
-                0x08000840                _fini
- .fini          0x08000844        0x8 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
-                0x0800084c                        . = ALIGN (0x4)
-                0x0800084c                        _etext = .
+ .fini          0x080009b8        0x4 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crti.o
+                0x080009b8                _fini
+ .fini          0x080009bc        0x8 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
+                0x080009c4                        . = ALIGN (0x4)
+                0x080009c4                        _etext = .
 
-.vfp11_veneer   0x0800084c        0x0
- .vfp11_veneer  0x0800084c        0x0 linker stubs
+.vfp11_veneer   0x080009c4        0x0
+ .vfp11_veneer  0x080009c4        0x0 linker stubs
 
-.v4_bx          0x0800084c        0x0
- .v4_bx         0x0800084c        0x0 linker stubs
+.v4_bx          0x080009c4        0x0
+ .v4_bx         0x080009c4        0x0 linker stubs
 
-.iplt           0x0800084c        0x0
- .iplt          0x0800084c        0x0 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+.iplt           0x080009c4        0x0
+ .iplt          0x080009c4        0x0 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x0800084c       0x24
-                0x0800084c                        . = ALIGN (0x4)
+.rel.dyn        0x080009c4        0x0
+ .rel.iplt      0x080009c4        0x0 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+
+.rodata         0x080009c4        0x0
+                0x080009c4                        . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
- .rodata.MODE_RESET
-                0x0800084c       0x24 build_F446RE/main_bonus.o
-                0x0800084c                MODE_RESET
-                0x08000870                        . = ALIGN (0x4)
-
-.rel.dyn        0x08000870        0x0
- .rel.iplt      0x08000870        0x0 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x080009c4                        . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x08000870        0x0
-                0x08000870                        __exidx_start = .
+.ARM            0x080009c4        0x0
+                0x080009c4                        __exidx_start = .
  *(.ARM.exidx*)
-                0x08000870                        __exidx_end = .
+                0x080009c4                        __exidx_end = .
 
-.preinit_array  0x08000870        0x0
-                0x08000870                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x080009c4        0x0
+                0x080009c4                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x08000870                        PROVIDE (__preinit_array_end = .)
+                0x080009c4                        PROVIDE (__preinit_array_end = .)
 
-.init_array     0x08000870        0x4
-                0x08000870                        PROVIDE (__init_array_start = .)
+.init_array     0x080009c4        0x4
+                0x080009c4                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x08000870        0x4 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x08000874                        PROVIDE (__init_array_end = .)
+ .init_array    0x080009c4        0x4 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x080009c8                        PROVIDE (__init_array_end = .)
 
-.fini_array     0x08000874        0x4
-                0x08000874                        PROVIDE (__fini_array_start = .)
+.fini_array     0x080009c8        0x4
+                0x080009c8                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x08000874        0x4 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x08000878                        PROVIDE (__fini_array_end = .)
-                0x08000878                        _sidata = LOADADDR (.data)
+ .fini_array    0x080009c8        0x4 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x080009cc                        PROVIDE (__fini_array_end = .)
+                0x080009cc                        _sidata = LOADADDR (.data)
 
-.data           0x20000000       0x24 load address 0x08000878
+.data           0x20000000        0x4 load address 0x080009cc
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
  *(.data*)
- .data.MODE_1   0x20000000       0x24 build_F446RE/main_bonus.o
-                0x20000000                MODE_1
-                0x20000024                        . = ALIGN (0x4)
-                0x20000024                        _edata = .
+ .data.MODE2    0x20000000        0x1 build_F446RE/main_bonus.o
+                0x20000000                MODE2
+                0x20000004                        . = ALIGN (0x4)
+ *fill*         0x20000001        0x3 
+                0x20000004                        _edata = .
 
-.igot.plt       0x20000024        0x0 load address 0x0800089c
- .igot.plt      0x20000024        0x0 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x20000024                        . = ALIGN (0x4)
+.igot.plt       0x20000004        0x0 load address 0x080009d0
+ .igot.plt      0x20000004        0x0 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x20000004                        . = ALIGN (0x4)
 
-.bss            0x20000024       0x34 load address 0x0800089c
-                0x20000024                        _sbss = .
-                0x20000024                        __bss_start__ = _sbss
+.bss            0x20000004       0x4c load address 0x080009d0
+                0x20000004                        _sbss = .
+                0x20000004                        __bss_start__ = _sbss
  *(.bss)
  *(.bss*)
  .bss.completed.1
-                0x20000024        0x1 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
- *fill*         0x20000025        0x3 
- .bss.object.0  0x20000028       0x18 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
- .bss.MODE2     0x20000040        0x1 build_F446RE/main_bonus.o
-                0x20000040                MODE2
- .bss.MODE1_1   0x20000041        0x1 build_F446RE/main_bonus.o
-                0x20000041                MODE1_1
- .bss.MODE1     0x20000042        0x1 build_F446RE/main_bonus.o
-                0x20000042                MODE1
- *fill*         0x20000043        0x1 
+                0x20000004        0x1 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ *fill*         0x20000005        0x3 
+ .bss.object.0  0x20000008       0x18 D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .bss.frequency3
+                0x20000020        0x4 build_F446RE/main_bonus.o
+                0x20000020                frequency3
+ .bss.frequency2
+                0x20000024        0x4 build_F446RE/main_bonus.o
+                0x20000024                frequency2
+ .bss.frequency1
+                0x20000028        0x4 build_F446RE/main_bonus.o
+                0x20000028                frequency1
+ .bss.MODE1_1   0x2000002c        0x1 build_F446RE/main_bonus.o
+                0x2000002c                MODE1_1
+ .bss.MODE13    0x2000002d        0x1 build_F446RE/main_bonus.o
+                0x2000002d                MODE13
+ .bss.MODE12    0x2000002e        0x1 build_F446RE/main_bonus.o
+                0x2000002e                MODE12
+ .bss.MODE11    0x2000002f        0x1 build_F446RE/main_bonus.o
+                0x2000002f                MODE11
+ .bss.counter_led3
+                0x20000030        0x4 build_F446RE/main_bonus.o
+                0x20000030                counter_led3
+ .bss.counter_led2
+                0x20000034        0x4 build_F446RE/main_bonus.o
+                0x20000034                counter_led2
+ .bss.counter_led1
+                0x20000038        0x4 build_F446RE/main_bonus.o
+                0x20000038                counter_led1
  .bss.counter_led
-                0x20000044        0x4 build_F446RE/main_bonus.o
-                0x20000044                counter_led
- .bss.flag      0x20000048        0x1 build_F446RE/main_bonus.o
-                0x20000048                flag
- *fill*         0x20000049        0x3 
- .bss.counter   0x2000004c        0x4 build_F446RE/main_bonus.o
-                0x2000004c                counter
+                0x2000003c        0x4 build_F446RE/main_bonus.o
+                0x2000003c                counter_led
+ .bss.flag3     0x20000040        0x1 build_F446RE/main_bonus.o
+                0x20000040                flag3
+ .bss.flag2     0x20000041        0x1 build_F446RE/main_bonus.o
+                0x20000041                flag2
+ .bss.flag1     0x20000042        0x1 build_F446RE/main_bonus.o
+                0x20000042                flag1
+ .bss.flag      0x20000043        0x1 build_F446RE/main_bonus.o
+                0x20000043                flag
+ .bss.counter   0x20000044        0x4 build_F446RE/main_bonus.o
+                0x20000044                counter
  .bss.BUTTON_2_STATE
-                0x20000050        0x4 build_F446RE/main_bonus.o
-                0x20000050                BUTTON_2_STATE
+                0x20000048        0x4 build_F446RE/main_bonus.o
+                0x20000048                BUTTON_2_STATE
  .bss.BUTTON_1_STATE
-                0x20000054        0x4 build_F446RE/main_bonus.o
-                0x20000054                BUTTON_1_STATE
+                0x2000004c        0x4 build_F446RE/main_bonus.o
+                0x2000004c                BUTTON_1_STATE
  *(COMMON)
-                0x20000058                        . = ALIGN (0x4)
-                0x20000058                        _ebss = .
-                0x20000058                        __bss_end__ = _ebss
+                0x20000050                        . = ALIGN (0x4)
+                0x20000050                        _ebss = .
+                0x20000050                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20000058      0x600 load address 0x0800089c
-                0x20000058                        . = ALIGN (0x8)
+                0x20000050      0x600 load address 0x080009d0
+                0x20000050                        . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
-                0x20000058                        PROVIDE (_end = .)
-                0x20000258                        . = (. + _Min_Heap_Size)
- *fill*         0x20000058      0x200 
-                0x20000658                        . = (. + _Min_Stack_Size)
- *fill*         0x20000258      0x400 
-                0x20000658                        . = ALIGN (0x8)
+                0x20000050                        PROVIDE (_end = .)
+                0x20000250                        . = (. + _Min_Heap_Size)
+ *fill*         0x20000050      0x200 
+                0x20000650                        . = (. + _Min_Stack_Size)
+ *fill*         0x20000250      0x400 
+                0x20000650                        . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -759,55 +790,55 @@ LOAD D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13
  .comment       0x00000039       0x3a build_F446RE/init_bonus.o
  .comment       0x00000039       0x3a D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
 
-.debug_info     0x00000000      0xd77
+.debug_info     0x00000000      0xe5e
  .debug_info    0x00000000      0x5f0 build_F446RE/system_stm32f4xx.o
- .debug_info    0x000005f0      0x3aa build_F446RE/main_bonus.o
- .debug_info    0x0000099a      0x3ad build_F446RE/init_bonus.o
- .debug_info    0x00000d47       0x30 build_F446RE/startup_stm32f446xx.o
+ .debug_info    0x000005f0      0x491 build_F446RE/main_bonus.o
+ .debug_info    0x00000a81      0x3ad build_F446RE/init_bonus.o
+ .debug_info    0x00000e2e       0x30 build_F446RE/startup_stm32f446xx.o
 
-.debug_abbrev   0x00000000      0x33c
+.debug_abbrev   0x00000000      0x33e
  .debug_abbrev  0x00000000      0x11b build_F446RE/system_stm32f4xx.o
- .debug_abbrev  0x0000011b      0x156 build_F446RE/main_bonus.o
- .debug_abbrev  0x00000271       0xae build_F446RE/init_bonus.o
- .debug_abbrev  0x0000031f       0x1d build_F446RE/startup_stm32f446xx.o
+ .debug_abbrev  0x0000011b      0x158 build_F446RE/main_bonus.o
+ .debug_abbrev  0x00000273       0xae build_F446RE/init_bonus.o
+ .debug_abbrev  0x00000321       0x1d build_F446RE/startup_stm32f446xx.o
 
-.debug_loc      0x00000000      0x1ed
+.debug_loc      0x00000000      0x221
  .debug_loc     0x00000000      0x181 build_F446RE/system_stm32f4xx.o
- .debug_loc     0x00000181       0x6c build_F446RE/main_bonus.o
+ .debug_loc     0x00000181       0xa0 build_F446RE/main_bonus.o
 
-.debug_aranges  0x00000000       0xb8
+.debug_aranges  0x00000000       0xd0
  .debug_aranges
                 0x00000000       0x28 build_F446RE/system_stm32f4xx.o
  .debug_aranges
-                0x00000028       0x48 build_F446RE/main_bonus.o
+                0x00000028       0x60 build_F446RE/main_bonus.o
  .debug_aranges
-                0x00000070       0x20 build_F446RE/init_bonus.o
+                0x00000088       0x20 build_F446RE/init_bonus.o
  .debug_aranges
-                0x00000090       0x28 build_F446RE/startup_stm32f446xx.o
+                0x000000a8       0x28 build_F446RE/startup_stm32f446xx.o
 
-.debug_ranges   0x00000000       0x80
+.debug_ranges   0x00000000       0x98
  .debug_ranges  0x00000000       0x18 build_F446RE/system_stm32f4xx.o
- .debug_ranges  0x00000018       0x38 build_F446RE/main_bonus.o
- .debug_ranges  0x00000050       0x10 build_F446RE/init_bonus.o
- .debug_ranges  0x00000060       0x20 build_F446RE/startup_stm32f446xx.o
+ .debug_ranges  0x00000018       0x50 build_F446RE/main_bonus.o
+ .debug_ranges  0x00000068       0x10 build_F446RE/init_bonus.o
+ .debug_ranges  0x00000078       0x20 build_F446RE/startup_stm32f446xx.o
 
-.debug_line     0x00000000      0xa88
+.debug_line     0x00000000      0xd28
  .debug_line    0x00000000      0x2ff build_F446RE/system_stm32f4xx.o
- .debug_line    0x000002ff      0x5a2 build_F446RE/main_bonus.o
- .debug_line    0x000008a1      0x174 build_F446RE/init_bonus.o
- .debug_line    0x00000a15       0x73 build_F446RE/startup_stm32f446xx.o
+ .debug_line    0x000002ff      0x842 build_F446RE/main_bonus.o
+ .debug_line    0x00000b41      0x174 build_F446RE/init_bonus.o
+ .debug_line    0x00000cb5       0x73 build_F446RE/startup_stm32f446xx.o
 
-.debug_str      0x00000000      0x4a0
- .debug_str     0x00000000      0x4a0 build_F446RE/system_stm32f4xx.o
+.debug_str      0x00000000      0x52e
+ .debug_str     0x00000000      0x52e build_F446RE/system_stm32f4xx.o
                                 0x383 (size before relaxing)
- .debug_str     0x000004a0      0x2a2 build_F446RE/main_bonus.o
- .debug_str     0x000004a0      0x2d8 build_F446RE/init_bonus.o
- .debug_str     0x000004a0       0x64 build_F446RE/startup_stm32f446xx.o
+ .debug_str     0x0000052e      0x331 build_F446RE/main_bonus.o
+ .debug_str     0x0000052e      0x2d8 build_F446RE/init_bonus.o
+ .debug_str     0x0000052e       0x64 build_F446RE/startup_stm32f446xx.o
 
-.debug_frame    0x00000000       0xe0
+.debug_frame    0x00000000      0x118
  .debug_frame   0x00000000       0x30 build_F446RE/system_stm32f4xx.o
- .debug_frame   0x00000030       0x90 build_F446RE/main_bonus.o
- .debug_frame   0x000000c0       0x20 build_F446RE/init_bonus.o
+ .debug_frame   0x00000030       0xc8 build_F446RE/main_bonus.o
+ .debug_frame   0x000000f8       0x20 build_F446RE/init_bonus.o
 
 Cross Reference Table
 
@@ -868,16 +899,19 @@ I2C2_ER_IRQHandler                                build_F446RE/startup_stm32f446
 I2C2_EV_IRQHandler                                build_F446RE/startup_stm32f446xx.o
 I2C3_ER_IRQHandler                                build_F446RE/startup_stm32f446xx.o
 I2C3_EV_IRQHandler                                build_F446RE/startup_stm32f446xx.o
+LED1_MODE20                                       build_F446RE/main_bonus.o
+LED2_MODE21                                       build_F446RE/main_bonus.o
+LED3_MODE22                                       build_F446RE/main_bonus.o
 LED_1_STATE                                       build_F446RE/main_bonus.o
 LED_2_STATE                                       build_F446RE/main_bonus.o
 LED_3_STATE                                       build_F446RE/main_bonus.o
-LED_MODE1                                         build_F446RE/main_bonus.o
+LED_FREQUENCY                                     build_F446RE/main_bonus.o
 LED_MODE2                                         build_F446RE/main_bonus.o
-MODE1                                             build_F446RE/main_bonus.o
+MODE11                                            build_F446RE/main_bonus.o
+MODE12                                            build_F446RE/main_bonus.o
+MODE13                                            build_F446RE/main_bonus.o
 MODE1_1                                           build_F446RE/main_bonus.o
 MODE2                                             build_F446RE/main_bonus.o
-MODE_1                                            build_F446RE/main_bonus.o
-MODE_RESET                                        build_F446RE/main_bonus.o
 MODE_SELECTION_BUT1                               build_F446RE/main_bonus.o
 MODE_SELECTION_BUT2                               build_F446RE/main_bonus.o
 MemManage_Handler                                 build_F446RE/startup_stm32f446xx.o
@@ -1103,6 +1137,9 @@ atexit                                            D:/Tools/xpack-arm-none-eabi-g
                                                   D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o
 counter                                           build_F446RE/main_bonus.o
 counter_led                                       build_F446RE/main_bonus.o
+counter_led1                                      build_F446RE/main_bonus.o
+counter_led2                                      build_F446RE/main_bonus.o
+counter_led3                                      build_F446RE/main_bonus.o
 environ                                           build_F446RE/syscalls.o
 errno                                             D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-reent.o)
                                                   D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-sbrkr.o)
@@ -1114,7 +1151,13 @@ exit                                              D:/Tools/xpack-arm-none-eabi-g
                                                   D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o
 fflush                                            D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fflush.o)
 flag                                              build_F446RE/main_bonus.o
+flag1                                             build_F446RE/main_bonus.o
+flag2                                             build_F446RE/main_bonus.o
+flag3                                             build_F446RE/main_bonus.o
 frequency                                         build_F446RE/main_bonus.o
+frequency1                                        build_F446RE/main_bonus.o
+frequency2                                        build_F446RE/main_bonus.o
+frequency3                                        build_F446RE/main_bonus.o
 g_pfnVectors                                      build_F446RE/startup_stm32f446xx.o
 hardware_init_hook                                D:/Tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o
 initialise_monitor_handles                        build_F446RE/syscalls.o
